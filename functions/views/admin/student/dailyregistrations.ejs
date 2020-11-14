@@ -1,0 +1,59 @@
+<section class="bg-light">
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5">
+            <%-include('../panel') %>
+            <div class="p-3 col-md-6 col-sm-10"> 
+                
+            <%-include('./search') %>  
+
+            <% if( registrants.length > 0 ){ %>
+                   
+                <table class="table" >           
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Full names</th>                    
+                            <th scope="col">Tel</th>                    
+                            <th scope="col">Payment</th>
+                            <th scope="col">Course Dates</th>                   
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% registrants.forEach((student, index) => { %>                           
+                            <tr class="justify-content-between">
+                                <th scope="row"> <%=index+1 %> </th>
+                                <td><%=student.name%> </td>                    
+                                <td><%=student.tel%></td>                    
+                                <td><%=student.payment.amount%></td>                             
+                                <td><a href="/courses/<%=student.payment.course_id %>"><%=student.payment.name %>  </a></td>                              
+                            </tr> 
+                        <% }) %>   
+                    </tbody>           
+                </table>
+                <hr> 
+                <tr class="float-right"><strong> Total class payment: <%= daily_sum %></strong></tr> 
+            
+            <% } else { %>
+                    
+                <table class="table" >
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Full names</th>                    
+                            <th scope="col">Tel</th>                    
+                            <th scope="col">Payment</th>
+                            <th scope="col">Course Dates</th>                    
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <div class="d-flex justify-content-end mt-5">
+                            <h4 class="text-danger lead"><strong> No students registered today. </strong>  </h4>
+                        </div>
+                    </tbody>
+                </table>                 
+            <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+

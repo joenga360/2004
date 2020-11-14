@@ -1,0 +1,53 @@
+<header class="p-3 m-4">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container d-flex flex-column flex-md-row align-items-center">
+            <% if( lead ) { %>
+                <a class="navbar-brand text-white">
+                    <img style="max-height:25px;" />  
+                    Excel Health Careers Training
+                </a>
+            <% } else { %>
+                <% if( !admin ) { %>
+                    <a href='/' class="navbar-brand text-white">
+                        <img style="max-height:25px;" />  
+                        Excel Health Careers Training
+                   </a>
+                <% } %>     
+                <% if(admin) { %>
+                    <a href='/admin/dashboard' class="navbar-brand"> 
+                        <img style="max-height:25px;"/>
+                        Admin panel 
+                    </a>                 
+                <% } %> 
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav ml-auto">                      
+                        <li class="nav-item">
+                            <a href="/courses" class="nav-link text-white" >
+                                Courses 
+                            </a>
+                        </li>                       
+                        <li class="nav-item">
+                            <a href="/questions" class="nav-link text-white">
+                                Questions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/videos" class="nav-link text-white">
+                                Videos
+                            </a>
+                        </li>                                                            
+                    </ul>
+                </div>
+            <% } %>      
+        </div>
+    </nav>
+</header> 
+
+
+
+
+

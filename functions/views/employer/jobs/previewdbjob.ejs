@@ -1,0 +1,96 @@
+<section class="bg-light">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6" >             
+                <div class="card">
+                    <div class="card-header bg-dark">
+                        <h3 class="text-white"><%=user.name%></h3>
+                    </div>              
+                    
+                    <div class="card-body">
+                        
+                        <h4 class="card-title" id="title"></h4>                            
+                        <br>
+                        <h5 class="card-subtitle" id="location"><strong>Location: </strong></h5>
+                        <br>
+                        <h5 class="card-subtitle" id="contact"><strong>Contact: </strong> </h5>
+                        <br>
+                        <h5 class="card-subtitle"><strong>Compensation </strong></h5>                            
+                        <p class="card-text" id="compensation"></p>  
+
+                        <h5 class="card-subtitle"><strong>Requirements </strong></h5>                            
+                        <p class="card-text" id="requirements"> </p>  
+
+                        <h5 class="card-subtitle"><strong>Schedule </strong></h5>                            
+                        <p class="card-text" id="schedule"></p> 
+
+                        <h5 class="card-subtitle"><strong>Description </strong></h5>                            
+                        <p class="card-text" id="description"></p>                 
+    
+                        <div class="row justify-content-between m-3">
+
+                            <a href="/jobs" class="btn btn-secondary col-md-3 col-sm-10" role="button" aria-pressed="true"><strong>Edit</strong> </a>        
+                            <!-- <a href="/jobs" class="btn btn-primary col-md-3 col-sm-10" role="button" aria-pressed="true"><strong>Post</strong> </a>         -->
+                            <!-- <button class="btn btn-secondary col-md-3 col-sm-10" type="submit" id="editBtn">Edit</button>  -->
+                            <button class="btn btn-primary col-md-3 col-sm-10" type="submit" id="postBtn">Post</button>
+                        </div>
+
+                        <hr>   
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>        
+</section>    
+
+
+<script>
+
+    $(document).ready(()=>{ 
+          
+        const jobPost =  (<%-JSON.stringify(dbJobPosting)%>) 
+        debugger
+        //get the post attributes - there are 7 attributes       
+        const compensation = jobPost.compensation.trim()        
+        const contact = jobPost.contact.trim() 
+        const description = jobPost.description.trim()
+        const location = jobPost.location.trim()
+        const requirements = jobPost.requirements.trim()
+        const schedule = jobPost.schedule.trim()
+        const title = jobPost.title.trim()             
+        //Bolden the job title
+        const jobTitle = '<strong>'+ title +'</strong>'
+        //append attributes to 
+        $("#title").wrapInner(jobTitle)
+        $('#contact').append(contact)
+        $('#location').append(location)
+        $('#compensation').append(compensation)
+        $('#requirements').append(requirements)
+        $('#schedule').append(schedule)
+        $('#description').append(description)
+
+        const posting = {
+            compensation, contact, description, location, requirements, schedule, title
+        }
+
+        localStorage.setItem('jobPost', JSON.stringify(posting))
+   
+             
+
+        $('#postBtn').on('click', (e) => {
+            e.preventDefault()
+            //send user to check out
+            window.location.replace("/jobs/checkout")
+        })
+    })
+
+   
+</script>
+
+<style scoped>
+
+.card-text {
+    white-space: pre-wrap;
+}
+
+</style>

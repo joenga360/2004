@@ -1,0 +1,228 @@
+<section class="bg-light p-4">     
+    <div class="container-fluid">                    
+        <div class="row justify-content-center">  
+            <% if(Object.keys(user.profile).length === 0 ){%>                       
+                <div class="col-sm-8">                   
+                    <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 1 of 4 </span> </p>
+                    <h5 class="lead text-center text-primary">Your recruiting profile will be used to enhance all your job posts.</h5>            
+                    <!--BEGINNING OF THE FORM-->
+                    
+                    <form id="profile-form" ref="form">
+                        <!--ADDRESS-->
+                                                        
+                        <div class="form-group">
+                            <label for="address">Address</label>                                   
+                            <input type="text" class="form-control" name="address" placeholder="Enter address of recruiting staff/office" required>                                                     
+                        </div>                          
+                                                
+                        <!--EMAIL AND TELEPHONE-->
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="email">HR email</label>  
+                                <input type="email" class="form-control" name="email" placeholder="Enter email of recruiting staff/office" required>                                                                                                  
+                            </div>
+                        
+                            <div class="form-group col-sm-6">
+                                <label for="tel">HR telephone</label>                                 
+                                <input type="tel" class="form-control" name="tel" placeholder="Enter telephone of recruiting staff/office" required>                                                                                                 
+                            </div>
+                        </div> 
+                                                
+                        <div class="bg-dark p-3 mt-3 mb-5">
+                            <!-- TYPE OF ORGANIZATION --> 
+                            <p class=" text-white "><strong>What type is your organization?</strong></p>                       
+                                        
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" name="Hospital" value="Hospital" >                                
+                                <label class="card-text text-white form-check-label" for="hospital">Hospital </label>
+                                <input type="checkbox" class="form-check-input" name="Nursing Home" value="Nursing Home" >                               
+                                <label class="card-text text-white form-check-label" for="nursing home">Nursing Home </label>
+                                <input type="checkbox" class="form-check-input" name="Assisted Living Home" value="Assisted Living Home" >                                
+                                <label class="card-text text-white form-check-label" for="assisted living home">Assisted Living Home </label>                            
+                            </div>
+                                
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" name="Home Care Agency" value="Home Care Agency" >                                
+                                <label class="card-text text-white form-check-label" for="hca">Home Care Agency </label>
+                                <input type="checkbox" class="form-check-input" name="Adult Family/Boarding Home" value="Adult Family/Boarding Home" >                                
+                                <label class="card-text text-white form-check-label" for="afh">Adult Family/Boarding Home </label>
+                                <input type="checkbox" class="form-check-input" name="Other" value="Other" >
+                                <label class="form-check-label text-white" for="other">Other </label>
+                            </div> 
+                            <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
+                            <p class=" text-white "><strong>Do you offer tuition assistance/reimbursement?</strong> (optional)</p>
+                            
+                            <div class="form-check form-check-inline">                                    
+                                <input class="form-check-input" type="radio" name="reimbursement" value="Yes" >                                
+                                <label class="card-text text-white form-check-label" for="Yes"> Yes </label>                                
+                                <input class="form-check-input" type="radio" name="reimbursement" value = "No" >
+                                <label class="card-text text-white form-check-label" for="No"> No </label>                     
+                            </div>
+                            <!--  COURSES OFFERED BY ORGANIZATION --> 
+                            <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong> (optional)</p>
+                            <div class="form-check form-check-inline">                            
+                                <input  class="form-check-input" type="radio" name="inhouse" value = "Yes">                                
+                                <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
+                                <input class="form-check-input" type="radio" name="inhouse" value = "No" >                                
+                                <label class="card-text text-white form-check-label" for="No"> No </label>
+                            </div>
+                            <div>    
+                                <p class="text-white"><strong>If yes, what courses? </strong> (optional)</p>                     
+                            </div>                            
+
+                            <div class="form-group">                       
+                                <textarea class="form-control" name="courses" cols="20" rows="2" placeholder="e.g. Continuous Education Units, CPR/First Aid/AED, Core Basic, Nurse Delegation, Dementia etc."></textarea> 
+                                                            
+                            </div>       
+                                <!-- SHARE MORE ABOUT ORGANIZATION --> 
+                            <div class="form-group">
+                                <label class="text-white" for="notes"><strong> Share more about your organization</strong></label>                                    
+                                <textarea class="form-control" name="notes" cols="20" rows="10" 
+                                    placeholder="Share more information on how you support caregiver/CNA career's growth, if there is any sign-on bonus, job requirements, your work benefits and pay, individual to contact about job openings etc."  
+                                ></textarea>                             
+                            </div>
+                                
+                            <button class="btn btn-success btn-block py-3" type="submit"><strong>Post profile</strong> </button>                 
+                            
+                        </div> 
+                    </form>
+                </div>   
+            <% } else { %>  
+                <div class="col-sm-6" >                  
+                    <div class="card">                        
+                        <div class="card-body">                       
+                            <h4 class="card-title"><strong><%=user.name%>'s profile</strong></h4>                            
+                            <hr>
+                            <h5 class="card-subtitle"><strong>Location: </strong><span class="text-dark"><%= user.profile.address%></span> </h5>
+                            <br>
+                            
+                            <h6 class="card-text"><strong>HR Contact Email: </strong><span class="text-dark" id='email'><%= user.profile.hremail %></span> </h6>
+                            <h6 class="card-text"><strong>HR Contact Tel: </strong><span class="text-dark" id='tel'><%= user.profile.hrphone%></span> </h6>
+                            
+                            <hr>
+                            <% if( user.profile.notes.length > 0 ) {%>
+                            <h5 class="card-subtitle"><strong>Benefits for CNAs/Caregivers working for <%= user.name%> </strong></h5>
+                            <div>
+                                <p class="card-text"><%=user.profile.notes %></p>                            
+                            </div> 
+                            <br>
+                            <% } %>
+                              
+                            <%if(user.profile.reimbursement === 'Yes'){%>                     
+                            <div>
+                                <p class="card-text font-weight-bold"><%=user.name%> offers tuition reimbursement/assistance.</p>
+                            </div>
+                            <%}%>                        
+                            <br>
+                            <% if(user.profile.inhouse === 'Yes'){ %>
+                            <div>
+                                <p class="card-text font-weight-bold"><%=user.name%> offers inhouse training. </p>
+                            </div>
+                            <%}%>
+                            <%if(user.profile.courses.length > 0 ){%>
+                            <div>
+                                <p class="card-text" ><strong>Courses offered by <%= user.name %> include: </strong> 
+                                    <%=user.profile.courses %>
+                                </p>
+                                
+                            </div>  
+                            <%}%>                                      
+                            <hr>
+                            <div class="row justify-content-center m-3">
+                                <button class="btn btn-primary col-md-3 col-sm-10" type="submit" id="editBtn">Edit</button>                                 
+                            </div>
+    
+                            <hr>   
+                        </div>
+                    </div>                
+                </div>
+            <% } %>    
+        </div>                
+    </div>       
+</section>
+
+
+<script>
+    $(document).ready(() => {
+
+        //handle initial form submission
+        $('#profile-form').on('submit', (e) => {
+
+            e.preventDefault()                      
+            //at least one checkbox must be checked to process the form
+            if ($('input:checkbox').is(':checked')) {
+                // get all input in the form
+                const $otherInputs = $('#profile-form :input')
+
+                //create the profile object to store form data
+                const profile = {}
+
+                // get the radio buttons of the form   
+                const $radio = $("#profile-form :input[type=radio]:checked")
+                //get the checkboxes of the form
+                const $checkboxes = $("#profile-form :input[type=checkbox]:checked")
+                //const $checkboxes = $(".setting :input[type=checkbox]:checked")
+                //
+                $radio.each(function() {                    
+                    profile[this.name] = this.value        
+                })
+
+                profile.settings = []
+                $checkboxes.each(function() {
+                   // profile[this.name] = this.value   
+                   profile.settings.push(this.value)   
+                })
+
+                console.log(profile.settings)
+                
+                $otherInputs.each(function(){
+                    console.log('OUTSIDE IF -> ', this.name, 'AND -> ', this.value)
+                    if(this.name !== '' && this.value !== '' ){                        
+                        if(this.name === 'address' || this.name === 'email' || this.name === 'tel' || this.name === 'courses' || this.name === 'notes'){
+                            console.log('INSIDE IF -> ', this.name, 'AND -> ', this.value)
+                            profile[this.name] = this.value 
+                        }
+                        
+                    }                  
+                })                
+
+               // console.log("profile ", profile)
+                localStorage.setItem('profile', JSON.stringify(profile))
+                debugger
+                //send user to profile preview page
+                window.location.replace("/user/profile-preview")
+       
+            
+            } else {
+                alert('Please select the type of your organizaiton!')
+                return false
+            }    
+        })
+
+        //handle edit button click 
+        //send to edit form
+        $('#editBtn').on('click', (e) => {
+
+            e.preventDefault()
+
+            //get the user 
+            const user = (<%-JSON.stringify(user)%>)
+            //get profile of the user
+            const profile = user.profile
+            //stringify and store in the local storage
+            localStorage.setItem('profile', profile)
+            //move to edit page
+            window.location.replace('/user/edit-profile')
+        })
+    })
+</script>
+
+<style scoped>
+    .card-text {
+        white-space: pre-wrap;
+        padding-right:25px;  
+    } 
+    .form-check-input{
+        color:green;
+    }
+</style>

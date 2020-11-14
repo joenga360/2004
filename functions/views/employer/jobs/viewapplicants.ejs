@@ -1,0 +1,19 @@
+<section class="p-4">
+    <%if(jobPost.applicants.length > 0) {%>
+    <div class="container col-sm-4">  
+        <%jobPost.applicants.forEach(applicant => {%>    
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><%=applicant.name %></h5>
+                <p class="card-text">
+                    <strong>EMAIL: </strong> <%=applicant.email %><br>
+                    <strong>TEL: </strong><%=applicant.tel %><br>                        
+                </p>                    
+                <p class="card-text"><strong>QUALIFICATIONS: </strong> <%=applicant.qualifications %></p>
+            </div>            
+        </div>
+        <br>
+        <% }) %>                  
+    </div>
+    <% } %> 
+</section>

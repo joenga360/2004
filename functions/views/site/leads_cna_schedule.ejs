@@ -1,0 +1,95 @@
+<section class="my-5">
+    <div class="container-fluid ">    
+        <div class="row justify-content-center p-5 ">
+           
+            <div class="col-sm-12 col-md-6">
+                <h1 class="diplay text-primary text-center">Day, Evening and Weekend CNA Course Schedules.</h1>  
+                <p class="diplay text-danger text-center mr-4">*If you are using a phone, scroll down to see different class times and dates.*</p>                         
+            </div>                
+        </div>
+    </div>     
+    <div class="container align-items-center">                     
+        <div class="row">         
+            <div class="col-sm-12 col-md-8 justify-content-start px-5">  
+
+                <h3 class="mb-3 font-weight-normal text-success"><%= header %></h3>  <br>   
+                <% lists.forEach(list => { %>                                          
+                <ul class="list-group list-group-flush" >
+                    <li class="h5 list-group-item text-success"><i class="far fa-check-square fa-1x"></i> <%=list%> </li>                                   
+                </ul> 
+                <% }) %>
+                <br>      
+                <div class="bg-warning">
+                    <p class="text-dark"> Due to COVID-19, WA DoH recommends the NAR pathway to NAC licensing which entails the following: </p>    
+                    <ol class="text-dark">    
+                        <li>Apply for NAR license - if you don't have a SSN, contact obraregistry@dshs.wa.gov and ask for candidate ID number.</li>
+                        <li>Complete the online sessions offered by Excel Health Careers Training (EHCT) via ZOOM. Skill demonstrations will be substituted by EHCT skill videos. </li>
+                        <li>Get a (paid) job using your NAR license and work a minimum of 40 hours -  this job will substitute for your clinical training.</li>
+                        <li>Come to EHCT to do your written final exam.  After passing, you get a certificate of completion.  You can work as a CNA.</li>
+                        <li>When the WA CNA state exam re-opens, return to EHCT to get skill training and testing.  This is called <i>circling back</i>.</li> 
+                    </ol>
+                    <p class="text-dark">The above steps need not be taken sequentially; we actually advise you to complete the above steps concurrently. </p>
+                </div>                               
+            </div>                              
+            <div class="col-sm-12 col-md-4">
+            <h4 class="diplay text-right mr-4">*Click on course dates to sign up.*</h4>                      
+                <div class=" row justify-content-end">
+                    <div class="col-12">                        
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item list-group-item-primary text-dark"> <strong>DAY CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 9:00 a.m. - 3:00 p.m.</li> 
+                            <%cna.day_courses.forEach(course => {%>                                    
+                            <li class="list-group-item" >
+                                <a href="/register/course/<%=course.courseId%>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                            </li>
+                            <% }) %>  
+                        </ul>                                        
+                    </div>
+                </div>    
+                <div class="row justify-content-end">                    
+                    <div class="col-12">                                                  
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 3:00 p.m. - 9:00 p.m.</li>                        
+                            <% cna.evening_courses.forEach(course => { %>       
+                            <li class="list-group-item" >
+                                <a href="/register/course/<%=course.courseId%>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                            </li>
+                            <% }) %>  
+                        </ul>                                           
+                    </div>                 
+                </div>  
+                <div class="row justify-content-end">
+                    <div class="col-12">                                                            
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong> <br> Sat & Sun <br> 7 weekends <br> 2:00 p.m. - 10:00 p.m.</li>   
+                            <% cna.weekend_courses.forEach(course => { %>             
+                            <li class="list-group-item" >
+                                <a href="/register/course/<%=course.courseId%>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                            </li>
+                            <% }) %>  
+                        </ul>                                              
+                    </div>                
+                </div>                                      
+            </div> 
+        </div>                  
+    </div>           
+</section>    
+
+<script type="application/javascript">
+
+    $(document).ready(() => {
+
+        gtag('event', "View LEAD CNA Course Schedule", {
+            'event_category': 'Engagement',
+            'event_label': 'Prospective Student',
+            'value': 1
+        })
+    })        
+            
+</script>
+
+<style scoped>
+    .course-info  {
+        white-space: pre-wrap;
+    } 
+</style>
+

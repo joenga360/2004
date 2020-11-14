@@ -1,0 +1,84 @@
+<div class="modal fade" id="applyJobModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Enter details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">                                    
+                <form id="apply-job-form" action="/jobs/apply/<%=jobPost._id%>" method="POST">
+                
+                    <div class="form-group">
+                        <label for="applicant-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter first and last name." name="name"required>
+                         
+                    </div>
+                    <div class="form-group">
+                        <label for="applicant-email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email address." name="email" required>
+                        
+                    </div> 
+                        <div class="form-group">
+                        <label for="applicant-tel" class="col-form-label">Telephone:</label>
+                        <input type="tel" class="form-control" id="tel" placeholder="Enter telephone in this format: 206-505-5050." name="tel" required>
+                        
+                    </div> 
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Licenses/Certificates and Availability:</label>
+                        <textarea class="form-control" id="message-text" placeholder="Enter when you are available to work, the licenses and the certificates you hold." cols="30" rows="5" name="qualifications"></textarea>
+                    </div>                    
+                </form>            
+                <div class="modal-footer">                
+                    <button type="button" class="btn btn-block btn-lg btn-primary" id="submitJobBtn">Submit application</button>
+                </div>                    
+            </div>
+           
+        </div>
+    </div>
+</div>    
+
+<script type="application/javascript">
+    $(document).ready(()=>{
+
+        $('#apply-job-form').on('submit', (e) => {
+            //make sure front data side is filled     
+
+            if(!$('#name').val()) return alert('Please fill in your name!')
+            if(!$('#email').val()) return alert('Please fill in your email!')
+            if(!$('#tel').val()) return alert('Please fill in your phone number!')
+            //Classify the user as a job seeker and increment 'Job Applications Submitted' by one
+            gtag('set', { 'dimension2': "Job Seeker", 'metric7': 1 })
+            gtag('event', `Apply Job`, {
+                'event_category': 'Engagement',
+                'event_label': `Job Seeker`,
+                'value': 1
+            })
+
+            alert('Thanks for submitting your job application.')
+            $("#applyJobModal").modal("hide")
+
+
+            //clear the data contained in the modal form
+            $("#applyJobModal").on('hidden.bs.modal', () => {
+                //this reset html
+                $('#applyJobModal form')[0].reset()
+            })
+            
+            e.preventDefault
+        })
+
+        $('#submitJobBtn').on('click', () => {           
+            // e.preventDefault
+            $('#apply-job-form').submit()
+            
+        })
+        
+    })
+//create a get route to send the user to admin
+</script> 
+
+
+
+ 

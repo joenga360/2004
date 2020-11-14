@@ -1,0 +1,106 @@
+<template>
+    <section class="bg-light">     
+        <div class="container-fluid">           
+            <div class="row justify-content-center">  
+                <!-- RESOURCES FOR DISPLAYING CHECKBOXES AND RADIO BUTTONS -->
+                <!-- https://electrictoolbox.com/check-uncheck-checkbox-jquery/ -->
+                <form ref="form" >                  
+                             
+                    <!--ADDRESS-->
+                                                    
+                    <div class="form-group">
+                        <label for="address">Address</label>                         
+                            <input type="text" class="form-control" name="address" >                        
+                    </div>                          
+                                            
+                    <!--EMAIL AND TELEPHONE-->
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="email">HR email</label>                        
+                                <input type="email" class="form-control" name="email">                                                                 
+                        </div>
+                    
+                        <div class="form-group col-sm-6">
+                            <label for="tel">HR telephone</label>                           
+                                <input type="tel" class="form-control" name="tel">                                                                
+                        </div>
+                    </div>                          
+                    <div class="bg-dark p-3 mt-3 mb-5">
+                        
+                        <p class="text-white "><strong>What type is your organization?</strong></p>                       
+                                    
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="hospital" value="Hospital">                               
+                            <label class="card-text text-white form-check-label" for="hospital">Hospital </label>
+                            <input type="checkbox" class="form-check-input" id="nh" value="Nursing Home">                               
+                            <label class="card-text text-white form-check-label" for="nursing home">Nursing Home </label>
+                            <input type="checkbox" class="form-check-input" id="alh" value="Assisted Living Home">                                
+                            <label class="card-text text-white form-check-label" for="assisted living home">Assisted Living Home </label>                            
+                        </div>
+                            
+                        <div class="form-check form-check-inline">
+
+                            <input type="checkbox" class="form-check-input" id="hca" value="Home Care Agency">                               
+                            <label class="card-text text-white form-check-label" for="hca">Home Care Agency </label>
+                            <input type="checkbox" class="form-check-input" id="afh" value="Adult Family/Boarding Home">                               
+                            <label class="card-text text-white form-check-label" for="afh">Adult Family/Boarding Home </label>
+                            <input type="checkbox" class="form-check-input" id="other" value="Other">                               
+                            <label class="form-check-label text-white" for="assisted living home">Other </label>
+                        </div>                         
+                        <p class=" text-white "><strong>Do you offer tuition assistance/reimbursement?</strong> (optional)</p>
+                        
+                        <div class="form-check form-check-inline">                                    
+                            <input class="form-check-input" type="radio" id="Yes" value = "Yes">                               
+                            <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
+                            <input class="form-check-input" type="radio" id="No" value = "No">                                
+                            <label class="card-text text-white form-check-label" for="No"> No </label>                     
+                        </div>
+                        <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong> (optional)</p>
+                        <div class="form-check form-check-inline">                                
+                            <input class="form-check-input" type="radio" id="Yes" value = "Yes">
+                            <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
+                            <input class="form-check-input" type="radio" id="No" value = "No">
+                            <label class="card-text text-white form-check-label" for="No"> No </label>
+                        </div>
+                        <div>    
+                            <p class="text-white"><strong>If yes, what courses? </strong> (optional)</p>                     
+                        </div>                            
+
+                        <div class="form-group">                           
+                        
+                            <textarea class="form-control" name="courses" cols="20" rows="2" 
+                                placeholder="e.g. Continuous Education Units, CPR/First Aid/AED, Core Basic, Nurse Delegation, Dementia etc." >
+                            </textarea> 
+                                                        
+                        </div>       
+
+                        <div class="form-group">
+                            <label class="text-white" for="notes"><strong> List benefits to CNAs/Caregivers for working for your organization? </strong></label>                                    
+                            <textarea class="form-control" name="notes" cols="20" rows="10" 
+                                placeholder="Share more information on how you support caregiver/CNA career's growth, if there is any sign-on bonus, job requirements, your work benefits and pay, individual to contact about job openings etc.">
+                            </textarea>
+                        </div>
+                            
+                        <button class="btn btn-success btn-block py-3" type="submit"><strong>Update profile</strong> </button>                           
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </section>
+</template>
+
+
+<script>
+
+</script>
+
+<style scoped>
+
+    .card-text {
+        padding-right:25px;    
+    }
+
+    .form-check-input{
+        color:green;
+    }
+</style>

@@ -1,0 +1,137 @@
+<section class="bg-light text-dark py-5 mt-5">
+    <!--COURSE START AND END DATES-->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <%-include('../panel') %>
+            <div class="p-3 col-md-6 col-sm-10">     
+                <form id="add-course-form">
+                    <div class="justify-content-center"> 
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <h3 class="diplay">Select course to add dates</h3>
+                                <hr><br>                                                                 
+                                <select class="form-control form-control-lg" id="course_type" name="course" selected>
+                                    <%courses.forEach(course => {%>
+                                        <option value ="<%=course%>"><strong><%=course %></strong></option>     
+                                    <%})%>                          
+                                </select>                        
+                            </div>                
+                        </div>
+                <br><br>
+                        <div class="row">                                             
+                            <div class="col-md">
+                                <p class='display-text'>Day Classes</p>
+                                <div class="form-group">                                    
+                                    <input type="text" class="form-control" name="day">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="text" class="form-control" name="day">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="text" class="form-control" name="day">
+                                </div>
+                            </div>            
+                            
+                            <div class="col-md">
+                                <p class='display-text'>Evening Classes</p>
+                                <div class="form-group">
+                                    
+                                    <input type="text" class="form-control" name="evening">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="text" class="form-control" name="evening">
+                                </div>
+                                <div class="form-group">
+                                
+                                    <input type="text" class="form-control" name="evening">
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <p class='display-text'>Weekend Classes</p>
+                                <div class="form-group">
+                                
+                                    <input type="text" class="form-control" name="weekend">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <input type="text" class="form-control" name="weekend" >
+                                </div>
+                                <div class="form-group">
+                                
+                                    <input type="text" class="form-control" name="weekend">
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-9">                    
+                                <button class="btn btn-primary btn-block py-3" type="submit" ><strong>Add Courses</strong> </button>
+                            </div>                
+                        </div>                                            
+                    </div>                    
+                </form>
+            </div>
+        </div>                    
+    </div>            
+</section>   
+
+<script type="application/javascript">
+
+    //load document
+    $(document).ready(() => {
+        //listen to form submission
+        $("#add-course-form").on('submit', e => {
+            //prevent default behavior
+            e.preventDefault()
+            //get data from the form
+            const formData =  $('#add-course-form').serializeArray()           
+            //create variable for 
+            let course = ""
+            const day = [], evening = [], weekend = []
+            //sort the form data courses into day, evening, and weekend arrays
+            formData.forEach(data => {
+                
+                if(data.name === 'day' && data.value !== "") day.push(data.value)
+                if(data.name === 'evening' && data.value !== "") evening.push(data.value)
+                if(data.name === 'weekend' && data.value !== "") weekend.push(data.value)
+                if(data.name === 'course' && data.value !== "") course = data.value 
+            })
+            //create data to send to backend
+            const postData = { 
+                                course, 
+                                'day' : day.length > 0 ? day : [],
+                                'evening' : evening.length > 0 ? evening : [],
+                                'weekend' : weekend.length > 0 ? weekend : []
+                            }
+            debugger
+            $.ajax({
+                    type: 'POST', 
+                    url: '/courses/add',
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    headers: {
+                        'CSRF-Token':  Cookies.get("XSRF-TOKEN")
+                    },
+                    dataType: "json",
+                    data: postData,
+                }).done(function (response) {
+                    if (response.redirect !== undefined && response.redirect) {
+                        debugger
+                        alert(response.message)
+                        
+                        window.location.replace(response.redirect_url)
+                    } else {
+                        //if something is wrong - alert user and redirect user to course schedule page                       
+                        alert('Something went wrong - sign in again!')
+
+                        window.location.replace('auth/signout')
+                    }                                   
+                }) 
+
+
+        })
+    })
+</script>    
+

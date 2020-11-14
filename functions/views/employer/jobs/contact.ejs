@@ -1,0 +1,197 @@
+<section class="bg-light p-4">     
+    <div class="container-fluid">                    
+        <div class="row justify-content-center">  
+                         
+                <div class="col-sm-5">                   
+                    <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 3 of 3 </span> </p>
+                    <h5 class="lead text-center text-primary p-3">Add contact information to your job post.</h5>            
+                    <!--BEGINNING OF THE FORM-->
+                    
+                    <form id="profile-form" ref="form">
+                        <!-- NAME OF FACILITY -->
+                        <div class="form-group">
+                            <label for="facility_name">Name of Facility</label>                                   
+                            <input type="text" class="form-control" name="facility_name" placeholder="Enter name of facility" required>                                                     
+                        </div>  
+                        <!--ADDRESS-->
+                                                        
+                        <div class="form-group">
+                            <label for="address">Address</label>                                   
+                            <input type="text" class="form-control" name="address" placeholder="Enter address of recruiting staff/office" required>                                                     
+                        </div>                          
+                                                
+                        <!--EMAIL AND TELEPHONE-->
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="email">Email</label>  
+                                <input type="email" class="form-control" name="email" placeholder="Enter email of recruiting staff/office" required>                                                                                                  
+                            </div>
+                        
+                            <div class="form-group col-sm-6">
+                                <label for="tel">Telephone</label>                                 
+                                <input type="tel" class="form-control" name="tel" placeholder="Enter telephone of recruiting staff/office" required>                                                                                                 
+                            </div>
+                        </div> 
+                                                
+                        <div class="bg-dark p-3 mt-3 mb-5">
+                            <!-- TYPE OF ORGANIZATION --> 
+                            <p class=" text-white "><strong>What type is your organization?</strong></p>                       
+                                        
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" name="Hospital" value="Hospital" >                                
+                                <label class="card-text text-white form-check-label" for="hospital">Hospital </label>
+                                <input type="checkbox" class="form-check-input" name="Nursing Home" value="Nursing Home" >                               
+                                <label class="card-text text-white form-check-label" for="nursing home">Nursing Home </label>
+                                <input type="checkbox" class="form-check-input" name="Assisted Living Home" value="Assisted Living Home" >                                
+                                <label class="card-text text-white form-check-label" for="assisted living home">Assisted Living Home </label>                            
+                            </div>
+                                
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" name="Home Care Agency" value="Home Care Agency" >                                
+                                <label class="card-text text-white form-check-label" for="hca">Home Care Agency </label>
+                                <input type="checkbox" class="form-check-input" name="Adult Family/Boarding Home" value="Adult Family/Boarding Home" >                                
+                                <label class="card-text text-white form-check-label" for="afh">Adult Family/Boarding Home </label>
+                                <input type="checkbox" class="form-check-input" name="Other" value="Other" >
+                                <label class="form-check-label text-white" for="other">Other </label>
+                            </div> 
+                            <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
+                            <p class=" text-white "><strong>Do you offer tuition assistance/reimbursement?</strong> (optional)</p>
+                            
+                            <div class="form-check form-check-inline">                                    
+                                <input class="form-check-input" type="radio" name="reimbursement" value="Yes" >                                
+                                <label class="card-text text-white form-check-label" for="Yes"> Yes </label>                                
+                                <input class="form-check-input" type="radio" name="reimbursement" value = "No" >
+                                <label class="card-text text-white form-check-label" for="No"> No </label>                     
+                            </div>
+                            <!--  COURSES OFFERED BY ORGANIZATION --> 
+                            <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong> (optional)</p>
+                            <div class="form-check form-check-inline">                            
+                                <input  class="form-check-input" type="radio" name="inhouse_training" value = "Yes">                                
+                                <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
+                                <input class="form-check-input" type="radio" name="inhouse_training" value = "No" >                                
+                                <label class="card-text text-white form-check-label" for="No"> No </label>
+                            </div>  
+                                                 
+                            <button class="btn btn-success btn-block py-3" type="submit"><strong>Post Job Opening</strong> </button>
+                             
+                        </div> 
+                        <!-- <div class="form-group"> -->
+                        <div class="g-recaptcha" data-sitekey="6LdF1toZAAAAABDpzizcERm-DAEbEZAY3yIGqDPY"></div>  
+                        <!-- </div>   -->
+                    </form>
+                </div>                
+        </div>                
+    </div>       
+</section>
+
+
+<script>
+    $(document).ready(() => {
+        //get the job posting
+        const jobPosting = localStorage.getItem('jobPost')
+        //handle initial form submission
+        $('#profile-form').on('submit', e => {
+
+            e.preventDefault()                      
+            //at least one checkbox must be checked to process the form
+            if ($('input:checkbox').is(':checked')) {
+
+                      
+                //restore it as an object
+                const jobPost = JSON.parse(jobPosting)
+                // get all input in the form
+                const $otherInputs = $('#profile-form :input')
+
+                //create the profile object to store form data
+                const profile = {}
+
+                // get the radio buttons of the form   
+                const $radio = $("#profile-form :input[type=radio]:checked")
+                //get the checkboxes of the form
+                const $checkboxes = $("#profile-form :input[type=checkbox]:checked")
+                //const $checkboxes = $(".setting :input[type=checkbox]:checked")
+                //
+                $radio.each(function() {                    
+                    profile[this.name] = this.value        
+                })
+
+                //const captcha = 
+                //get the captcha value
+                profile.captcha = document.querySelector('#g-recaptcha-response').value
+                debugger
+                profile.settings = []
+                $checkboxes.each(function() {
+                   // profile[this.name] = this.value   
+                   profile.settings.push(this.value)   
+                })         
+
+                
+                $otherInputs.each( function() {
+                    // console.log('OUTSIDE IF -> ', this.name, 'AND -> ', this.value)
+                    if(this.name !== '' && this.value !== '' ){                        
+                        if( this.name === 'address' || this.name === 'email' || this.name === 'tel'|| this.name === 'facility_name' ){
+                            // console.log('INSIDE IF -> ', this.name, 'AND -> ', this.value)
+                            profile[this.name] = this.value 
+                        }                        
+                    }                  
+                })                
+
+                //join profile data with job post data
+                const jobData = Object.assign(profile, jobPost)
+                debugger
+               // console.log("profile ", profile)
+               $.ajax({
+                        type: 'POST', 
+                        url: '/job',
+                        credentials: 'same-origin', // <-- includes cookies in the request
+                        headers: {                            
+                            'CSRF-Token':  Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
+                        },
+                        dataType: "json",
+                        data: jobData,
+                    }).done(function (response) {
+                        console.log('RESPONSE - > ', response)
+                        debugger
+                        if (response.redirect !== undefined && response.redirect && response.success) {
+                            
+                            localStorage.clear()
+                            //store response job id in local storage
+                            localStorage.setItem('jobId', response.id)
+                          
+                            alert(response.message)
+                            //go to receipt page
+                            window.location.replace(response.url)
+                            
+                        }      
+                        //if something is wrong - alert user and redirect user to course schedule page
+                        if (response.redirect === undefined && !response.redirect && !response.success) {
+                            debugger
+                            alert(response.message)
+
+                            //localStorage.clear()
+
+                            window.location.replace(response.url)
+                        }   
+                    
+                    })   
+       
+            
+            } else {
+                alert('Please select the type of your organizaiton!')
+                return false
+            }    
+        })
+
+        
+    })
+</script>
+
+<style scoped>
+    .card-text {
+        white-space: pre-wrap;
+        padding-right:25px;  
+    } 
+    .form-check-input{
+        color:green;
+    }
+</style>

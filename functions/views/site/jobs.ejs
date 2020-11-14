@@ -1,0 +1,48 @@
+<div class="container-fluid p-5">           
+        <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-6">     
+            <%= jobs.length %>
+            <% if(jobs.length > 0) { %>
+                <table class="table" >
+                    <thead>
+                        <tr> 
+                            <th scope="col"><h5 class="lead">Job Openings and Profiles </h5></th>                     
+                        </tr>
+                    </thead>
+                                                      
+                    <tbody >      
+                        <!-- <%=jobs%>              -->
+                        <%jobs.forEach((value, key)=>{ %>                          
+                            <tr>
+                                <td><a href="/jobs/read/<%=value._id%>"><span class="text-secondary"></span><strong><%=value.title%> </strong></a></td>   
+                            </tr>              
+                        <%})%>                         
+                    </tbody>
+                </table>
+            <% } else {%>                      
+                <div class="mt-5" v-else>
+                    <h5>Our website is just a baby :'(...and so no jobs have been posted yet.  Check back in a few...</h5>
+                    <!-- <br> -->
+                    <p class="lead">In the meantime, you can review some theory questions, watch skill videos, or sign up for a course.</p>
+                </div>
+            <% } %>  
+        </div>           
+    </div> 
+</div>   
+
+ 
+<script type="application/javascript">
+    $(document).ready(()=>{
+        gtag('event', `View Jobs Page`, {
+            'event_category': 'Engagement',
+            'event_label': `Job Seeker`,
+            'value': 1
+        })
+    })
+//create a get route to send the user to admin
+</script>
+
+
+
+  
+

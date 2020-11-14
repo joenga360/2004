@@ -1,0 +1,134 @@
+<section class="p-5 mt-4 bg-light">
+    <div class="container-fluid">    
+        <div class="row justify-content-center">
+                           
+            <div class="p-3 col-md-2 col-sm-2">        
+                <%-include('../employerpanel') %> 
+            </div>
+            <div class="p-3 col-md-6 col-sm-10">   
+                <div class= "justify-content-between m-3">           
+                    <div class="row justify-content-between mb-4">                
+                        <h5 class="lead"> Your Job Postings </h5>
+                        <!-- <button class="btn btn-primary" id="postJob" onclick="createPost()"></button>    -->
+                        <a href="/jobs" class="btn btn-primary" role="button" aria-pressed="true"><strong>Post Your Job Opening</strong> </a>             
+                    </div>
+                    <% if(jobs.length > 0) {%>
+                    <div>
+                        <table class="table" >
+                            <thead>
+                                <tr class="justify-content-center">
+                                    <!-- <th scope="col">#</th> -->
+                                    <th scope="col">Title</th>                                      
+                                    <th scope="col">Manage</th>
+                                        <!-- <th scope="col">Respondents</th>    -->
+                                </tr>
+                            </thead>
+                            <% jobs.forEach(job => { %>
+                            <tbody>      
+                                <tr class="justify-content-center">
+                                    <!-- <th scope="row"> {{index+1}} </th> -->
+                                    <td><a href='/jobs/view/<%=job._id%>'><%= job.title %></a></td>                          
+                                    <td> 
+                                        <a href="/jobs/repost/<%=job._id%>" class="btn btn-light btn-sm" >Repost</a>    
+                                        <a href="/jobs/edit/<%=job._id%>" class="btn btn-light btn-sm" >Edit</a>                                  
+                                        <a class="btn btn-light btn-sm deleteJob" value="<%=job._id%>" >Delete</a>       
+                                    </td>
+                                    <% if(job.applicants.length> 0) {%>
+                                        <td> <a href='/jobs/applicants/<%=job._id%>'> <%= job.applicants.length %> applicants </a> </td>   
+                                    <% } %>
+                                </tr>    
+                            </tbody>
+                            <% }) %>
+                        </table>
+                    </div>
+                    <% } else { %>
+                    <div>
+                        <div class="card">
+                            <h3 class="card-header">Use this site to recruit CNAs and caregivers</h3>
+                            <div class="card-body">
+                                <h5 class="card-title">Reach the right audience</h5>
+                                <p class="card-text">Create a job posting for the right audience - our site is used mainly by licensed HCAs, NARs and CNAs, CNA and caregiver students, recent graduates preparing for state exam, their friends and acquaintances.</p>  
+        
+                                <h5 class="card-title">Enroll your recruits in one of our courses</h5>
+                                <p class="card-text"> Our course offering include: </p>
+                                    <ul>
+                                        <li>CNA</li>
+                                        <li>HCA to CNA Bridging</li>
+                                        <li>CPR & AED/First Aid, Basic Life Support (BLS) </li>
+                                        <li>HIVAIDS</li>
+                                    </ul>
+        
+                                    <p class="card-text">Sign up your employees and/or recruits for their courses on the courses tab to your right.  Use us to maintain your staff CPR/First Aid/AED and BLS cards current.</p>                     
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>        
+                </div> 
+            </div>
+        </div>                  
+    </div>    
+</section>
+
+<script type="application/javascript">
+
+    $(document).ready(()=>{
+
+        localStorage.clear()
+        // function deleteJob(id){
+        //     debugger
+        //     console.log("Here is the id ", id)
+        // }
+
+        //function attached to button add a job
+
+        //function attached to repost button 
+
+        //function attached to edit post button
+
+        //function attached to delete post button
+        // $('.deleteJob').click(() => {
+        //    // e.preventDefault()
+        //     // console.log("EVENT ", e)
+        //     console.log("WE ARE GETTING HERE....")
+        //     //    const id = $(this)
+        //     const id = $(this).attr("value")
+        //     debugger
+        //     console.log("THIS ", id)
+        //     debugger
+              
+        // })  
+         $('.deleteJob').on('click', (e) => { 
+         
+            //get the job id
+            const id = e.currentTarget.attributes.value.nodeValue
+           
+            $.ajax({
+                    type: 'DELETE', 
+                    url: '/jobs/delete/'+id,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    // headers: {
+                    //     'CSRF-Token': token // <-- is the csrf token as a header
+                    // },
+                    dataType: "json",
+                    // data: updatedPost
+                }).done(function (response) {
+                    debugger
+                    if(response.redirect){
+                        // alert('MESSAGE: ', response.message)
+                        window.location.replace('/user/dashboard')
+                    }
+                
+            })
+          
+           
+
+         })
+            
+
+
+       
+
+    })
+
+
+</script>

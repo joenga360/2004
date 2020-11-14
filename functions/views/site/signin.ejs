@@ -1,0 +1,49 @@
+<section>
+    <div class="container mt-5 col-sm-10 col-md-6 col-lg-4 p-5">
+        <div class="alert alert-info" role="alert">
+            <h4 class="text-dark">Looking to hire caregivers and CNAs?  Sign in below. <br> <small>To sign up for courses, click <a href="/courses">here</a>.</small></h4>
+        </div>
+    
+        <form class="form-signin" action="/auth/signin" method="POST" >
+            <div class="text-center mb-4">        
+                <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>        
+            </div>
+
+            <div class="form-label-group">
+                <input type="email" class="form-control" placeholder="Email address" name="email"  autofocus required>
+                <label for="inputEmail">Email</label>
+            </div>
+
+            <div class="form-label-group">
+                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                <label for="inputPassword">Password</label>
+            </div>   
+            
+            <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Sign in</button>
+
+        </form>
+        <p><strong>Don't have an account? Sign up <a href="/signup"> here </a></strong></p>
+        <p><a href="/forgot">Forgot password </a></p>
+    </div>
+</section>
+
+ 
+<script type="application/javascript">
+    $(document).ready(()=>{
+
+        $("#employer-sign-in").on('submit', (e) => {
+
+            //classify the user as employer and increment number of sign in by 1
+            gtat('set', {
+                'dimension2': "Employer", 'metric10': 1
+            })
+            
+            //send this even to GA 
+            gtag('event', `Employer Sign In`, {
+                'event_category': 'Engagement',
+                'event_label': `Return Employer`,
+                'value': 1
+            })
+        })
+    })    
+</script> 

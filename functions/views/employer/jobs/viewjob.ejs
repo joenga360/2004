@@ -1,0 +1,45 @@
+<section class="bg-light m-4 p-4" >
+    <div class="container-fluid">        
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-8">
+                <div class="card">
+                    <div class="card-header bg-success">
+                        <h3 class="text-black"><%=jobPost.title %></h3>
+                    </div>
+                    <div class="card-body">                    
+                        <h4 class="card-title "><strong><%=jobPost.facility_name %></strong></h4>                        
+                        <h5>Description</h5>
+                        <p class="card-text"><%=jobPost.description %></p> 
+                        <h5>Requirements</h5>    
+                        <p class="card-text"><%=jobPost.requirements %></p>
+                       
+                        <h5>Compensation </h5>                            
+                        <p class="card-text"> <%= jobPost.compensation %> </p> 
+                        <p class="card-text">Offers reimbursement? <%=jobPost.reimbursement%></p>
+                        <h5>Schedule </h5>
+                        <p class="card-text"><%= jobPost.schedule %></p>                            
+                        <!-- <p class="card-text">  </p>  -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5><strong>Location:</strong> <%= jobPost.address %> </h5>
+                                <h5 class="text-danger"><strong>Contact:</strong> <%= jobPost.tel%></h5>                              
+                            </div>
+                        </div>                   
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>        
+</section>    
+
+<script>
+
+
+
+</script>
+
+<style scoped>
+.card-text {
+    white-space: pre-wrap;
+}
+</style>

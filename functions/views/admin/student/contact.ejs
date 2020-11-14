@@ -1,0 +1,74 @@
+<!-- Modal -->
+<div class="modal fade contactStudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <h5 class="modal-title" id="contactStudentLabel">FILL FORM AFTER CONTACTING STUDENT - MUST MAKE CONTACT!!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">                                    
+                <form action="" method="post" class="contact-form" ref="form">
+                   
+                                 
+                   
+                </form>                                
+            </div>          
+        </div>
+    </div>   
+</div>    
+
+
+<script>
+
+$(document).ready(() => {
+
+    $(".contactBtn").on('click', (e) => {
+        //show the modal
+        jQuery.noConflict()
+        $("#applyJobModal").modal('show')
+    })
+
+})
+
+
+    // methods : {
+        
+    //    async contacted(){
+    //       // this.student.status.contact_made = false
+    //         //check if the student has been contacted
+    //         if(this.student.contact_made  /*&& !this.student.status.contact_made */){
+    //             //if so, update student in store to indicate that the student has been contacted
+    //             this.student.status.contact_made = this.student.contact_made
+                //join student db comments with new comments
+//                 this.student.comments +=  this.student.comments
+//                 debugger
+//                 //send this event to GA
+//                 this.$ga.event({
+//                     eventCategory: 'Outreach',
+//                     eventAction: `Contact Student`,
+//                     eventLabel: `Prospective Student`,
+//                     eventValue: 1
+//                 })                             
+
+//                 await this.$store.dispatch( "updateStudent", this.student ) 
+
+                
+//                 $('#contactStudent').modal('hide')
+
+//                 alert("Thanks for updating student.")  
+//             }
+//         }
+//     }     
+// }
+
+
+</script>
+
+<style>
+.card-text {
+    white-space: pre-wrap;
+}
+</style>

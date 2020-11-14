@@ -1,0 +1,121 @@
+<section class="bg-light ">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+           
+            <div class="col-sm-5">   
+                <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 1 of 3 </span> </p>
+                
+                <!-- <h4 class="text-dark display-5" v-if="edit">Edit job post</h4>  -->
+                <h4 class="text-dark display-5" id="postHeader"></h4>
+                <form id="job-form">
+                    <div class="form-group">
+                        <label for="title"><strong>Title</strong></label>
+                        <!-- <input type="text" class="form-control form-control-lg" name="title" id="title"> -->
+                        <input type="text" class="form-control form-control-lg" name="title" id="title" 
+                        placeholder="Add title e.g., Caregiver/CNA needed for NOC shift." required>   
+                                        
+                    </div>                               
+
+                    <div class="form-group mb-3">
+                        <label for="requirements"><strong>List Requirements</strong></label>
+                        <!-- <textarea class="form-control" name="requirements" cols="30" rows="8" ></textarea> -->
+                        <textarea class="form-control" name="requirements" cols="30" rows="8" id="requirements"
+                        placeholder="Enter job, certification/licensing and experience requirements in form of a list." required></textarea>
+                        
+                    </div> 
+                    <div class="form-group mb-3">
+                        <label for="schedule"><strong>Job Schedule</strong></label>
+                        <!-- <textareaclass="form-control" name="schedule" cols="30" rows="5" ></textarea> -->
+                        <textarea class="form-control" name="schedule" cols="30" rows="5" id="schedule"
+                        placeholder="Enter work schedule - hours and days of the week e.g Sat and Sun, 8 a.m. - 6 p.m., or Mon - Fri, 9 a.m. - 5:30 p.m., or Live in from Fri 8 a.m. - Mon 3 p.m." required></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="description"><strong>Description - list job duties</strong></label>
+                        <!-- <textarea class="form-control" name="description" cols="30" rows="10"></textarea> -->
+                        <textarea class="form-control" name="description" cols="30" rows="10" id="description"
+                        placeholder="Describe what this job entails e.g, companion care, all ADLS such as bathing, feeding, etc.  Include benefits." required></textarea>                            
+                    </div> 
+
+                    <div class="form-group">
+                        <label for="compensation"><strong>Compensation </strong></label>
+                        <!-- <input type="text" class="form-control" name="compensation" id="compensation"> -->
+                        <input type="text" class="form-control" name="compensation" id="compensation" placeholder="E.g., $175/day for 4 days or $17/hour.  You can also add 'Negotiable'."  required>   
+                                       
+                    </div> 
+                    
+                                 
+                    <!-- <button class="btn btn-primary btn-block py-3" type="submit"><strong>Update Job</strong> </button> -->
+                    <button class="btn btn-primary btn-block py-3" type="submit" id='jobBtn'></button>                    
+                </form>
+            </div>
+        </div> 
+    </div>
+</section>  
+
+
+<script>
+
+    $(document).ready(() => {
+        //check to see if the local storage has any items 
+        //if local storage has length greater than 1, then we are editing
+        //get the post from local storage
+        const jobPosting = localStorage.getItem('jobPost')
+        
+        console.log('Job Posting...', jobPosting)
+
+        if( jobPosting !== null ){
+            //add a header
+            $('#postHeader').append('Edit job opening')
+            ///grab the butoon
+            const jobBtn = $('#jobBtn')
+            //add 'Edit Job' text
+            jobBtn.wrapInner('<strong> Edit Job </strong>')
+            
+            //restore it as an object
+            const jobPost = JSON.parse(jobPosting)
+
+            for (const [key, value] of Object.entries(jobPost)) {
+                //console.log(`${key}: ${value}`);
+                if(key === 'requirements' || key === 'description' || key === 'schedule'){
+                    $('#'+key).append(value)
+                } else {
+                    $('#'+key).attr("value", value)
+                }                
+            }
+
+        }else {
+             //add a header
+            $('#postHeader').append('Post job opening')
+            ///grab the butoon
+            const jobBtn = $('#jobBtn')
+            //add 'Edit Job' text
+            jobBtn.wrapInner('<strong>Post Job</strong>')
+        }
+
+        $('#job-form').on('submit', (e) => {
+
+            e.preventDefault()
+
+            let $inputs = $('#job-form :input')
+            debugger
+            //store them in an array
+            let jobPost = {}
+
+            $inputs.each(function(){
+                 //$(this).find(':input') //<-- Should return all input elements in that specific form.
+                 console.log("Name ", this.name, "Value ", this.value)
+                 if(this.name !== '' && this.value !== '') jobPost[this.name] = this.value                  
+            })
+
+            console.log("Job Form ", jobPost)
+           
+            localStorage.setItem('jobPost', JSON.stringify(jobPost))
+            debugger
+            //window.location.replace("/jobs/preview")
+            document.location.href = "/job/preview"
+        })
+    })
+</script>
+
+

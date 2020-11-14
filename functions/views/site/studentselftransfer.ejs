@@ -1,0 +1,199 @@
+<template>
+    <section>
+        <div class="container p-5">            
+            <div class="row justify-content-center mt-5">
+                <div class="col-sm-12 col-md-8">
+                    <h4 class="diplay text-danger text-center">Transfer To Upcoming {{getCourse.course.name}} Courses</h4>
+    
+                    <div class="border border-danger rounded">
+                        <strong> Name: </strong> {{ getCourse.student.name }} <br>
+                        <strong> Email: </strong>{{ getCourse.student.email }} <br>
+                        <strong> Phone #:</strong> {{ getCourse.student.tel }}         
+                    </div>
+                    <br>
+                     <p>You signed up for <span> <u> {{ displayDates(getCourse.course.start_date) }} {{ getCourse.course.name }}  {{ getCourse.course.type }} class </u> </span> but you never started 
+                         your training.  <strong> Check out our upcoming course schedules.  If you find a course schedule that fits you, go ahead transfer yourself into it. </strong>Let us know if there is anyway we can help you. Thanks for considering us.  Reach us at 206.271.1946 or training@excelcna.com.</p>                     
+                </div>                
+            </div>          
+            <div v-if="getCourse.course.name ==='CNA' || getCourse.course.name ==='Adult CPR/FA'" class="row justify-content-center">             
+                <div class="col-md-4 col-sm-12">                                 
+                    <ul v-if="getCourse.course.name ==='CNA'" class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li>      
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of dayCourses" :key="course.courseId">
+                            {{ displayDates(course.start_date)}} - {{displayDates(course.end_date) }} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div> 
+                                               
+                    </ul>
+                    <ul v-else class="list-group list-group-flush justify-content-center">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS </strong><br> 9:00 a.m. - 3:00 p.m.</li>     
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of dayCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}}<button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                          
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-sm-12">                                      
+                    <ul v-if="getCourse.course.name === 'CNA'" class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks long <br> 3:00 p.m. - 9:00 p.m.</li>      
+                        <div>
+                            <li class="list-group-item" v-for="course of eveningCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}} - {{displayDates(course.end_date)}} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                      
+                    </ul>
+                    <ul v-else class="list-group list-group-flush justify-content-center">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong> <br> 3:00 p.m. - 9:00 p.m.</li>     
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of dayCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}}<button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                                         
+                    </ul>
+                </div> 
+                
+                <div class="col-md-4 col-sm-12">
+                                     
+                    <ul v-if="getCourse.course.name ==='CNA'" class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong> WEEKEND CLASS </strong><br> Sat & Sun <br> 7 weekends long <br> 2:00 p.m. - 10:00 p.m.</li>
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of weekendCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}} - {{displayDates(course.end_date)}} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li> 
+                        </div>                                               
+                    </ul>
+                    <ul v-else class="list-group list-group-flush justify-content-center">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong> WEEKEND CLASS </strong><br> 10:00 a.m. - 4:00 p.m.</li>      
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of weekendCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}}<button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                                                   
+                    </ul>
+                </div>            
+            </div> 
+
+            <div v-else-if="getCourse.course.name === 'HCA-CNA Bridging'" class="row justify-content-center">
+                <div class="col-md-4 col-sm-12">                                 
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br> [Mon, Tue, Wed][Wed, Thu, Fri] <br> 9:00 a.m. - 5:30 p.m.</li>      
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of dayCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}} - {{displayDates(course.end_date)}} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                                               
+                    </ul>                
+                </div>
+                <div class="col-md-4 col-sm-12">                                 
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>WEEKEND CLASS </strong><br> 3 days <br>[Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>      
+                        <div>
+                            <li class="list-group-item" v-for="course of weekendCourses" :key="course.courseId">
+                            {{ displayDates(course.start_date) }} - {{ displayDates(course.end_date) }} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                                                
+                    </ul>                
+                </div>
+            </div>
+
+            <div v-else class="row justify-content-center">
+                <div class="col-md-4 col-sm-12">                                 
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>WEEKDAY/WEEKEND CLASS </strong><br> Tue / Sat <br> 11:00 a.m. - 3:00 p.m.</li>      
+                        <div>
+                            <li class="list-group-item text-center" v-for="course of weekendCourses" :key="course.courseId">
+                            {{displayDates(course.start_date)}} <button class="btn btn-sm btn-outline-success float-right"
+                                                v-on:click="transfer_student(course.courseId)" type="button" > + </button>
+                            </li>
+                        </div>                                              
+                    </ul>                
+                </div>
+            </div> 
+            {{getCourse.course._id}}                       
+        </div>         
+    </section>    
+</template>
+
+<script>
+
+import {mapGetters} from "vuex"
+import {store} from '../../store/store'
+import moment from 'moment'
+
+
+export default {
+
+    data(){
+        return{
+           
+            dayCourses: [],
+            eveningCourses: [],
+            weekendCourses: []
+        }
+    },
+    computed: {
+        ...mapGetters([
+            "getCourse", 
+           // "getAllCourses",
+            "getAllSortedCourses",                 
+            "getStudent"
+        ])        
+    },
+
+    methods: {
+        displayDates(dates){            
+            return moment.utc(dates).format("MMM D, YYYY")
+        },
+
+        sortCourses(){
+            debugger
+            this.dayCourses = this.getAllSortedCourses.Day.filter(course => course.name === this.getCourse.course.name)
+            this.eveningCourses  = this.getAllSortedCourses.Evening.filter(course => course.name === this.getCourse.course.name)
+            this.weekendCourses  = this.getAllSortedCourses.Weekend.filter(course => course.name === this.getCourse.course.name)
+           // console.log("Here is the courses ", course)
+        },
+
+        transfer_student(course_id){
+
+            const old_course_id = this.getCourse.course._id,
+                  new_course_id = course_id,
+                  student_id = this.$route.params.student_id
+
+            this.$store.dispatch('transferStudent', { old_course_id,  new_course_id, student_id })
+
+            //send this even to GA                   
+            this.$ga.event({
+                eventCategory: 'Engagement',
+                eventAction: `Transfer to Future Class`,
+                eventLabel: `Transferring Student`,
+                eventValue: 1
+            })
+
+            this.$router.push({ path: '/confirm-transfer' })
+        }
+    },    
+
+     created(){
+         //sort the courses
+        this.sortCourses()     
+     },
+
+    mounted(){
+       //this route get a specific/one course and student details using one call!
+        this.$store.dispatch('getPublicCourse', { courseId: this.$route.params.course_id, studentId: this.$route.params.student_id })  
+       //get all the courses to display
+        this.$store.dispatch('getPublicCourses')                
+    }
+}
+</script>

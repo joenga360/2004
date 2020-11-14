@@ -1,0 +1,294 @@
+<section class="p-5 mt-3">
+    <div class="container-fluid p-5">    
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-4">
+                <h1 class="diplay text-primary text-center">View Class Schedules</h1>                    
+                <hr>
+                <h5 class="diplay text-center">Classes Fill Up Fast! Sign Up Now!</h5>
+                <div class="row justify-content-between">                                            
+                    <select class="form-control form-control-md bg-danger text-white mb-4" id="course_type" selected>
+                        <%choices.forEach(choice => {%>
+                        <option value ="<%=choice%>"><strong><%=choice%></strong></option>     
+                        <%})%>                          
+                    </select>                                              
+                </div>
+                <!-- <%=classes.cna%> -->
+                <h5 class="diplay text-center">Click on course dates to sign up</h5>  
+            </div>                
+        </div>
+        <!-- CPR/FIRST AID AND CNA COURSES -->
+        <!-- <br> -->
+        <div class="row justify-content-center" id="main_course_div">                           
+            <div class="col-sm-10 col-md-2">       
+                <!-- CNA day                          -->
+                <ul class="list-group list-group-flush justify-content-between" id="day_cna_ul" > 
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>DAY CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 9:00 a.m. - 3:00 p.m.</li>                       
+                     <%classes.cna.day_courses.forEach(course => {%>
+                     <li class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                     <%})%>
+                </ul>
+                <!-- CPR/FA day -->
+                <ul class="cprfa_ul list-group list-group-flush justify-content-center" id="day_cpr_ul"  style="display: none;">
+                    <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS </strong><br> 9:00 a.m. - 3:00 p.m.</li>                         
+                    <%classes.cpr.day_courses.forEach(course => {%>
+                        <li class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+            </div>
+
+            <div class="col-sm-10 col-md-2">      
+                <!-- CNA evening                                 -->
+                <ul class="cna_ul list-group list-group-flush justify-content-between" id="evening_cna_ul">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 3:00 p.m. - 9:00 p.m.</li>             
+                    <%classes.cna.evening_courses.forEach(course => {%>
+                        <li  class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+                <!-- CPR/FA evening -->
+                <ul class="cprfa_ul list-group list-group-flush justify-content-center" id="evening_cpr_ul" style="display: none;">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> 3:00 p.m. - 9:00 p.m.</li>  
+                    <%classes.cpr.evening_courses.forEach(course => {%>
+                        <li  class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date %> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+            </div> 
+            
+            <div class="col-sm-10 col-md-2">
+                <!-- CNA weekend                     -->
+                <ul class="cna_ul list-group list-group-flush justify-content-between"  id="weekend_cna_ul">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong> <br> Sat & Sun <br> 7 weekends <br> 2:00 p.m. - 10:00 p.m.</li>     
+                     <!-- LIST ITEM WILL BE APPENDED USING JQUERY IN THE BELOW PAGE -->
+                    <%classes.cna.weekend_courses.forEach(course => {%>
+                        <li  class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+                <!-- CPR/FA weekend -->
+                <ul class="cprfa_ul list-group list-group-flush justify-content-center" id="weekend_cpr_ul"  style="display: none;">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> 10:00 a.m. - 4:00 p.m.</li>   
+                    <!-- LIST ITEM WILL BE APPENDED USING JQUERY IN THE BELOW PAGE -->
+                    <%classes.cpr.weekend_courses.forEach(course => {%>
+                        <li class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%>  <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+            </div>    
+        </div> 
+        <!-- BRIDGING COURSES -->
+        <div class="row justify-content-center" id="bridging_div" style="display: none;">
+            <div class="col-sm-10 col-md-3">
+                <!-- BRIDGING weekday --> 
+                               
+                <ul class="list-group list-group-flush justify-content-between"  id="day_bridging_ul">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Mon, Tue, Wed][Wed, Thu, Fri] <br> 3 days <br> 9:00 a.m. - 5:30 p.m.</li>   
+                    <%classes.bridging.day_courses.forEach(course => {%>
+                        <li  class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+            </div>
+            <div class="col-sm-10 col-md-3">
+                <!-- BRIDGING weekend -->
+                <ul class="list-group list-group-flush justify-content-between" id="weekend_bridging_ul">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong> <br> [Fri, Sat, Sun][Sat, Sun, Mon] <br> 3 days <br> 11:00 a.m. - 7:30 p.m.</li>                        
+                    <%classes.bridging.weekend_courses.forEach(course => {%>
+                        <li  class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>                    
+            </div> 
+        </div> 
+        <!-- BLS COURSES -->
+        <div class="row justify-content-center" id="bls_div" style="display: none;">
+            <div class="col-sm-10 col-md-3">
+                <!-- BLS weekday/weekend -->
+                <ul class="list-group list-group-flush justify-content-between" id="weekend_bls_ul">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong><br> Tue / Sat <br> 11:00 a.m. - 3:00 p.m.</li>                        
+                    <%classes.bls.forEach(course => {%>
+                        <li class="list-group-item" > <a href="/courses/enroll/<%=course.courseId%>" class="course_link"> <%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                    <%})%>
+                </ul>
+            </div>
+        </div>                                              
+        <!-- INFORMATION FOR COURSES -->
+        <div class="row justify-content-center">                
+            <div class="col-sm-12 col-md-6">
+                <hr>
+                <p class="text-center text-dark"><strong>Click on course dates to sign up.</strong></p>
+                    
+                <div class="alert alert-info" role="alert">
+                    <div id='cpr-bls-notes'>
+                        <p class="lead text-dark">Please note:</p>
+                        <ul class="lead text-dark">                                
+                            <li>Adult CPR/FA AED and BLS courses are not necessarily 6 hours long</li>                                
+                            <li>Skill testing is 30 minutes long.  Make arrangement by calling 206 271 1946</li>
+                        </ul>
+                    </div>
+                    <div id='cna-notes'>
+                        <p class="lead text-dark">CNA course requirements include:</p>
+                        <ul class="lead text-dark">
+                            <li>2 Steps TB Test Results less than 1 year old</li>
+                            <li>Valid ID</li>                                
+                            <li>$ 675.00 tuition cost </li>
+                            <li>Pass math and English entrance exam or unofficial college transcript showing at least 30 credits </li>
+                            <li>Functioning email address</li>
+                        </ul>                        
+                        <hr> 
+                        <div class="bg-warning">
+                            <p class="text-dark"> Due to COVID-19, WA DoH recommends the NAR pathway to NAC licensing which entails the following: </p>    
+                            <ol class="text-dark">    
+                                <li>Apply for NAR license - if you don't have a SSN, contact obraregistry@dshs.wa.gov and ask for candidate ID number.</li>
+                                <li>Complete the online sessions offered by Excel Health Careers Training (EHCT) via ZOOM. Skill demonstrations will be substituted by EHCT skill videos. </li>
+                                <li>Get a (paid) job using your NAR license and work a minimum of 40 hours -  this job will substitute for your clinical training.</li>
+                                <li>Come to EHCT to do your written final exam.  After passing, you get a certificate of completion.  You can work as a CNA.</li>
+                                <li>When the WA CNA state exam re-opens, return to EHCT to get skill training and testing.  This is called <i>circling back</i>.</li> 
+                            </ol>
+                            <p class="text-dark">The above steps need not be taken sequentially; we actually advise you to complete the above steps concurrently. </p>
+                        </div>  
+                        <div style="display: none;">
+                            <p>NOTE: 3 days out 10 days of the first days extend by 2 hours.</p>
+                            <p class="lead text-dark">CNA course includes:</p>
+                            <ul class="lead text-dark">
+                                <li>HIVAIDS Course</li>
+                                <li>AHA Adult CPRFA/AED</li>                         
+                            </ul> 
+                        </div>                                                   
+                    </div>
+                    <div id="bridging-notes">
+                        <p class="lead" style="display: none;">NOTE: The last day is a clinical day with different hours (6:00 a.m. - 2:30 p.m.)</p>
+                        <p class="text-dark">HCA - CNA course requirements include:</p>
+                        <ul class="text-dark">
+                            <li>2 Steps TB Test Results less than 1 year old</li>
+                            <li>Valid ID</li>                                
+                            <li>$ 450.00 tuition cost </li>
+                            <li>Valid/current HCA license</li>
+                            <li>Functioning email address</li>
+                        </ul>  
+                        <hr> 
+                        <div class="bg-warning">
+                            <p class="text-dark"> Due to COVID-19, WA DoH recommends the NAR pathway to NAC licensing which entails the following: </p>    
+                            <ol class="text-dark">                                    
+                                <li>Complete the online sessions offered by Excel Health Careers Training (EHCT) via ZOOM. Skill demonstrations will be substituted by EHCT skill videos. </li>
+                                <li>Get a (paid) job using your HCA license and work a minimum of 40 hours -  this job will substitute for your clinical training.</li>
+                                <li>Come to EHCT to do your written final exam.  After passing, you get a certificate of completion.  You can work as a CNA.</li>
+                                <li>When the WA CNA state exam re-opens, return to EHCT to get skill training and testing.  This is called <i>circling back</i>.</li> 
+                            </ol>
+                            <p class="text-dark">The above steps need not be taken sequentially; we actually advise you to complete the above steps concurrently. </p>
+                        </div> 
+                    </div>
+                    <p class="lead">Keep your receipts carefully.  Some or all of the trainings costs are reimbursable.  Inquire around because some employers help with training costs upfront.</p>                        
+                </div>
+            </div>
+        </div>          
+    </div>           
+</section>    
+
+<script type="application/javascript">
+    //when the document loads
+    $(document).ready(() => {        
+        //display the main course div for "CNA" and "CPR" courses
+        $("#main_course_div").show()
+        $('#cna-notes').show()
+        $('#bridging-notes').hide()
+        $('#cpr-bls-notes').hide()
+        $('#day_cpr_ul').hide()
+        $('#evening_cpr_ul').hide()
+        $('#weekend_cpr_ul').hide()
+        
+
+        let selectedCourse = "CNA"  
+        //send the event to GA - 
+        gtag('event', "Employer View CNA Course Schedule", {
+            'event_category': 'Engagement',
+            'event_label': 'Prospective Student',
+            'value': 1
+        })
+     
+        $("select#course_type").change(function(){ 
+
+            $("#main_course_div").hide()                        
+            
+            //get the value of selectied option
+            selectedCourse = $(this).children("option:selected").val()   
+            
+            //create a GA event action
+            const eventAction = 'View '+selectedCourse+' Course Schedule'
+            //send event to GA
+            gtag('event', eventAction, {
+                'event_category': 'Engagement',
+                'event_label': 'Prospective Sponsoring Employer',
+                'value': 1
+            })
+            
+            //determine course type and UI to use
+            switch(selectedCourse){
+                case "CNA":
+                    //show the main div for CNA and Adult CPR/FA
+                    $("#main_course_div").show()
+                    //show ul div of cna - containing days and times of CNA training
+                    $('#day_cna_ul').show()
+                    $('#evening_cna_ul').show()
+                    $('#weekend_cna_ul').show()
+                    $('#cna-notes').show()
+                    //hide 
+                    $('#day_cpr_ul').hide()
+                    $('#evening_cpr_ul').hide()
+                    $('#weekend_cpr_ul').hide()
+                    $("#bridging_div").hide()
+                    $("#bls_div").hide()
+                    
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    
+                    break
+
+                case "Adult CPR/FA":
+                    //show the main div for CNA and Adult CPR/FA
+                    $("#main_course_div").show()
+                    //show ul div of cpr - containing days and times of CPR training
+                    $('#day_cpr_ul').show()
+                    $('#evening_cpr_ul').show()
+                    $('#weekend_cpr_ul').show()
+                    //hide 
+                    $('#day_cna_ul').hide()
+                    $('#evening_cna_ul').hide()
+                    $('#weekend_cna_ul').hide()
+                    $("#bridging_div").hide()
+                    $("#bls_div").hide()   
+                    
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').show()
+                    
+                    break
+              
+                case "HCA-CNA Bridging":
+                   
+                    $("#bridging_div").show()
+                    $("#main_course_div").hide()
+                    $("#bls_div").hide()
+                    $("#day_bridging_ul").show()                      
+                    $("#weekend_bridging_ul").show()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').show()
+                    $('#cpr-bls-notes').hide()
+
+                    break
+                
+                case "Basic Life Support (BLS)":
+                    //show    
+                    $("#bls_div").show()
+                    $('#cpr-bls-notes').show()
+                    //hide
+                    $("#bridging_div").hide()
+                    $("#main_course_div").hide()
+                    $("#weekend_bls_ul").show()                    
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()                    
+                
+                    break
+            }    
+
+        })  
+    })
+</script>
+
+
+

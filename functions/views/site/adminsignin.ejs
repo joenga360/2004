@@ -1,0 +1,66 @@
+<section>
+    <div class="container mt-5 col-sm-10 col-md-6 col-lg-4 p-5">
+        <form class="form-signin" >
+            <div class="text-center mb-4">        
+            <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>        
+        </div>
+
+        <div class="form-label-group">
+            <input type="email" class="form-control" placeholder="Email Address" name="email" id="email" autofocus required>
+            <label for="email">Email</label>
+        </div>
+
+        <div class="form-label-group">
+            <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+            <label for="password">Password</label>
+        </div>    
+
+        <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Sign in</button>
+
+        </form>
+    </div>
+</section>
+
+<script type="application/javascript">
+
+    $(document).ready(() => {
+        //listen to form submission
+        $(".form-signin").on('submit', e => {
+            //prevent default behavior
+            e.preventDefault()
+            //get the values
+            const email = document.getElementById("email").value
+            //get the password
+            const password = document.getElementById("password").value
+            debugger
+            //sign in data
+            const signInData = { email, password }
+           
+            //send to server
+            $.ajax({
+                type: 'POST', 
+                url: "/auth/signin",
+                credentials: 'same-origin',
+                headers: {
+                    "CSRF-Token": Cookies.get("XSRF-TOKEN")
+                },
+                dataType: "json",
+                data: signInData
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    
+                    alert(response.message)
+                    // window.location.href = response.redirect_url
+                    window.location.replace(response.redirect_url)
+                }      
+                
+                if (response.redirect === undefined || !response.redirect) {
+                    
+                    alert(response.message)
+                    // window.location.href = response.redirect_url
+                    window.location.replace(response.redirect_url)
+                }            
+            })
+        })
+    })
+</script>

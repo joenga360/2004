@@ -1,0 +1,76 @@
+<template>
+    <section class="bg-light">        
+        <div class="container-fluid">
+            <div class="row p-3">                
+                <!-- <div class=" mx-auto "> -->
+                    <div class="card" style="width: 45rem;"> <!--increase/decrease 18rem; -->                    
+                        <div class="card-body">
+                            <div class="row">
+                                <h5 class="card-title">{{ getStudent.first }}</h5>&nbsp;
+                                <h5 class="card-title">{{ getStudent.last }}</h5>
+                            </div>                            
+                            <div class="row">
+                                <p class="card-text">{{ getStudent.address }}</p>                          
+                            </div>
+                            <div class="row">                                   
+                                <p class="card-text">{{ getStudent.city }}</p>&nbsp;
+                                <p class="card-text">{{ getStudent.state }}</p>&nbsp;
+                                <p class="card-text">{{ getStudent.zip }}</p>                               
+                            </div> 
+                            <div class="row">                                   
+                                <p class="card-text"><strong>Email: </strong> {{ getStudent.email }}</p>&nbsp;&nbsp;
+                                <p class="card-text"><strong>Tel: </strong>{{ getStudent.tel }}</p>&nbsp;                                    
+                            </div>                        
+                              
+                            <div v-if="getStudent.payments.length > 0" class="row" >
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Course</th>
+                                            <th scope="col">Amount Paid</th>                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(payment, index) of getStudent.payments" :key="index">                                            
+                                            <th scope="row">{{displayDates(payment.date)}}</th>
+                                            <td><router-link v-bind:to="{ path: `/admin_course/${payment.course_id._id}` }">{{displayDates(payment.course_id.start_date)}} {{payment.course_id.type}} {{payment.course_id.name}}</router-link></td>
+                                            <td>{{payment.amount}}</td>                                            
+                                        </tr>                                            
+                                    </tbody>
+                                </table>                                
+                            </div>                                 
+                        </div>
+                    </div>
+                <!-- </div>    -->
+            </div>
+        </div>
+    </section>
+</template>
+
+<script>
+import { store } from "../../../store/store"
+import { Tuition } from "../../../helpers/courses"
+import {mapGetters} from "vuex"
+import moment from "moment"
+
+export default {
+    computed:{
+        ...mapGetters([
+            "getStudent"
+        ])
+    },
+
+    methods:{
+        displayDates(dates){           
+            return moment.utc(dates).format("MMM DD YYYY")
+        }
+    },
+
+    mounted(){
+        debugger
+        this.$store.dispatch('getStudent', this.$route.params.student_id)       
+    }
+    
+}
+</script>

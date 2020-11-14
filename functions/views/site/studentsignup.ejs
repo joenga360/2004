@@ -1,0 +1,322 @@
+<section class="p-4 mt-3">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-12">                 
+                
+                <% if(course.end_date) { %>
+                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> - <%=course.end_date%> <%=course.name%> <%=course.type%> Class</h3>
+                <% } else { %> 
+                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> <%=course.name%> <%=course.type%> Class </h3>      
+                <% } %>
+                <br> 
+                <br>               
+                <!--BEGINNING OF THE FORM-->
+                <form id="course_sign_up" >
+                        <!--FIRST AND LAST NAMES-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-5 col-lg-2">                                
+                            <div class="form-group">
+                                <label for="first">First Name</label>                                   
+                                <input  type="text" class="form-control" name="first" id="first" required>
+                               
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-5 col-lg-2">
+                            <div class="form-group">
+                                <label for="last">Last Name</label>                                   
+                                <input type="text" class="form-control" name="last" id="last" required>                                                               
+                            </div>
+                        </div>
+                    </div>                               
+                                            
+                        <!--EMAIL AND TELEPHONE-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-5 col-lg-2">
+                            <div class="form-group">
+                                <label for="email">Email</label>                                    
+                                <input type="email" class="form-control" name="email" id="email" required>  
+                                                                   
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-5 col-lg-2">
+                            <div class="form-group">
+                                <label for="tel">Telephone</label>                                 
+                                <input type="tel" class="form-control" name="tel" id="tel" required>                                                                    
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--COMMENTS AND QUESTIONS-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-10 col-lg-4">
+                            <div class="form-group">
+                                <label for="comments">Comments</label>
+                                
+                                <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter your comments or questions" ></textarea>
+                            </div>          
+                        </div>
+                    </div>    
+
+                    <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-10 col-lg-4 p-3 bg-light">     
+                            <p class="text-center lead text-danger"><strong> Classes fill up fast.  Register now and secure your spot immediately. </strong></p>
+                            <label for="card-element">
+                                Credit or debit card
+                            </label>
+                            <div id="card-element">
+                                <!-- Elements will create input elements here -->
+                            </div>
+                            
+                              <!-- We'll put the error messages in this element -->
+                            <div id="card-errors" role="alert" ></div>
+                            <div class="mt-2">                               
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= fees[course.name] %>.00 Registration Fee</strong></button> 
+                                <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
+                                <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
+                            </div>
+                                
+                        </div>
+                    </div>                       
+                    
+                    <!-- ADD TO THE WAITLIST BUTTON -->
+                    <div class="row justify-content-center mt-2">
+                        <div class="col-sm-12 col-md-10 col-lg-4 bg-white"> 
+                            <p>Still undecided? </p>                                                                                
+                            <button class="btn btn-secondary py-3" name="waitlist" id="btnWaitlist" type="submit"><strong>Add me to the waitlist </strong> </button> 
+                            <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
+                        </div>
+                    </div>                
+                </form>
+            </div>                
+        </div>
+    </div>
+</section>
+<script type="application/javascript">
+
+    //get the public stripe token
+    let stripe = Stripe(<%-JSON.stringify(STRIPE_PUBLIC_KEY)%>)
+    
+    let elements = stripe.elements()
+
+    // Set up Stripe.js and Elements to use in checkout form
+    var style = {
+        base: {
+            color: "#32325d",
+        }
+    }
+    //create card
+    var card = elements.create("card", { style: style })
+    //mount the card on the form
+    card.mount("#card-element")
+    //if card details change, note any errors and if nothing show empty string
+    card.on('change', ({ error }) => {
+
+        const displayError = document.getElementById('card-errors')
+
+        if (error) {
+            displayError.textContent = error.message
+        } else {
+            displayError.textContent = ''
+        }
+    })
+
+    $(document).ready(() => {       
+         //get the course
+        const course = (<%-JSON.stringify(course)%>)
+
+        const fees = (<%-JSON.stringify(fees)%>)  
+
+        //this event register a student who pays registration fees
+        $("#btnRegister").on('click', e => { 
+            //prevent default behavior
+            e.preventDefault()
+            //REQUIRED FIELD: get student's first name
+            const first = $('#first').val()
+            //REQUIRED FIELD: get student's last name
+            const last = $('#last').val()
+            //REQUIRED FIELD: get student's email
+            const email = $('#email').val()
+            //REQUIRED FIELD: get student's telephone #
+            const tel = $('#tel').val()
+            //get student's comments or questions    
+            const comments = $('#comments').val()
+            //make sure that first, last, email and telephone #s fields are filled
+            if(first === '' || last === '' || email === '' || tel === ''){
+                return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
+            }
+      
+            //hide the registration button to avoid multiple form submission           
+            $('#btnRegister').hide()
+            //show user their form submission is being processed
+            $("#process-registration").show()
+
+            stripe.createToken( card ).then( result => {
+                // Handle result.error or result.token
+                if(result.error){
+                    return displayError.textContent = result.error
+                }               
+                //get the stripe token
+                const stripeToken = result.token.id              
+                //create an on object constructed from data entered by user in the form above
+                const studentData = { first, last, email, tel, comments }
+                //debugger                
+                //add course costs 
+                studentData.payment = fees[course.name]
+                //add stripe token from stripe
+                studentData.stripeToken = stripeToken
+                debugger
+                //send data to GA         
+                gtag('event', 'Course Registration', {
+                    "transaction_id": course.courseId,
+                    "affiliation": "EHCT - Course Self Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course.courseId,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            "variant": course.type,     
+                            "quantity": 1,
+                            "price": studentData.payment
+                        }
+                    ]
+                })
+
+                $.ajax({
+                    type: 'POST', 
+                    url: '/students/register/'+course.courseId,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    headers: {
+                        'CSRF-Token': Cookies.get("XSRF-TOKEN")
+                    },
+                    dataType: "json",
+                    data: studentData,
+                }).done(function (response) {
+                    if (response.redirect !== undefined && response.redirect) {
+                        debugger
+                        alert(response.message)
+                        //window.location.replace(response.redirect_url)
+                        window.location.href = response.redirect_url
+                    }      
+                    //if something is wrong - alert user and redirect user to course schedule page
+                    if (response.redirect !== undefined && !response.redirect) {
+                        
+                        alert('Something went wrong - start the registration process again!')
+                        window.location.href = '/courses'
+                       // window.location.replace('/courses')
+                    }                   
+                })                         
+            })           
+        })
+
+        //this event adds a student to the waitlist
+        $("#btnWaitlist").on('click', e => {
+
+            e.preventDefault()            
+            //arbitrarily assign the price to be a third that of the registrant who paid for the course
+            const price = 15         
+           
+            //REQUIRED FIELD: get student's first name
+            const first = $('#first').val()
+            //REQUIRED FIELD: get student's last name
+            const last = $('#last').val()
+            //REQUIRED FIELD: get student's email
+            const email = $('#email').val()
+            //REQUIRED FIELD: get student's telephone #
+            const tel = $('#tel').val()
+            //get student's comments or questions    
+            const comments = $('#comments').val()
+            //make sure that first, last, email and telephone #s fields are filled
+            if(first === '' || last === '' || email === '' || tel === ''){
+                return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
+            } else {
+                //hide waitlist button
+                $('#btnWaitlist').hide()
+                //show user their form submission is being processed
+                $("#process-waitlist").show()
+                //create an on object constructed from data entered by user in the form above
+                const studentData = { first, last, email, tel, comments }        
+                //get the course id for the course -> student will be added to the course with course id          
+                gtag('event', 'Course Add To Waitlist', {
+                    "transaction_id": course.courseId,
+                    "affiliation": "EHCT - Course Self Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course.courseId,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            "variant": course.type,     
+                            "quantity": 1,
+                            "price": price
+                        }
+                    ]
+                }) 
+                //classify the user as employer and increment number of sign in by 1
+                // gtat('set', {
+                //     'dimension1': course.name, 'metric10': 1
+                // })
+                
+                $.ajax({
+                        type: 'POST', 
+                        url: '/students/register/'+course.courseId,
+                        credentials: 'same-origin', // <-- includes cookies in the request
+                        headers: {
+                            "CSRF-Token": Cookies.get("XSRF-TOKEN")
+                        },
+                        dataType: "json",
+                        data: studentData,
+                    }).done(function (response) {
+                        if (response.redirect !== undefined && response.redirect) {
+                            debugger
+                            alert(response.message)
+                            window.location.replace(response.redirect_url)
+                        }      
+                        //if something is wrong - alert user and redirect user to course schedule page
+                        if (response.redirect !== undefined && !response.redirect) {
+                            
+                            alert('Something went wrong - start the registration process again!')
+
+                            window.location.replace('/courses')
+                        }                   
+                })
+            }                
+        })     
+   })    
+
+
+
+</script>
+<style>
+   
+    .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    /* border: 1px solid transparent; */
+    border: 2px solid green;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+    border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+    }
+
+</style>

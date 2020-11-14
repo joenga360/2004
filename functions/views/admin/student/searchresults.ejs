@@ -1,0 +1,77 @@
+<section class="bg-light"> 
+    <div class="container-fluid">
+        <div class="row p-2">       
+            <%students.forEach(student => { %>                   
+            <div v-for="(student, index) of getStudents" :key="index" class="card" style="width: 45rem;">  <!-- increase/decrease 18rem;                      -->
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <h5 class="card-title"><%=student.name%></h5>&nbsp;
+                        
+                    </div>                            
+                    <div class="row" v-if="student.address">
+                        <p class="card-text"><%=student.address%></p>                          
+                    </div>                             
+                    <div class="row" v-if="student.city && student.state && student.zip">                                   
+                        <p class="card-text"><%=student.city%></p>&nbsp;
+                        <p class="card-text"><%=student.state%></p>&nbsp;
+                        <p class="card-text"><%=student.zip%></p>                               
+                    </div> 
+                    <div class="row">                                   
+                        <p class="card-text"><strong>Email: </strong> <%=student.email%></p>&nbsp;&nbsp;
+                        <p class="card-text"><strong>Tel: </strong><%=student.tel%></p>&nbsp;                                    
+                    </div>   
+                    <div class="row" v-if="student.comments">
+                        <p class="card-text"><strong>Comments: </strong> <%=student.comments%></p>                          
+                    </div>            
+                    
+                    <% if(student.payments.length > 0 ) { %>
+                    <div class="row" >
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Course</th>
+                                    <th scope="col">Amount Paid</th>                                        
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% student.payments.forEach(payment => { %>
+                                <tr >                                            
+                                    <th scope="row"><%=payment.date %></th>
+                                    <td><a href="/admin_course/<%=payment.courseId %>"><%=payment.item %></a></td>
+                                    <td><%=payment.amount %></td>                                            
+                                </tr>  
+                                <% }) %>                                          
+                            </tbody>
+                        </table>                                
+                    </div> 
+                    <% } %>                                 
+                </div> 
+            </div> 
+            <% } )%>          
+        </div>
+    </div>
+</section> 
+
+
+<script>
+import { store } from "../../../store/store"
+import { Tuition } from "../../../helpers/courses"
+import {mapGetters} from "vuex"
+import moment from "moment"
+
+export default {
+    computed:{
+        ...mapGetters([
+            "getStudents"
+        ])
+    },
+
+    methods:{
+        displayDates(dates){           
+            return moment.utc(dates).format("MMM DD YYYY")
+        }
+    } 
+}
+</script>

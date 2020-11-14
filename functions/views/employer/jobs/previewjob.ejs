@@ -1,0 +1,93 @@
+<section class="bg-light">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-4" >       
+                <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 2 of 3 </span> </p>      
+                <div class="card">
+                    
+                    
+                    <div class="card-body">
+                        
+                        <h4 class="card-title" id="title"></h4>                            
+                        <br>                        
+                        <h5 class="card-subtitle"><strong>Compensation </strong></h5>                            
+                        <p class="card-text" id="compensation"></p>  
+
+                        <h5 class="card-subtitle"><strong>Requirements </strong></h5>                            
+                        <p class="card-text" id="requirements"> </p>  
+
+                        <h5 class="card-subtitle"><strong>Schedule </strong></h5>                            
+                        <p class="card-text" id="schedule"></p> 
+
+                        <h5 class="card-subtitle"><strong>Description </strong></h5>                            
+                        <p class="card-text" id="description"></p> 
+                        
+                        <hr>                
+                        <br>
+                        <div class="row justify-content-between m-3">
+                            <a href="/job" class="btn btn-secondary col-md-3 col-sm-10" role="button" aria-pressed="true"><strong>Edit</strong> </a>       
+                      
+                            <button class="btn btn-primary col-md-3 col-sm-10" type="submit" id="postBtn">Continue</button>
+                        </div>
+   
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>        
+</section>    
+
+
+<script>
+
+    $(document).ready(()=>{    
+        //get the post from local storage -- it is in string format      
+
+        const localJobPosting = localStorage.getItem('jobPost')
+        //if there is no item 'jobPost' in local storage, then jobPosting will equal null
+        //it means the jobPosting is from the database        
+        const newJobPost =  JSON.parse(localJobPosting)
+
+        //get the post attributes - there are 7 attributes       
+        const compensation = newJobPost.compensation.trim()        
+       //const contact = newJobPost.contact.trim() 
+        const description = newJobPost.description.trim()
+        //const location = newJobPost.location.trim()
+        const requirements = newJobPost.requirements.trim()
+        const schedule = newJobPost.schedule.trim()
+        const title = newJobPost.title.trim()             
+        //Bolden the job title
+        const jobTitle = '<strong>'+ title +'</strong>'
+        //append attributes to 
+        $("#title").wrapInner(jobTitle)
+        //$('#contact').append(contact)
+       // $('#location').append(location)
+        $('#compensation').append(compensation)
+        $('#requirements').append(requirements)
+        $('#schedule').append(schedule)
+        $('#description').append(description)
+
+        const posting = {
+            compensation, description,  requirements, schedule, title
+        }
+
+        localStorage.setItem('jobPost', JSON.stringify(posting))
+              
+        //
+        $('#postBtn').on('click', (e) => {
+            e.preventDefault()
+            //send user to check out
+            window.location.replace("/job/contact")
+        })
+    })
+
+   
+</script>
+
+<style scoped>
+
+.card-text {
+    white-space: pre-wrap;
+}
+
+</style>

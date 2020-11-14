@@ -1,0 +1,81 @@
+<section class="p-5 mt-3">
+  <div class="container-fluid">
+    <div class="row justify-content-center ">
+      <div class="col-sm-4 m-3" id="quiz">      
+        <div>
+          <h1 class="lead"><strong>CNA and HCA theory questions</strong></h1>     
+        </div>
+        
+       <form id="questions-list-form" >          
+          
+          <table class="table table-striped" >
+            <% questions.forEach((question, index)=>{ %>
+            <thead >
+              <tr class='question'>
+                <th scope="col"><%= index+1 %>: <%= question.question %> </th>
+              </tr>              
+            </thead>
+            
+            <tbody>
+              <% question.choices.forEach((choice, x)=>{ %>
+                <tr >               
+                  <td>                 
+                     <span class="font-weight-bold"><%=answerChoices[x]%>:  </span> <input type="radio" name="<%=index%>" value="<%=x%>" required > ~ <%=choice%>   
+                  </td>             
+                </tr>
+                <% }) %>
+                 <tr >               
+                  <td id="rationale<%=index%>" class="text-danger" style="display: none";>The answer is <bold></bold> <%=answerChoices[question.answer]%>.</bold>  EXPLANATION: <%=question.rationale%></td>
+                </tr>  
+            </tbody>           
+            <% }) %>
+          </table>                         
+          
+          <div class="float-right" >        
+            <button id="btnGradeQuiz" class="btn btn-primary" type="submit">Grade Quiz</button>          
+          </div>
+      </form>        
+       
+      </div>        
+    </div>      
+  </div>
+</section>  
+
+
+<script type="application/javascript">
+ 
+    $(document).ready(()=>{
+    
+        $("#questions-list-form").on('submit', (e) => {
+
+            e.preventDefault()
+
+            //classify the user as an exam candidate and increment number of quizzes by 1
+            gtag('set', {'dimension2': "Exam Candidate", 'metric8': 1})
+
+            const questionsArray = (<%-JSON.stringify(questions)%>)
+            //get answers user entered in the quiz           
+            const $inputs = $("#questions-list-form :input[type=radio]:checked")
+     
+            //store them in an array
+            let userAnswers = []
+
+            $inputs.each(function() {
+                //console.log("This value ", this.value)
+                userAnswers[this.name] = this.value            
+                //console.log("Value ", this.value)            
+            })
+
+            userAnswers.forEach((answer, index) => {
+              //console.log("Answer...", answer)
+              if(parseInt(questionsArray[index]['answer']) !== parseInt(answer)){
+                  //alert("You scored: ", score)
+                  $("#rationale"+index).show()
+              }            
+            })          
+        })
+    })    
+      
+  
+</script>
+

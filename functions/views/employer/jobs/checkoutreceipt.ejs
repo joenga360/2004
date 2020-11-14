@@ -1,0 +1,66 @@
+<section class="m-3 p-3">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-4" >
+                
+                <p>
+                    Thanks for posting on our site.  You can see your job post <a id="jobLink">here</a>. 
+                </p>  
+                <div class="bg-success p-3">
+                    <h4>Check out our courses catalog.  Our courses let you:</h4>                  
+                    <p>                 
+                        <ol>
+                            <li>keep you CPR/First Aid and Continuous Education Units (CEUs) current </li>
+                            <li>care for residents with diverse chronic conditions such as Traumatic Brain Injury, Dementia and Mental Health </li>
+                            <li>care for more acute residents - by bridging from HCA license to CNA</li>
+                        </ol>                   
+                    </p> 
+                    <h4>We schedule our courses to fit into your work schedule by:</h4>
+                    <p>
+                        <ul>
+                            <li>offering our courses and skill sessions during days, evenings and weekends</li>
+                            <li>offering our courses via ZOOM (also in person)</li>
+                            <li>allowing rolling enrollment for CORE Basic Training</li>
+                        </ul>
+                    </p>
+                    
+                </div>
+                <div class="p-3"> 
+                    <a href='/courses' class="btn btn-danger float-right"> Caregivers Courses </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>    
+
+<script type="application/javascript">
+
+    $(document).ready(() => {
+        //get the job id from local storage
+        const jobId = localStorage.getItem('jobId')
+
+        console.log("JOB ID ", jobId)
+
+        //add it to a link
+        $('#jobLink').attr('href', '/job/view/'+jobId)
+
+        $('#jobLink').on('click', ()=>{
+            
+            //clear local storage 2 seconds after clicking on the link
+            setTimeout(localStorage.clear(), 2000)
+        })
+    })
+ 
+</script>
+
+<style scoped>
+.post-payment-text {
+    white-space: pre-wrap;
+}
+</style>
+
+
+
+
+

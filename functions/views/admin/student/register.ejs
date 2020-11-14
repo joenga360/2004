@@ -1,0 +1,469 @@
+<section class="bg-light">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div>          
+                <h4 class="text-dark text-center p-3" ><%=course.start_date%> <%=course.name%> <%=course.type%> class sign up form</h4>
+                <!--BEGINNING OF THE FORM-->
+                <% if(update){ %>
+                    <form class="text-muted" ref="form" id="updateForm">
+                        <!-- CONTACT MADE, WALK IN, START CLASS          -->
+
+                        <div class="row mb-3 justify-content-center ">
+                            <div class="col-md-6 col-sm-12 bg-success">
+                                <div class="form-check form-check-inline">   
+                                    <% if(student.status.course_start) { %>                          
+                                        <input type="checkbox" class="form-check-input" name ="course_start" value="<%=student.status.course_start%>" checked>
+                                        <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
+                                    <% } else{ %>
+                                        <input type="checkbox" class="form-check-input" name ="course_start" value=true>
+                                        <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
+                                    <% } %>
+
+                                    <% if(student.status.walk_in){ %>
+                                        <input type="checkbox" class="form-check-input" name="walk_in" value="<%=student.status.walk_in%>" checked>
+                                        <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
+                                    <% } else { %>
+                                        <input type="checkbox" class="form-check-input" name="walk_in" value=true>
+                                        <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
+                                    <% } %>
+                                </div>
+                            </div>                            
+                        </div>                        
+                        <!--FIRST AND LAST NAMES-->
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">                                
+                                <div class="form-group">
+                                    <label for="first">First Name</label>       
+    
+                                    <input  type="text" class="form-control" name="first" value="<%=student.first%>" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="last">Last Name</label>                                
+                                    <input type="text" class="form-control" name="last" value="<%=student.last%>" required>                          
+                                </div>
+                            </div>
+                        </div>
+                        <!--MAILING ADDRESS-->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-10">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" name="address" value="<%=student.address%>" required>                              
+                                </div>
+                            </div>                            
+                        </div>
+    
+                            <!--CITY, STATE AND ZIP CODE-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" name="city" value="<%=student.city%>" required>                     
+                                </div>
+                            </div>  
+                                <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" class="form-control" name="state"  value="WA" required>                          
+                                </div>
+                            </div>  
+                                <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" name="zip" value="<%=student.zip%>" required>                              
+                                </div>
+                            </div>                            
+                        </div>                                                
+                        <!--EMAIL AND TELEPHONE-->
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" name="email" value="<%=student.email%>" required>
+                                 
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="tel">Telephone</label>
+                                    <input type="tel" class="form-control" name="tel" value="<%=student.tel%>" required>
+                                </div>
+                            </div>
+                        </div>
+                        <!--PAYMENT AND DOB-->
+                        <div class="row">
+          
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="date">Date of Birth</label>
+                                    <input type="date" class="form-control" name="birthdate" value="<%=student.dob%>" required>                      
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">                                
+                                    <label for="payment">Payment</label>                                
+                                    <input type="text" class="form-control" name="payment" >    
+                                                                                              
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!--COMMENTS AND QUESTIONS-->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-10">
+                                <div class="form-group">
+                                    <label for="comments">Comments</label>
+                                    <textarea class="form-control" name="comments" cols="15" rows="5" placeholder="Enter your comments or questions"><%=student.comments%></textarea>                          
+                                </div>
+                            </div>
+                        </div> 
+                        <input type="hidden" name="student_id" value="<%=student.id%>">                  
+                        <button id="updateBtn" class="btn btn-primary btn-block py-3" type="submit"><strong>Update Student</strong> </button>                        
+                    </form>
+                <% } else { %>
+                    <form id='signUpForm' class="text-muted" ref="form"  >
+                        <!-- CONTACT MADE, WALK IN, START CLASS          -->
+                        <div class="row mb-3 justify-content-center ">
+                            <div class="col-md-6 col-sm-12 bg-success">
+                                <div class="form-check form-check-inline">                              
+                                    <input type="checkbox" class="form-check-input" name ="start" value=true>
+                                    <label class="text-dark form-check-label mx-3" for="start">Started Course </label>
+                                    
+                                    <input type="checkbox" class="form-check-input" name="walk_in" value=true>
+                                    <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
+                                </div>
+                            </div>                            
+                        </div>                        
+                        <!--FIRST AND LAST NAMES-->
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">                                
+                                <div class="form-group">
+                                    <label for="first">First Name</label>       
+    
+                                    <input  type="text" class="form-control" name="first"  required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="last">Last Name</label>                                
+                                    <input type="text" class="form-control" name="last" required>                          
+                                </div>
+                            </div>
+                        </div>
+                        <!--MAILING ADDRESS-->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-10">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" name="address" required>                              
+                                </div>
+                            </div>                            
+                        </div>    
+                        <!--CITY, STATE AND ZIP CODE-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" name="city" required>                     
+                                </div>
+                            </div>  
+                                <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" class="form-control" name="state"  value="WA" required>                          
+                                </div>
+                            </div>  
+                                <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" name="zip" required>                              
+                                </div>
+                            </div>                            
+                        </div>                                                
+                        <!--EMAIL AND TELEPHONE-->
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                 
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="tel">Telephone</label>
+                                    <input type="tel" class="form-control" name="tel" required>
+                                </div>
+                            </div>
+                        </div>
+                        <!--PAYMENT AND DOB-->
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">
+                                    <label for="date">Date of Birth</label>
+                                    <input type="date" class="form-control" name="birthdate" required>                      
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-10">
+                                <div class="form-group">                                
+                                    <label for="payment">Payment</label>                                
+                                    <input type="text" class="form-control" name="payment">                                                              
+                                </div>
+                            </div>
+                        </div>    
+                        <!--COMMENTS AND QUESTIONS-->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-10">
+                                <div class="form-group">
+                                    <label for="comments">Comments</label>
+                                    <textarea class="form-control" name="comments" cols="15" rows="5" placeholder="Enter your comments or questions"></textarea>                          
+                                </div>
+                            </div>
+                        </div>                   
+                        <button class="btn btn-primary btn-block py-3" id="signUpBtn" type="submit"><strong>Sign Up Student</strong> </button>                        
+                    </form>
+                <% } %>            
+            </div>                
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(() => {
+
+        //get the course 
+        const course = (<%-JSON.stringify(course)%>)
+       
+        //get course id
+        const course_id = course.courseId
+        //handle form submit click for registering student
+        $('#signUpForm').on('submit', e => {
+            //prevent default behavior
+            e.preventDefault()
+            //get data from the form
+            const formData =  $('#signUpForm').serializeArray()
+
+            const studentData = {}
+
+            //get the form data and save it in the student data object created above
+            formData.forEach((datum, index) => {
+                //let objKey = datum.name
+                let objKey = formData[index]['name']
+                let objValue = datum.value.trim()     
+        
+                studentData[objKey] = objValue                     
+            }) 
+
+            console.log('STUDENT DATA -> ', studentData)
+            debugger                  
+            //if the student start course, send data to GA
+            if(studentData.course_start){
+                //set event name
+                const course_start_event_name = 'Start '+ course.name +" "+ course.type + ' training' 
+                //send data to GA
+                gtag('event', course_start_event_name, {
+                    'event_category': 'Course start',
+                    'event_label': 'Student',
+                    'value': 1
+                })
+            }
+         
+            //if the student start course, send data to GA
+            if(studentData.walk_in){
+                //set event name : walk in a
+                const walk_in_event_name = 'Walk in before start of '+ course.name +" "+ course.type + ' training'
+                //send data to GA
+                gtag('event', walk_in_event_name, {
+                    'event_category': 'Walk In Before Course Start',
+                    'event_label': 'Prospective Student',
+                    'value': 1
+                })
+            }
+            debugger
+            //if there is payment received, send it to GA as ecommerce data 
+            if(parseInt(studentData.payment) > 0 ){
+                 debugger
+                 //send data to GA         
+                gtag('event', 'purchase', {
+                    "transaction_id": course_id,
+                    "affiliation": "EHCT - Admin Course Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course_id,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            "variant": course.type,     
+                            "quantity": 1,
+                            "price": parseInt(studentData.payment)
+                        }
+                    ]
+                })
+            }
+            debugger
+            $.ajax({
+                type: 'POST', 
+                url: '/students/start/'+course_id,
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    'CSRF-Token': Cookies.get("XSRF-TOKEN")
+                },
+                dataType: "json",
+                data: studentData,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    debugger
+                    // window.location.href = response.redirect_url
+                    window.location.replace(response.redirect_url)
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect !== undefined && !response.redirect) {
+                    
+                    alert('Something went wrong - start the registration process again!')
+
+                    window.location.replace('/courses')
+                }   
+                //clear the local storage
+                localStorage.clear() 
+            })  
+        })
+
+        //handle form submit click for updating student
+        $('#updateBtn').on('click', e => {
+            //prevent default action
+            e.preventDefault()      
+            
+            //get the student
+            const student = (<%-JSON.stringify(student)%>)
+            //get data from the form
+            const formData = $('#updateForm').serializeArray()
+            debugger
+            //create an on object constructed from data entered by user in the form above
+            const studentData = {}          
+            //get the form data
+            formData.forEach((datum, index) => {
+                //let objKey = datum.name
+                let objKey = formData[index]['name']
+                let objValue = datum.value.trim()  
+        
+                studentData[objKey] = objValue                     
+            })        
+
+            const course_start_phrase = student.status.web_sign_up ? "Web Sign Up Course Start" : "Admin Sign Up Course Start"
+            //send data to GA once to avoid redundant counting everytime student information is updated
+            if( student.status.web_sign_up && !student.status.course_start ){
+                //if the student start course, send data to GA
+                if( studentData.course_start ){
+                    //set event name
+                    const course_start_event_name = course_start_phrase + ' '+ course.name +" "+ course.type + ' training' 
+                    //send data to GA
+                    gtag('event', course_start_event_name, {
+                        'event_category': course_start_phrase,
+                        'event_label': 'Student',
+                        'value': 1
+                    })
+                } 
+            }
+
+            const walk_in_phrase = student.status.web_sign_up ? "Web Sign Up Walk In" : "Admin Sign Up Walk In"  
+            //send data to GA once to avoid redundant counting everytime student information is updated
+            if(!student.status.walk_in){
+                //if the student start course, send data to GA
+                if(studentData.walk_in){
+                    //set event name : walk in a
+                    const walk_in_event_name = walk_in_phrase +' Before ' + course.name +" "+ course.type + ' training'
+                    //send data to GA
+                    gtag('event', walk_in_event_name, {
+                        'event_category': walk_in_phrase +' Before Course Start',
+                        'event_label': 'Prospective Student',
+                        'value': 1
+                    })
+                }
+            }
+            
+
+            // console.log('STUDENT DATA -> ', studentData)
+            if(parseInt(studentData.payment) > 0){
+                //send data to GA         
+                gtag('event', 'purchase', {
+                    "transaction_id": course_id,
+                    "affiliation": "EHCT - Admin Course Update",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course_id,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            "variant": course.type,     
+                            "quantity": 1,
+                            "price": parseInt(studentData.payment)
+                        }
+                    ]
+                })
+            }           
+                            
+           
+            $.ajax({
+                type: 'PATCH', 
+                url: '/students/update/'+course_id,
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    'CSRF-Token':  Cookies.get("XSRF-TOKEN")
+                },
+                dataType: "json",
+                data: studentData,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    debugger
+                    // window.location.href = response.redirect_url
+                    window.location.replace(response.redirect_url)
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect !== undefined && !response.redirect) {
+                    
+                    alert('Something went wrong - start the registration process again!')
+
+                    window.location.replace(response.redirect_url)
+                }   
+                //clear the local storage
+                localStorage.clear() 
+            })   
+        })
+    })
+
+</script>
+
+<style scoped>
+   
+    .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    /* border: 1px solid transparent; */
+    border: 2px solid green;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+    border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+    }
+
+</style>

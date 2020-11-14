@@ -1,0 +1,339 @@
+<section class="bg-light p-4" >
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6">                    
+                <h3 class="text-dark text-center">Job Posting Checkout</h3>
+                <br>
+    
+                <div class="row justify-content-center mb-4">
+                    <div class="col-sm-10 p-3 bg-light"> 
+                        <div class="card" >
+                            <div class="card-body">
+                                <h5 class="card-title">Remember...</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">...to create a profile.</h6>
+                                <p class="card-text">
+                                    Your organization profile is FREE and enhances your job post.  It introduces you to caregivers preparing for their HCA/CNA state exams and searching for jobs on www.excelcna.com.                                         
+                                </p>
+                                <p class="card-text">
+                                    <strong>We are in this together;</strong> we want our graduates to find a job and you need caregivers/CNAs.  Our goals are clearly mutual. <br>                                                                                
+                                </p>
+                                <p class="card-text">
+                                    When you get a promising applicant for your job opening who lacks proper certification(s), sponsor her training after you screen her.  Use a local trainer.  Doing so, will <strong>develop your recruiting network and reach.</strong>
+                                </p>
+                                <p class="card-text">
+                                    Alternatively, you can train her.
+                                </p>
+                                <p class="card-text text-primary">
+                                    We offer (i) CNA training (ii) HCA to CNA bridging course (iii) CPR/First Aid/AED (iv) Basic LIfe Support (BLS) at discounted price for the first 3 months after you sign up.
+                                </p>                                    
+                            </div>
+                        </div> 
+                        </div>     
+                </div>        
+           
+                <div class="row justify-content-center">
+                    <% if(!user.job_trial) {%>
+                    <div  class="col-sm-10 p-3 bg-light">     
+                        <p class="text-center lead text-danger"><strong> Find caregivers looking for full time (days, evening or NOC), part time or weekends shifts.</strong></p>
+
+                        <%if(user.charges.length > 0){%>
+                        <div class="mb-3">
+                            <button class="btn btn-primary btn-block p-3 mt-3" type="submit" id="last4"><strong>Use card ending with <%=user.charges[0].last4%> to pay $ 25.00</strong> </button>
+                        </div>   
+                        <%}%>                         
+                        
+                        <label for="card-element">
+                            Credit or debit card
+                        </label>
+                        <div id="card-element" >
+                        <!-- A Stripe Element will be inserted here. -->
+                        </div>                      
+
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" ref="card-errors" role="alert"></div>
+                        <br>
+                        <button class="btn btn-primary float-right" type="submit" id="jobPostId"><strong>Pay $ 25.00</strong> </button> 
+                        <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
+                    </div>
+                    <% } else {%>
+                    <div class="col-sm-10 p-3 bg-light">
+                        <p class="text-center lead text-danger"><strong> Find caregivers looking for full time (days, evening or NOC), part time or weekends shifts.</strong></p>
+                        <button class="btn btn-primary float-right" type="submit" id="trial"><strong>Free post</strong> </button> 
+                    </div>
+                    <% }%>
+                </div>
+                
+            </div>                
+        </div>
+    </div>
+</section>
+
+<script type="application/javascript">  
+
+    $(document).ready(() => {
+        //get user's trial status
+        let user = (<%-JSON.stringify(user)%>)
+        //get the post from local storage
+        const jobPosting = localStorage.getItem('jobPost')
+
+        const jobPost = JSON.parse(jobPosting)
+
+        if(!user.job_trial){
+           
+            //stripe token
+            let stripe = Stripe (<%-JSON.stringify(STRIPE_PUBLIC_KEY)%>),
+                elements = stripe.elements()
+            //card = undefined 
+
+            let style = {
+
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                    color: '#aab7c4'
+                    }
+                },
+                
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            }
+
+            //create card
+            let card = elements.create("card", { style: style })
+            debugger
+            //mount the card on page
+            card.mount("#card-element")
+            //if there is a change
+            card.on('change', ({error}) => {
+
+                const displayError = document.getElementById('card-errors')
+
+                if (error) {
+                    displayError.textContent = error.message
+                } else {
+                    displayError.textContent = ''
+                }
+            })  
+
+            $('#jobPostId').on('click', (e) => {
+                //stripe token
+                stripe.createToken(card).then(result => {
+                    // Handle result.error or result.token
+                    if(result.error){
+                        return displayError.textContent = result.error
+                    }               
+                    //create a stripe token for the cjob
+                    const paydetails = result.token.id
+
+                    jobPost.paydetails = paydetails   
+
+                    //send data to GA         
+                    gtag('event', 'purchase', {
+                        "transaction_id": 1,
+                        "affiliation": "EHCT - Job Post Announcement",  
+                        "currency": "USD",  
+                        "items": [
+                            {
+                                "id": 1,
+                                "name": "Job Post Announcement",     
+                                "category": "Job Post Announcement", 
+                                "variant": "Paid",     
+                                "quantity": 1,
+                                "price": 25
+                            }
+                        ]
+                    })
+
+                    $.ajax({
+                        type: 'POST', 
+                        url: '/jobs',
+                        credentials: 'same-origin', // <-- includes cookies in the request
+                        // headers: {
+                        //     'CSRF-Token': token // <-- is the csrf token as a header
+                        // },
+                        dataType: "json",
+                        data: jobPost,
+                    }).done(function (response) {
+                        if (response.redirect !== undefined && response.redirect) {
+                            debugger
+                        //store response job id in local storage
+                            localStorage.setItem('jobId', response.jobId)
+                            //go to receipt page
+                            window.location.replace('/jobs/receipt')
+                        }      
+                        //if something is wrong - alert user and redirect user to course schedule page
+                        if (response.redirect === undefined && !response.redirect) {
+                            
+                            alert('Something went wrong - start the registration process again!')
+
+                            window.location.replace('/jobs')
+                        }   
+                        //clear the local storage
+                    // localStorage.clear() 
+                    })   
+                })
+            })
+
+
+        }
+        
+        
+        //last 4
+
+
+        //trial
+        $('#trial').on('click', (e) => {
+
+            e.preventDefault()
+            
+            debugger
+            //send data to GA         
+            gtag('event', 'purchase', {
+                "transaction_id": 1,
+                "affiliation": "EHCT - Job Post Announcement",  
+                "currency": "USD",  
+                "items": [
+                    {
+                        "id": 1,
+                        "name": "Job Post Announcement",     
+                        "category": "Job Post Announcement", 
+                        "variant": "Trial",     
+                        "quantity": 1,
+                        "price": 0
+                    }
+                ]
+            })
+            debugger
+            $.ajax({
+                type: 'POST', 
+                url: '/jobs',
+                credentials: 'same-origin', // <-- includes cookies in the request
+                // headers: {
+                //     'CSRF-Token': token // <-- is the csrf token as a header
+                // },
+                dataType: "json",
+                data: jobPost,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    debugger
+                    //store response job id in local storage
+                    localStorage.setItem('jobId', response.jobId)
+                    //go to receipt page
+                    window.location.replace('/jobs/receipt')
+                   
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect === undefined && !response.redirect) {
+                    
+                    alert('Something went wrong - start the registration process again!')
+
+                    window.location.replace('/jobs')
+                }   
+                //clear the local storage
+                //localStorage.clear() 
+            })
+        })
+
+        $('#last4').on('click', (e) => {
+
+            e.preventDefault() //prevent default behavior             
+           
+
+            jobPost.paydetails = user.charges[0].last4
+             debugger
+      
+
+            //send data to GA         
+            gtag('event', 'purchase', {
+                "transaction_id": 1,
+                "affiliation": "EHCT - Job Post Announcement",  
+                "currency": "USD",  
+                "items": [
+                    {
+                        "id": 1,
+                        "name": "Job Post Announcement",     
+                        "category": "Job Post Announcement", 
+                        "variant": "Paid",     
+                        "quantity": 1,
+                        "price": 25
+                    }
+                ]
+            })
+
+            $.ajax({
+                type: 'POST', 
+                url: '/jobs',
+                credentials: 'same-origin', // <-- includes cookies in the request
+                // headers: {
+                //     'CSRF-Token': token // <-- is the csrf token as a header
+                // },
+                dataType: "json",
+                data: jobPost,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    debugger
+                    //store response job id in local storage
+                    localStorage.setItem('jobId', response.jobId)
+                    //go to receipt page
+                    window.location.replace('/jobs/receipt')
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect === undefined && !response.redirect) {
+                    
+                    alert('Something went wrong!')
+
+                    window.location.replace('/jobs')
+                }   
+                //clear the local storage
+                //localStorage.clear() 
+            })   
+        })
+
+    })
+
+                  
+     
+       
+       
+ 
+</script>
+
+<style >
+
+   
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  /* border: 1px solid transparent; */
+  border: 2px solid green;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+</style>
+

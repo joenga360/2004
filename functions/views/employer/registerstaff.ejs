@@ -1,0 +1,375 @@
+<section class='p-4'>
+    <div class="container-fluid">
+        <div class="row justify-content-center m-2">
+            <div class="col-sm-4">
+        
+                <% if(course.end_date) { %>
+                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> - <%=course.end_date%> <%=course.name%> <%=course.type%> Class</h3>
+                <% } else { %> 
+                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> <%=course.name%> <%=course.type%> Class </h3>      
+                <% } %>
+                <br>                   
+                <!--BEGINNING OF THE FORM-->
+                <form ref="form" id="enroll_staff"  >
+                    <h5 class="lead text-center text-primary">Fill up this form to sign up your staff for training</h5>  
+                    <br>
+                    <!--FIRST AND LAST NAMES-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-6">                        
+                            <div class="form-group">
+                                <label for="first">Staff's First Name</label>                                   
+                                <input  type="text" class="form-control" name="first" required>
+                            </div>
+                        </div> 
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="last">Staff's Last Name</label>                                   
+                                <input type="text" class="form-control" name="last" required>                                                            
+                            </div>
+                        </div> 
+                    </div>                                    
+                    <!--EMAIL AND TELEPHONE-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-6">  
+                            <div class="form-group">
+                                <label for="email">Staff's Email</label>                                    
+                                <input type="email" class="form-control" name="email" required>                                                                
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">  
+                            <div class="form-group">
+                                <label for="tel">Staff's Telephone</label>                                 
+                                <input type="tel" class="form-control" name="tel" required>                                                                  
+                            </div>
+                        </div>
+                    </div>                    
+                    <!--COMMENTS AND QUESTIONS-->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-12"> 
+                            <div class="form-group">
+                                <label for="comments">Comments</label>                                    
+                                <textarea class="form-control" name="comments" cols="10" rows="5" placeholder="Enter your comments or questions"></textarea>
+                            </div>          
+                        </div>
+                    </div> 
+                    <!-- COURSE COSTS -->
+                    <div class="row justify-content-center">
+                        <% if(course.name==='CNA' || course.name ==='HCA - CNA Bridging'){ %>
+                            <div class="col-sm-12 col-md-12"> 
+                                <div class="form-group">                                                                      
+                                    <input type="radio" name="amount" class="amount" value=75 required>
+                                    <label for="registration">$ 75.00 registration fee</label>  
+                                </div>          
+                            </div>
+                        <% } %>
+                        
+                        <%if(user.course_trial){%>
+                            <div class="col-sm-12 col-md-12"> 
+                                <div class="form-group">                                                                      
+                                    <input type="radio" name="amount" value='<%=costs.discount_price[course.name]%>' required>
+                                    <label for="discount">$ <%=costs.discount_price[course.name]%>.00 discount price</label>  
+                                </div>          
+                            </div>
+                        <%}%>
+
+                        <%if(!user.course_trial){%>
+                            <div class="col-sm-6"> 
+                                <div class="form-group">                                                                      
+                                    <input type="radio" name="amount" value='<%=costs.regular_price[course.name]%>' required>
+                                    <label for="regular">$ <%=costs.regular_price[course.name]%>.00 discount price</label>  
+                                </div>          
+                            </div>
+                        <%}%>
+                    </div> 
+                   
+                    <br>
+                    <!-- ENTER NEW CARD DETAILS -->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-10 p-3 bg-light">     
+                            <p class="text-center lead text-danger"><strong> Register your staff now and secure a spot immediately. </strong></p>
+                            <% if(user.charges.length > 0 ){%>
+                            <div class="justify-content-center">
+                               
+                                <button class="btn btn-light btn-outline-danger font-weight-bold mb-3"  id="btnLast4Registration" type="submit"> Use card ending with <%=user.charges[0].last4 %><strong></button> 
+                            </div>
+                            <% } %>
+                            <!-- DISCOUNT PRICES -->
+                            
+                                <label for="card-element">
+                                    Enter new credit or debit card
+                                </label>                               
+                                <div id="card-element" ref="card-element">
+                                <!-- A Stripe Element will be inserted here. -->
+                                </div>
+
+                                <!-- Used to display form errors. -->
+                                <div id="card-errors" role="alert"></div>                                
+                               
+                                <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>            
+                                           
+                                <hr> 
+                                <button class="btn btn-success float-right py-3" id="btnSignUp" type="submit"><strong>Enroll Staff</strong> </button>      
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>                 
+        </div>
+    </div>
+</section>
+
+
+<script type="application/javascript">
+
+    let stripe = Stripe(<%-JSON.stringify(STRIPE_PUBLIC_KEY)%>)
+    let elements = stripe.elements()
+
+    console.log('stripe -> ', stripe)
+    // Set up Stripe.js and Elements to use in checkout form
+    let style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder' : {
+                color: '#aab7c4'
+            }
+        },
+        
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    }
+    //create card
+    let card = elements.create("card", { style: style })
+  
+    //mount the card on the form
+    card.mount("#card-element")
+
+    //if card details change, note any errors and if nothing show empty string
+    card.on('change', ({error}) => {
+
+        const displayError = document.getElementById('card-errors')
+
+        if (error) {
+            displayError.textContent = error.message
+        } else {
+            displayError.textContent = ''
+        }
+    })  
+
+    $(document).ready(()=>{
+        //get the course
+        const course = (<%-JSON.stringify(course)%>)
+
+        $('#btnLast4Registration').on('click', (e) => {             
+            //get the amount the employer is paying
+            const amount = $("input[name='amount']:checked").val()
+            //send data to google
+            gtag('event', 'purchase', {
+                "transaction_id": course.courseId,
+                "affiliation": "EHCT - Employer Sponsored Registration",  
+                "currency": "USD",  
+                "items": [
+                    {
+                        "id": course.courseId,
+                        "name": course.name,     
+                        "category": "Courses", //course_name,
+                        "variant": course.type,     
+                        "quantity": 1,
+                        "price": amount
+                    }
+                ]
+            })
+        })
+
+       //this event register a student who pays registration fees
+       $("#btnSignUp").on('click', (e) => {
+            
+            e.preventDefault()
+
+            $("#btnSignUp").hide()
+            stripe.createToken(card).then(result => {
+                // Handle result.error or result.token
+                if(result.error){
+                    return displayError.textContent = result.error
+                }               
+
+                const stripeToken = result.token.id
+                debugger
+                //get data from the form
+                const formData =  $('#enroll_staff').serializeArray()
+
+                console.log('form data -> ', formData)
+                //get the amount the employer is paying
+                const amount = $("input[name='amount']:checked").val()
+                debugger
+                //create an on object constructed from data entered by user in the form above
+                const studentData = {}
+                // debugger
+                formData.forEach((datum, index) => {
+                    //let objKey = datum.name
+                    let objKey = formData[index]['name']
+                    let objValue = datum.value
+
+                    studentData[objKey] = objValue
+                })
+                // debugger
+                console.log("STUDENT DATA -> 1 ", studentData)
+                debugger
+                //add stripe token from stripe
+                studentData.stripeToken = stripeToken
+                //add course name, type and dates e.g., 'Jun 1 - Jun 19 CNA Evening'
+                console.log('STRIPE TOKEN -> ', stripeToken)
+                //send data to GA              
+                gtag('event', 'purchase', {
+                    "transaction_id": course.courseId,
+                    "affiliation": "EHCT - Employer Sponsored Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course.courseId,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            "variant": course.type,     
+                            "quantity": 1,
+                            "price": amount
+                        }
+                    ]
+                })
+
+                $.ajax({
+                    type: 'POST', 
+                    url: '/courses/'+course.courseId,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    // headers: {
+                    //     'CSRF-Token': token // <-- is the csrf token as a header
+                    // },
+                    dataType: "json",
+                    data: studentData,
+                }).done(function (response) {
+                    if (response.redirect !== undefined && response.redirect) {
+                        debugger
+                        alert(response.message)
+                        window.location.replace(response.redirect_url)
+                    }      
+                    //if something is wrong - alert user and redirect user to course schedule page
+                    if (response.redirect !== undefined && !response.redirect) {
+                        
+                        alert('Something went wrong - start the registration process again!')
+
+                        window.location.replace('/courses')
+                    }   
+                    //clear the local storage
+                    localStorage.clear() 
+                })                         
+            })           
+        })       
+    })
+
+
+       
+        //async reuse(amount){
+          
+
+                // const student_payment =  { stripeToken : this.getUser.card.last4 , student: this.student, amount, user_course: this.course }
+
+                // const course_id = this.$route.params.course_id
+
+                // const payload = { data: student_payment, course_id }                    
+                
+                //employer is paying for this course
+                // if(amount > 75){
+                //     //full payment for the course
+                //     this.$ga.set({"dimension2": "Employer", "metric13": 1})
+                // }else {
+                //     //registration fee for the course
+                //     this.$ga.set({"dimension2": "Employer", "metric12": 1})
+                // }                
+                //get the course metric
+                // const metric = Keys[courseIndex][this.course_name]
+                // //add the course type information
+                // this.$ga.set({"dimension1" : this.course_name, metric : 1})   
+                // //add transaction data - virtual cart
+                // this.$ga.ecommerce.addTransaction({
+                //     id: `${ course_id }`                   
+                // })                                                             
+                                      
+                // //add item to virtual cart 
+                // this.$ga.ecommerce.addItem({
+                //     id: `${course_id}`,
+                //     name: this.course,
+                //     category: this.course_name,
+                //     price: amount,
+                //     quantity: 1                 
+                // })
+
+                // this.$ga.ecommerce.send()
+
+
+      //  async register(amount){                    
+
+                    //employer is paying for this course
+                    // if(amount > 75){
+                    //     //payment for the course in full
+                    //     this.$ga.set({"dimension2": "Employer", "metric13": 1})
+                    // }else {
+                    //     //payment for the course reigstration
+                    //     this.$ga.set({"dimension2": "Employer", "metric12": 1})
+                    // }                
+                    // //get the course metric
+                    // const metric = Keys[courseIndex][this.course_name]
+                    // //add the course type information
+                    // this.$ga.set({"dimension1" : this.course_name, metric : 1})
+
+                    // //add transaction data - virtual cart
+                    // this.$ga.ecommerce.addTransaction({
+                    //     id: `${course_id}`
+                    // })                                                             
+                                      
+                    // //add item to virtual cart 
+                    // this.$ga.ecommerce.addItem({
+                    //     id: `${course_id}`,
+                    //     name: this.course,
+                    //     category: this.course_name,
+                    //     price: amount,
+                    //     quantity: 1                 
+                    // })
+
+         
+
+</script>
+
+<style scoped>   
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  /* border: 1px solid transparent; */
+  border: 2px solid green;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+</style>

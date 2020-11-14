@@ -1,0 +1,105 @@
+<template>
+    <section class="bg-light m-4 p-4">
+        <div class="container-fluid m-4 p-4">            
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                      
+                       <h4 class="card-title"><strong>{{getProfile.title}}</strong></h4>                            
+                 
+                        <h5 class="card-subtitle"><strong> Location: </strong><span class="text-dark">{{ getProfile.address}}</span> </h5>
+                        <br>
+                        <p class="card-subtitle"><strong> Email contact: </strong><span class="text-dark">{{ getProfile.email }}</span> </p>
+                        <p class="card-subtitle"><strong> Phone contact: </strong><span class="text-dark">{{ getProfile.tel }}</span> </p>
+                        <br>
+                         <div v-if='getProfile.assistance === "Yes"'>
+                            <p class="card-text"><strong>Offers tuition assistance and/or tuition reimbursement. </strong>  For more details, contact {{getProfile.email}} </p>
+                        </div>
+                        <br>
+                        <div v-if='getProfile.inhouse ==="Yes"'>
+                            <p class="card-text"><strong>Offers in-house training. </strong> For more details, contact {{getProfile.email}} </p>
+                        </div>
+                        <br>
+                        <div v-if='getProfile.courses!==""'>
+                            <p class="card-text"><strong> Courses offered by {{getProfile.title}} include:</strong> {{getProfile.courses}}</p>
+                        </div>
+                        <h5 class="card-subtitle"><strong> Learn more about {{getProfile.title}} </strong></h5>
+                        <hr>
+                            <p class="card-text">{{ getProfile.notes }}</p>                            
+                        <hr>
+                        <!-- <div class="py-2 text-right">                    
+                            <p class="px-3"><strong>Share on: </strong></p>
+                            <social-sharing url="https://excelcna.com/jobs"
+                                                    title="Great and rewarding caregiver, CNA and Home Care Aide job opportunities around you!"
+                                                    description="Great CNA, HCA and Caregiver job opportunities by Nursing Homes, Assisted Living Homes, Adult Family Homes, Hospitals." 
+                                                    quote="Find and share easily employers looking for CNAs, caregivers, and Home Care Aides."
+                                                    hashtags="CNA, Home Care Aide, Caregivers"                                                                                                   
+                                                    inline-template>
+                                <div class="justify-content-between">
+                                    <network network="sms">
+                                        <i class="fa fa-commenting-o" aria-hidden="true"></i> SMS
+                                    </network> 
+                                    
+                                    <network network="facebook">
+                                        <i class="fa fa-facebook" aria-hidden="true"></i> Facebook
+                                    </network>                                                                     
+                                    
+                                    <network network="telegram">
+                                        <i class="fa fa-telegram"></i> Telegram
+                                    </network>
+                                    
+                                    <network network="whatsapp">
+                                        <i class="fa fa-whatsapp"></i> Whatsapp
+                                    </network>
+                                    <network network="email">
+                                        <i class="fa fa-envelope"></i> Email
+                                    </network>
+                                </div>
+                            </social-sharing>                                                      
+                        </div>                     -->
+                    </div>
+                </div>                              
+            </div>
+        </div>
+        </div>
+        
+    </section>    
+</template>
+
+<script>
+
+import { mapGetters } from 'vuex'
+import { store } from "../../store/store"
+
+export default {
+
+    data(){
+        return{
+            id: this.$route.params.id,
+            url: 'https://excelcna.com/viewprofile/'+this.$route.params.id,
+        }
+    },
+
+    computed:{
+        ...mapGetters([
+            "getProfile"
+        ])
+    },    
+
+    beforeRouteEnter(to, from, next){
+        next(vm=>{
+            debugger
+            vm.$store.dispatch("getProfileById", vm.$route.params.id)
+        })
+    }
+    
+}
+</script>
+
+<style scoped>
+.card-text {
+    white-space: pre-wrap;
+}
+
+</style>

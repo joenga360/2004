@@ -1,0 +1,151 @@
+<section class="bg-light p-5">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6" >                  
+                <div class="card">                        
+                    <div class="card-body">                       
+                        <h4 class="card-title"><strong><%=user.name%>'s profile</strong></h4>                            
+                        <hr>
+                        <h5 class="card-subtitle"><strong>Location: </strong><span class="text-dark" id="address"></span> </h5>
+                        <br>
+                        
+                        <h6 class="card-text"><strong>HR Contact Email: </strong><span class="text-dark" id='email'></span> </h6>
+                        <h6 class="card-text"><strong>HR Contact Tel: </strong><span class="text-dark" id='tel'></span> </h6>
+                        
+                        <hr>
+                        <h5 class="card-subtitle"><strong>Benefits for CNAs/Caregivers working for <%= user.name%> </strong></h5>
+                        <div style="display: none"; id="notes">
+                            <p class="card-text" id='p-notes'></p>                            
+                        </div> 
+                        <br>                       
+                        <div style="display: none"; id="reimbursement">
+                            <p class="card-text font-weight-bold" id="p-reimbursement"><%=user.name%> offers tuition reimbursement/assistance.</p>
+                        </div>                        
+                        <br>
+                        
+                        <div style="display: none"; id="inhouse">
+                            <p class="card-text font-weight-bold" id="p-inhouse"><%=user.name%> offers inhouse training. </p>
+                        </div>
+                        
+                        <div style="display: none"; id="courses">
+                            <p class="card-text" ><strong>Courses offered by <%= user.name %> include: </strong> </p>
+                            <p id="p-courses"> </p>
+                        </div>                                        
+                        <hr>
+                        <div class="row justify-content-between m-3">                             
+                            <a href="/user/edit-profile" class="btn btn-secondary col-md-3 col-sm-10" >Edit</a>  
+                            <button class="btn btn-primary col-md-3 col-sm-10" type="submit" id="postBtn">Post</button>
+                        </div>
+
+                        <hr>   
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>        
+</section>    
+
+
+<script>
+
+    $(document).ready(() => {
+        //get the profile from the local storage
+        const localProfile = localStorage.getItem('profile')
+
+        const newProfile = JSON.parse(localProfile)
+
+        //get the user profile attributes - possible 8 in total
+        const address = newProfile.address.trim()
+        const courses = newProfile.courses.length > 0 ? newProfile.courses.trim() : ''
+        const inhouse = newProfile.inhouse.length > 0 ? newProfile.inhouse.trim() : ''
+        const hremail = newProfile.email.trim()
+        const hrphone = newProfile.tel.trim()
+        const notes = newProfile.notes.length > 0 ? newProfile.notes.trim() : ''
+        const reimbursement = newProfile.reimbursement.length > 0 ? newProfile.reimbursement.trim() : ''
+        const settings = newProfile.settings       
+
+        //started
+        $('#address').append(address)
+        $("#email").append(hremail)
+        $("#tel").append(hrphone)       
+
+        if(courses !== '') {                     
+            $("#p-courses").append(courses)
+            $("#courses").show()
+        }
+
+        
+        if(notes !== '') {                  
+            $("#p-notes").append(notes)
+            $("#notes").show()
+        }
+
+        if(inhouse === 'Yes') {
+            const inhouseString = '  For more details about inhouse training, contact' + hremail +'.'          
+            $("#p-notes").append(inhouseString)
+            $("#notes").show()
+        }
+
+        if(reimbursement === 'Yes'){
+            const reimbursementString = '  For more details/information about tuition assistance/reimbursement, contact ' + hremail +'.'
+            $("#p-reimbursement").append(reimbursementString)
+            $("#reimbursement").show()
+        }
+
+        const profile = {address,  courses, hremail, hrphone, inhouse, notes, reimbursement, settings }
+        debugger
+        $("#postBtn").on('click', (e) => {
+
+            //prevent default behavior
+            e.preventDefault()
+
+            //send created profile to the backend using ajax
+            $.ajax({
+                        type: 'POST', 
+                        url: '/user/profile',
+                        credentials: 'same-origin', // <-- includes cookies in the request
+                        // headers: {
+                        //     'CSRF-Token': token // <-- is the csrf token as a header
+                        // },
+                        dataType: "json",
+                        data: profile,
+                    }).done(function (response) {
+                        if (response.redirect !== undefined && response.redirect) {
+                            debugger
+                        //store response job id in local storage
+                            localStorage.setItem('jobId', response.jobId)
+                            //go to receipt page
+                            window.location.replace('/user/dashboard')
+                        }      
+                        //if something is wrong - alert user and redirect user to course schedule page
+                        if (response.redirect === undefined && !response.redirect) {
+                            
+                            alert('Something went wrong - start the registration process again!')
+
+                            window.location.replace('/jobs')
+                        }   
+                        //clear the local storage
+                    // localStorage.clear() 
+                    })   
+        })
+
+
+    })
+
+      
+
+                //Label user as an employer and increase number of profiles by 1
+                // this.$ga.set({"dimension2": "Employer", "metric11": 1})
+              
+                  
+       
+
+</script>
+
+<style>
+
+.card-text {
+    white-space: pre-wrap;
+}
+
+</style>

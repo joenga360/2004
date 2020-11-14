@@ -1,0 +1,114 @@
+
+<section class="bg-light ">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6">                   
+                <!-- <h4 class="text-dark display-5" v-if="edit">Edit job post</h4>  -->
+                <h4 class="text-dark display-5" >Edit job opening</h4>
+                <form class="lead" ref="form" id="job-form">
+                    <div class="form-group">
+                        <label for="title"><strong>Title</strong></label>
+                        <!-- <input type="text" class="form-control form-control-lg" name="title" id="title"> -->
+                        <input type="text" class="form-control form-control-lg" name="title" id="title" value="<%=jobPosting.title%>"
+                        placeholder="Add title e.g., Caregiver/CNA needed for NOC shift." required>   
+                                        
+                    </div>                               
+
+                    <div class="form-group mb-3">
+                        <label for="requirements"><strong>List Requirements</strong></label>
+                        <!-- <textarea class="form-control" name="requirements" cols="30" rows="8" ></textarea> -->
+                        <textarea class="form-control" name="requirements" cols="30" rows="8" 
+                        placeholder="Enter job, certification/licensing and experience requirements in form of a list." required>"<%=jobPosting.requirements%>"</textarea>
+                        
+                    </div> 
+                    <div class="form-group mb-3">
+                        <label for="schedule"><strong>Job Schedule</strong></label>
+                        <!-- <textareaclass="form-control" name="schedule" cols="30" rows="5" ></textarea> -->
+                        <textarea class="form-control" name="schedule" cols="30" rows="5" 
+                        placeholder="Enter work schedule - hours and days of the week e.g Sat and Sun, 8 a.m. - 6 p.m., or Mon - Fri, 9 a.m. - 5:30 p.m., or Live in from Fri 8 a.m. - Mon 3 p.m." required>"<%=jobPosting.schedule%>"</textarea>
+                            
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="description"><strong>Description - list job duties</strong></label>
+                        <!-- <textarea class="form-control" name="description" cols="30" rows="10"></textarea> -->
+                        <textarea class="form-control" name="description" cols="30" rows="10" 
+                        placeholder="Describe what this job entails e.g, companion care, all ADLS such as bathing, feeding, etc.  Include benefits." required>"<%=jobPosting.description%>"</textarea>
+                            
+                    </div> 
+
+                    <div class="form-group">
+                        <label for="compensation"><strong>Compensation </strong></label>
+                        <!-- <input type="text" class="form-control" name="compensation" id="compensation"> -->
+                        <input type="text" class="form-control" name="compensation" id="compensation" value="<%=jobPosting.compensation%>"
+                        placeholder="E.g., $175/day for 4 days or $17/hour.  You can also add 'Negotiable'."  required>   
+                                            
+                    </div> 
+                    
+                    <div class="form-group">
+                        <label for="location"><strong>Job Location</strong></label>
+                        <!-- <input type="text" class="form-control" name="location" id="location"> -->
+                        <input type="text" class="form-control" name="location" id="location" value="<%=jobPosting.location%>"
+                        placeholder="Enter job (city) location e.g., Seattle, WA." required>                            
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact"><strong>Contact's email/phone</strong></label>
+                        <!-- <input type="text" class="form-control" name="contact" id="contact"> -->
+                        <input type="text" class="form-control" name="contact" id="contact" value="<%=jobPosting.contact%>"
+                        placeholder="Contact's phone number or email.  Enter phone # for faster response." required>                                                
+                    </div>    
+                    
+                    <!-- <button class="btn btn-primary btn-block py-3" type="submit"><strong>Update Job</strong> </button> -->
+                    <button class="btn btn-primary btn-block py-3" type="submit" id='jobBtn'>Edit Job</button>
+                    
+                </form>
+            </div>
+        </div> 
+    </div>
+</section>  
+
+
+<script>
+
+    $(document).ready(() => {
+        //get the jobposting from the server
+        const jobPost = (<%-JSON.stringify(jobPosting)%>)
+        debugger
+        $('#job-form').on('submit', (e) => {
+
+            e.preventDefault()
+
+            let $inputs = $('#job-form :input')
+
+            //store them in an array
+            let updatedPost = {}
+
+            $inputs.each(function(){
+                 //$(this).find(':input') //<-- Should return all input elements in that specific form.
+                 console.log("Name ", this.name, "Value ", this.value)
+                 if(this.name !== '' && this.value !== '') updatedPost[this.name] = this.value                  
+            })
+
+            console.log("Job Form ", updatedPost)
+            $.ajax({
+                    type: 'PATCH', 
+                    url: '/jobs/update/'+jobPost._id,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    // headers: {
+                    //     'CSRF-Token': token // <-- is the csrf token as a header
+                    // },
+                    dataType: "json",
+                    data: updatedPost
+                }).done(function (response) {
+                    debugger
+                    if(response.redirect){
+                        window.location.replace('/jobs/view/'+response.jobId)
+                    }
+            })
+        })
+    })
+
+</script>
+
+
