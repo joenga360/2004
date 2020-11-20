@@ -64,21 +64,41 @@ app.use( async( req, res, next ) => {
     res.locals.lead = false
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
-    //get firebase user
-    const user = firebase.auth().currentUser
-    //if user
-    if(user!= null){        
-        //get userid
-        const userRecord = await admin.auth().getUser(user.uid)
-        //check if the user has admin privileges
-        const adminClaims = await userRecord.customClaims['admin']    
-        //if the user has admin privileges, set admin to true and proceed
-        if(adminClaims){
+
+    const sessionCookie = req.cookies.session ? req.cookies.session : ""
+    console.log('REQ COOKIES ', req.cookies)
+    console.log('SESSION COOKIE IN INDEX JS ', sessionCookie)
+
+    admin
+        .auth()
+        .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+        .then(() => {
             res.locals.admin = true
+           // res.render("profile.html")
             next()
-        }
+        }).catch((error) => {
+            console.log(error)
+            next()
+            //res.redirect("/admin/signin")
+        });
+
+
+
+    // //get firebase user
+    // const user = firebase.auth().currentUser
+    // //if user
+    // if(user!= null){        
+    //     //get userid
+    //     const userRecord = await admin.auth().getUser(user.uid)
+    //     //check if the user has admin privileges
+    //     const adminClaims = await userRecord.customClaims['admin']    
+    //     //if the user has admin privileges, set admin to true and proceed
+    //     if(adminClaims){
+    //         res.locals.admin = true
+    //         next()
+    //     }
         
-     } else next()
+    // } else next()
 })
 
 console.log('Before routes...')

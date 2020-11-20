@@ -20,10 +20,32 @@
         </form>
     </div>
 </section>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-analytics.js"></script>
 
 <script type="application/javascript">
 
     $(document).ready(() => {
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCsnmzIFaMRMNNuAPDrbAwDkWOkpuUT5no",
+        authDomain: "exhct2004.firebaseapp.com",
+        databaseURL: "https://exhct2004.firebaseio.com",
+        projectId: "exhct2004",
+        storageBucket: "exhct2004.appspot.com",
+        messagingSenderId: "1077932241776",
+        appId: "1:1077932241776:web:a77060932c8b12b73055b5",
+        measurementId: "G-7WCNC0TMEM"
+      }
+
+      firebase.initializeApp(firebaseConfig)
+
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
         //listen to form submission
         $(".form-signin").on('submit', e => {
             //prevent default behavior
@@ -32,35 +54,37 @@
             const email = document.getElementById("email").value
             //get the password
             const password = document.getElementById("password").value
-            debugger
-            //sign in data
-            const signInData = { email, password }
+            debugger        
            
-            //send to server
-            $.ajax({
-                type: 'POST', 
-                url: "/auth/signin",
-                credentials: 'same-origin',
-                headers: {
-                    "CSRF-Token": Cookies.get("XSRF-TOKEN")
-                },
-                dataType: "json",
-                data: signInData
-            }).done(function (response) {
-                if (response.redirect !== undefined && response.redirect) {
-                    
-                    alert(response.message)
-                    // window.location.href = response.redirect_url
-                    window.location.replace(response.redirect_url)
-                }      
-                
-                if (response.redirect === undefined || !response.redirect) {
-                    
-                    alert(response.message)
-                    // window.location.href = response.redirect_url
-                    window.location.replace(response.redirect_url)
-                }            
-            })
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(email, password)
+                .then(({ user }) => {
+                  debugger
+                  return user.getIdToken().then((idToken) => {
+                    debugger
+                    return fetch("/auth/signin", {
+                      method: "POST",
+                      headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+                      },
+                      body: JSON.stringify({ idToken }),
+                    });
+                  });
+                })
+                //.then(response => response.json())
+                .then( () => {
+                  debugger
+                  return firebase.auth().signOut()
+                })
+                //.then(response => response.json())
+                .then(()=>{                  
+                  window.location.assign('/admin/dashboard');
+                });
+              return false;
+            
         })
     })
 </script>

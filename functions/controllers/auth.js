@@ -64,28 +64,50 @@ module.exports = {
 
         try {
 
-            const { email, password } = req.body
+            const idToken = req.body.idToken.toString();
 
-            const result = await auth.signInWithEmailAndPassword(email, password)        
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;  
+
+            admin.auth()
+                 .verifyIdToken(idToken)
+                 .then((decodedIdToken) => {
+                     console.log('DECODED ID TOKEN ', decodedIdToken)
+                    // Only process if the user just signed in in the last 30 minutes.
+                    if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60) {
+                        // Create session cookie and set it.
+                        return admin.auth()
+                            .createSessionCookie( idToken, { expiresIn })
+                            .then((sessionCookie) => {
+                                console.log('SESSION COOKIE IN AUTH CONTROLLLER', sessionCookie)
+                                // Set cookie policy for session cookie.
+                                const options = { maxAge: expiresIn, httpOnly: true /*, secure: true*/}
+                                res.cookie('session', sessionCookie, options)
+                                //res.end(JSON.stringify({ status: 'success' }))
+                                res.status(200).json({               
+                                    message: "Admin login successful",
+                                    //redirect: true,
+                                    redirect_url: "/admin/dashboard"
+                                })
+
+                            }, error => {
+                                console.log('session cookie error ', error)    
+                               // res.status(401).send('UNAUTHORIZED REQUEST!');
+                                res.status(401).json({
+                                    message: "Admin login unsuccessful",
+                                   // redirect: false,
+                                    redirect_url: "/admin/signin"
+                                })
+                            })
+                    }
+                    // A user that was not recently signed in is trying to set a session cookie.
+                    // To guard against ID token theft, require re-authentication.                   
+                    res.status(401).json({
+                        message: "Your session expired - please log in again",
+                       // redirect: false,
+                        redirect_url: "/admin/signin"
+                    })
+                })   
             
-            //get the created user id
-            const userUid = result.user.uid
-           console.log('userUid --> ', userUid)
-            if(userUid){
-                console.log('Inside --- final')
-                res.status(200).json({
-                   // user
-                    message: "Admin login successful",
-                    redirect: true,
-                    redirect_url: "/admin/dashboard"
-                })
-            }else {
-                res.status(401).json({
-                     message: "Admin login unsuccessful",
-                     redirect: false,
-                     redirect_url: "/admin/signin"
-                 })
-            }  
             
         } catch (error) {
             console.log('error ->', error)
@@ -94,22 +116,13 @@ module.exports = {
     },
 
     userLogOut: async (req, res) => {
-        const user = firebase.auth().currentUser
-
-        console.log('we are inside user log out')
-        console.log('USER -> ', user.uid)
-        console.log('req admin -> ', req.admin)
-        //console.log('req auth -> ', req.auth)
-        auth.signOut().then(function() {
-            // Sign-out successful.
-            console.log('We are signing out')
+        try {
+            res.clearCookie("session");
             req.admin = false
-            res.redirect('/admin/signin')
-
-          }).catch(function(error) {
+            res.redirect("/admin/signin")
+        } catch (error) {
             // An error happened.
             console.log('sign out error -> ', error)
-          });
-       // await auth.signOut()
+        }    
     }
 }
