@@ -30,12 +30,34 @@
         </form>
     </div>
 </section>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.1.0/firebase-analytics.js"></script>
 
 <script type="application/javascript">
     //load the document
-    $(document).ready(()=>{
+    $(document).ready(() => {
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsnmzIFaMRMNNuAPDrbAwDkWOkpuUT5no",
+            authDomain: "exhct2004.firebaseapp.com",
+            databaseURL: "https://exhct2004.firebaseio.com",
+            projectId: "exhct2004",
+            storageBucket: "exhct2004.appspot.com",
+            messagingSenderId: "1077932241776",
+            appId: "1:1077932241776:web:a77060932c8b12b73055b5",
+            measurementId: "G-7WCNC0TMEM"
+        }
+
+        firebase.initializeApp(firebaseConfig)
+
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
         //listen to form submit
-        $(".form-signup").on('submit', e => {
+        $(".form-signup").on('submit', async( e )=> {
 
             e.preventDefault()
             //get the form values
@@ -48,10 +70,14 @@
             if( password !== password2 ){
                 return alert('Your password must match your confirm password')
             }
-
+            debugger
             //assemble data to send to server
-            const signUpData = { email, name, password }
+            const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password)
+            debugger
+            const idToken = await user.getIdToken()
 
+            const signUpData = {idToken, name, email}
+            debugger
             //send to server
             $.ajax({
                 type: 'POST', 
@@ -63,17 +89,22 @@
                 },
                 dataType: "json",
                 data: signUpData
-            }).done(function (response) {
+            }).done(async function (response) {
                 if (response.redirect !== undefined && response.redirect) {
-                    
+                   
+                    debugger
                     alert(response.message)
+                    await firebase.auth().signOut()
+                    debugger
                     window.location.href = response.redirect_url
+                    
                    // window.location.replace(response.redirect_url)
                 }      
                 
                 if (response.redirect === undefined || !response.redirect) {
-                    
+                
                     alert(response.message)
+                    await firebase.auth().signOut()
                     // window.location.href = response.redirect_url
                     window.location.replace(response.redirect_url)
                 }                 

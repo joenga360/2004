@@ -65,6 +65,7 @@
                     debugger
                     return fetch("/auth/signin", {
                       method: "POST",
+                      credentials: 'same-origin',
                       headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
@@ -74,12 +75,14 @@
                     });
                   });
                 })
-                //.then(response => response.json())
+                .then(response => response.json())
                 .then( () => {
                   debugger
                   return firebase.auth().signOut()
                 })
-                //.then(response => response.json())
+                .then(data => {
+                  debugger
+                  console.log(data)})
                 .then(()=>{                  
                   window.location.assign('/admin/dashboard');
                 });
