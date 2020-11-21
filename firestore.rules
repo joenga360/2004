@@ -3,11 +3,11 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /courses/{courseId} {
       allow get, list;
-      allow create, update, delete: if request.auth !=null
+      allow create, update, delete
     }
     match /students/{studentId}{
       allow create;
-      allow update, delete, list, get: if request.auth!= null;
+      allow update, delete, list, get
     }
     match /jobs/{jobId}{
       allow get, list, create; 
