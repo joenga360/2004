@@ -6,18 +6,21 @@ module.exports = {
     
     isAdmin: async ( req, res, next ) => {
 
-        const sessionCookie = req.cookies.session || ""
+        const decodedCookie = req.cookies.decoded || ""
 
-        admin.auth()
-            .verifyIdToken( sessionCookie, true /** checkRevoked */)
-            .then(decodedIdToken => {
-                if(new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60 && decodedIdToken.admin ){
+        console.log('decoded cookie in authenticate ', decodedCookie)
+        // admin.auth()
+        //     .verifyIdToken( sessionCookie, true /** checkRevoked */)
+        //     .then(decodedIdToken => {
+                if(new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 && decodedCookie.admin ){
                     next()
-                }              
-            }).catch((error) => {
-                console.log('error in middleware --> ', error )
-                res.redirect("/admin/signin");
-            });
+                }   else {
+                    res.redirect("/admin/signin");
+                }           
+            // }).catch((error) => {
+            //     console.log('error in middleware --> ', error )
+                
+            // });
                
     }    
   

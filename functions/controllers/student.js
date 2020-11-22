@@ -15,7 +15,7 @@ module.exports = {
      */
     getDailyRegistrants: async ( req, res, next ) => {
         try {
-        
+            console.log('ARE WE GETTING HERE.....')
             //get today's date
             const today = moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")
 
