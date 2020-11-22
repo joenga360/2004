@@ -19,10 +19,10 @@ module.exports = {
             //get data
             const { name, email } = req.body
             //if user email is not in the allowed/admin emails, stop progress
-            // if(!adminEmails.includes( email )) {
-            //     //redirect to home page
-            //     return
-            // }  
+            if(!adminEmails.includes( email )) {
+                //redirect to home page
+                return
+            }  
             
             const idToken = req.body.idToken.toString();
 
