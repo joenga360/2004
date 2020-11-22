@@ -31,13 +31,14 @@ module.exports = {
             const decodedIdToken = await admin.auth().verifyIdToken( idToken )
 
             await admin.auth().setCustomUserClaims(decodedIdToken.sub, {
-                admin: true
+                admin : true
             })
 
             await admin.auth().updateUser(decodedIdToken.sub, {               
                 displayName: name,
             })           
-                
+            
+            
             // Only process if the user just signed in in the last 30 minutes.
             if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60) {
                 // Create session cookie and set it.

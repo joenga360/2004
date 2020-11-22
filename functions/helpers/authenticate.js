@@ -9,11 +9,11 @@ module.exports = {
         const sessionCookie = req.cookies.session || ""
 
         admin.auth()
-            .verifySessionCookie( sessionCookie, true /** checkRevoked */)
-            .then(() => {
-                console.log( 'session cookie ', sessionCookie )
-            // res.render("profile.html");
-                next()
+            .verifyIdToken( sessionCookie, true /** checkRevoked */)
+            .then(decodedIdToken => {
+                if(new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60 && decodedIdToken.admin ){
+                    next()
+                }              
             }).catch((error) => {
                 console.log('error in middleware --> ', error )
                 res.redirect("/admin/signin");
