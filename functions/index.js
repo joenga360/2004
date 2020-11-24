@@ -60,29 +60,49 @@ app.use(express.static("./public"))
 setEnvironment()   
 //Get user info and set csurf cooke
 app.use( async( req, res, next ) => {
+    //set conditionals for navbar header
     res.locals.admin = false
+    res.locals.employer = false
     res.locals.lead = false
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
+    //get session cookie
+    const sessionCookie = req.cookies.session || ""    
+    console.log('SESSION COOKIES IN INDEX --- ', sessionCookie)
+    //get the session cookie
+    const decodedCookie = req.cookies.decoded || ""
 
-    const sessionCookie = req.cookies.session ? req.cookies.session : ""    
+    if(sessionCookie !==""){
+        admin
+            .auth()
+            .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+            .then(() => {
+                if(decodedCookie.admin){
+                    res.locals.admin = true
+                    next()
+                } else {
+                    res.locals.employer = true
+                    next()
+                }               
+            })
+            .catch((error) => {
+                console.log('ERROR IN THE INDEX ....JS.....', error)
+                res.clearCookie("session")
+                res.clearCookie("decoded")        
+               // res.redirect("/");
+                next()
+            });
+    } else {
+        res.clearCookie("session")
+        res.clearCookie("decoded")        
+       // res.redirect("/")
+       next()
+    }
+    
 
-    admin
-        .auth()
-        .verifySessionCookie(sessionCookie, true /** checkRevoked */)
-        .then(() => {
-            res.locals.admin = true
-           // res.render("profile.html")
-            next()
-        }).catch((error) => {
-            console.log(error)
-            next()
-            //res.redirect("/admin/signin")
-        });
+})  
 
-})
-
-console.log('Before routes...')
+// console.log('Before routes...')
 app.use('/', require('./routes/site'))
 app.use('/admin', require('./routes/admin'))
 app.use('/auth', require('./routes/auth'))

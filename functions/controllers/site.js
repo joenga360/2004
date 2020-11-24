@@ -2,9 +2,9 @@ const QuestionService = require('../client_helpers/QuestionService')
 const SkillService = require('../client_helpers/SkillService')
 const seo_page = require('../client_helpers/seo_page_info')
 const campaign = require('../client_helpers/campaign')
-const { registration_fee} = require('../client_helpers/courses.js')
+const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
-const {course_classifier} = require('../helpers/course_classifier')
+const { course_classifier } = require('../helpers/course_classifier')
 const { campaignText, courseName } = require('../client_helpers/campaign') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
@@ -108,7 +108,7 @@ module.exports = {
     },
     //10. Get the employer sign in page
     getAdminSignInPage: (req, res) => {
-        res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
+      //  res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         res.render('site/adminsignin', {seo_info: seo_page.admin_signin_page_seo_info })
     },
     //11. Get the employer sign up page
