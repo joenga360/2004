@@ -67,12 +67,11 @@ app.use( async( req, res, next ) => {
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
     //get session cookie
-    const sessionCookie = req.cookies.session || ""    
-    console.log('SESSION COOKIES IN INDEX --- ', sessionCookie)
+    const sessionCookie = req.cookies.session || "" 
     //get the session cookie
     const decodedCookie = req.cookies.decoded || ""
 
-    if(sessionCookie !==""){
+    if( sessionCookie !=="" ){
         admin
             .auth()
             .verifySessionCookie(sessionCookie, true /** checkRevoked */)
@@ -98,8 +97,6 @@ app.use( async( req, res, next ) => {
        // res.redirect("/")
        next()
     }
-    
-
 })  
 
 // console.log('Before routes...')
