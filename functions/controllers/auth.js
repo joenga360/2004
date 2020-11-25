@@ -106,6 +106,8 @@ module.exports = {
                                 const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
                                 res.cookie('session', sessionCookie, options)
                                 res.cookie('decoded', decodedIdToken, options)
+
+                                console.log('console log res cookies after sign in ---> ', res.cookie)
                                 res.end(JSON.stringify({ status: 'success' }))
                               
 

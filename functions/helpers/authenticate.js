@@ -4,13 +4,13 @@ module.exports = {
     
     isAdmin: async ( req, res, next ) => {
 
-        console.log('REQ COOKIES ---> ', req.cookies)
+        console.log('REQUEST OBJECT ---> ', req )
         //get the decoded cookie
         const decodedCookie = req.cookies.decoded || ""       
         
         //get the session cookie
         const sessionCookie = req.cookies.session || ""
-
+        //console.log(req.cookies)
         console.log('SESSION COOKIE --> ', sessionCookie )
         console.log('DECODED COOKIE --> ', decodedCookie)
         //console.log('TIME PASSED --> ', timepassed)
