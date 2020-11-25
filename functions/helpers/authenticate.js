@@ -1,5 +1,4 @@
 const admin = require('firebase-admin')
-const moment = require('moment')
 
 module.exports = {
     
@@ -11,7 +10,7 @@ module.exports = {
         //console.log('TIME PASSED --> ', timepassed)
         switch( decodedCookie.admin ){
             case true:
-                console.log( 'is this true....?', new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 )               
+                //console.log( 'is this true....?', new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 )               
               
                 if( new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 ) {
                     
@@ -39,7 +38,7 @@ module.exports = {
             default:
                 console.log('GETTING HERE BEFORE ERRORS....')
                
-                return res.redirect("/")
+                return res.redirect("/courses")
         }
     }    
   

@@ -86,6 +86,7 @@ module.exports = {
     signInUser: async (req, res, next) => {
 
         try {
+
             const idToken = req.body.idToken.toString();
 
             const expiresIn = 60 * 60 * 24 * 5 * 1000;  
@@ -105,12 +106,8 @@ module.exports = {
                                 const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
                                 res.cookie('session', sessionCookie, options)
                                 res.cookie('decoded', decodedIdToken, options)
-                                //res.end(JSON.stringify({ status: 'success' }))
-                                res.status(200).json({               
-                                    message: "Admin login successful",
-                                    //redirect: true,
-                                    redirect_url: "/admin/dashboard"
-                                })
+                                res.end(JSON.stringify({ status: 'success' }))
+                              
 
                             }, error => {
                                 console.log('session cookie error ', error)    
