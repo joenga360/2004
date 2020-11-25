@@ -7,7 +7,8 @@ service cloud.firestore {
     match /students/{studentId} {
       allow read, write      
     }
-    match /jobs/{jobId}{
-      allow read, write    }
+    match /jobs/{jobId} {
+      allow read, write    
+    }
   }
 }

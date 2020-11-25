@@ -17,10 +17,12 @@ module.exports = {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         res.render('site/home', {seo_info: seo_page.home_page_seo_info})
     },
+
     //2. Get why post page
     getWhyPostPage: (req, res) => {
         res.render('site/whypost',  {seo_info: seo_page.whypost_page_seo_info})
     },
+
     //3. Get the questions page
     getQuestionsPage: (req, res) => {
         //construct quiz using 10 questions
@@ -43,7 +45,7 @@ module.exports = {
     getSignUpPage: (req, res) => {
         const campaignText = campaign.campaignText.recruit
         // const campaignText = campaignText["recruit"]["header"]
-        res.render('site/leadsignup', {campaignText: campaignText, seo_info: seo_page.signup_page_seo_info})    
+        res.render('site/leadsignup', { campaignText: campaignText, seo_info: seo_page.signup_page_seo_info })    
         //res.status(200).json({campaignText})
     },    
     //7. Get the course registration form
