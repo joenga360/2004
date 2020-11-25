@@ -6,11 +6,13 @@ module.exports = {
 
         console.log('REQ COOKIES ---> ', req.cookies)
         //get the decoded cookie
-        const decodedCookie = req.cookies.decoded || ""
-        console.log('DECODED COOKIE --> ', decodedCookie)
-        console.log('SESSION COOKIE --> ', req.cookies.session )
+        const decodedCookie = req.cookies.decoded || ""       
+        
         //get the session cookie
         const sessionCookie = req.cookies.session || ""
+
+        console.log('SESSION COOKIE --> ', sessionCookie )
+        console.log('DECODED COOKIE --> ', decodedCookie)
         //console.log('TIME PASSED --> ', timepassed)
         switch( decodedCookie.admin ){
             case true:                          
