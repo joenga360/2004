@@ -47,7 +47,9 @@ module.exports = {
                         // Set cookie policy for session cookie.
                         const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
 
-                        res.cookie('session', sessionCookie, options)
+                        
+                        res.setHeader('Cache-Control', 'private')
+                        res.cookie('__session', sessionCookie, options)                           
                         res.cookie('decoded', decodedIdToken, options)
                         //res.end(JSON.stringify({ status: 'success' }))
                         res.status(200).json({               
@@ -101,10 +103,12 @@ module.exports = {
                         return admin.auth()
                             .createSessionCookie( idToken, { expiresIn })
                             .then((sessionCookie) => {
-                               
+
                                 // Set cookie policy for session cookie.
                                 const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
-                                res.cookie('session', sessionCookie, options)
+
+                                res.setHeader('Cache-Control', 'private')
+                                res.cookie('__session', sessionCookie, options)                           
                                 res.cookie('decoded', decodedIdToken, options)
 
                                 console.log('console log res cookies after sign in ---> ', res.cookie)
