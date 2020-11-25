@@ -6,9 +6,9 @@ module.exports = {
 
         console.log('REQUEST OBJECT ---> ', req )
         //get the decoded cookie
-        const decodedCookie = req.cookies.decoded || ""       
+        const decodedCookie = req.decodedCookie     
         
-        //get the session cookie
+        //get the session co =  
         const sessionCookie = req.cookies.session || ""
         //console.log(req.cookies)
         console.log('SESSION COOKIE --> ', sessionCookie )

@@ -50,7 +50,7 @@ module.exports = {
                         
                         res.setHeader('Cache-Control', 'private')
                         res.cookie('__session', sessionCookie, options)                           
-                        res.cookie('decoded', decodedIdToken, options)
+                        req.decodedCookie =  decodedIdToken
                         //res.end(JSON.stringify({ status: 'success' }))
                         res.status(200).json({               
                             message: "Admin signup successful",
@@ -109,7 +109,7 @@ module.exports = {
 
                                 res.setHeader('Cache-Control', 'private')
                                 res.cookie('__session', sessionCookie, options)                           
-                                res.cookie('decoded', decodedIdToken, options)
+                                req.decodedCookie =  decodedIdToken
 
                                 console.log('console log res cookies after sign in ---> ', res.cookie)
                                 res.end(JSON.stringify({ status: 'success' }))
