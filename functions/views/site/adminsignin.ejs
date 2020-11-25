@@ -72,20 +72,16 @@
                         "CSRF-Token": Cookies.get("XSRF-TOKEN"),
                       },
                       body: JSON.stringify({ idToken }),
-                    });
-                  });
-                })
-                .then(response => response.json())
+                    })
+                  })
+                })               
                 .then( () => {
                   debugger
                   return firebase.auth().signOut()
-                })
-                .then(data => {
-                  debugger
-                  console.log(data)})
+                })                
                 .then(()=>{                  
-                  window.location.assign('/admin/dashboard');
-                });
+                  window.location.assign('/admin/dashboard')
+                })
               return false;
             
         })

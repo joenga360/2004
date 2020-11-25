@@ -74,9 +74,9 @@ app.use( async( req, res, next ) => {
     if( sessionCookie !=="" ){
         admin
             .auth()
-            .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+            .verifySessionCookie( sessionCookie, true /** checkRevoked */)
             .then(() => {
-                if(decodedCookie.admin){
+                if( decodedCookie.admin ){
                     res.locals.admin = true
                     next()
                 } else {

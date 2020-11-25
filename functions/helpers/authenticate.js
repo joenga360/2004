@@ -13,7 +13,7 @@ module.exports = {
             case true:
                 console.log( 'is this true....?', new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 )               
               
-                if( new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 ){
+                if( new Date().getTime() / 1000 - decodedCookie.auth_time < 30 * 60 ) {
                     
                     admin
                         .auth()

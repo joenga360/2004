@@ -21,8 +21,8 @@ module.exports = {
 
             //query student collection
             const results = await db.collection('students')
-                                    .orderBy('enrolledOn')
-                                    .get()
+                                .orderBy('enrolledOn')
+                                .get()
             //get student documents
             const docs = results.docs
            
@@ -76,8 +76,7 @@ module.exports = {
                     daily_sum: 0, 
                     seo_info: seo_page.admin_portal_seo_info 
                 })
-            }
- 
+            } 
 
         } catch (error) {
             console.log(error)

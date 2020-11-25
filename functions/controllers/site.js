@@ -8,7 +8,6 @@ const { course_classifier } = require('../helpers/course_classifier')
 const { campaignText, courseName } = require('../client_helpers/campaign') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
-const seo_page_info = require('../client_helpers/seo_page_info')
 const db = firebase.firestore()
 
 

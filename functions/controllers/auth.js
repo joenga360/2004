@@ -1,8 +1,6 @@
 const firebase = require("firebase")
 const admin = require("firebase-admin")
-
-//create reference for firebase authentication service
-const auth = firebase.auth()
+require('../config/var')
 //const seo_page = require('../client_helpers/seo_page_info')
 // const sgMail = require('@sendgrid/mail')
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY)
@@ -47,7 +45,7 @@ module.exports = {
                     .then((sessionCookie) => {
                         console.log('SESSION COOKIE IN AUTH CONTROLLLER', sessionCookie)
                         // Set cookie policy for session cookie.
-                        const options = { maxAge: expiresIn, httpOnly: true /*, secure: true*/}
+                        const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
 
                         res.cookie('session', sessionCookie, options)
                         res.cookie('decoded', decodedIdToken, options)
@@ -88,7 +86,6 @@ module.exports = {
     signInUser: async (req, res, next) => {
 
         try {
-
             const idToken = req.body.idToken.toString();
 
             const expiresIn = 60 * 60 * 24 * 5 * 1000;  
@@ -105,7 +102,7 @@ module.exports = {
                             .then((sessionCookie) => {
                                
                                 // Set cookie policy for session cookie.
-                                const options = { maxAge: expiresIn, httpOnly: true /*, secure: true*/}
+                                const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
                                 res.cookie('session', sessionCookie, options)
                                 res.cookie('decoded', decodedIdToken, options)
                                 //res.end(JSON.stringify({ status: 'success' }))
