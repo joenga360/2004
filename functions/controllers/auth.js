@@ -98,7 +98,7 @@ module.exports = {
                  .then((decodedIdToken) => {
                    
                     // Only process if the user just signed in in the last 30 minutes.
-                    if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60) {
+                    if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 30 * 60 && decodedIdToken.admin) {
                         // Create session cookie and set it.
                         return admin.auth()
                             .createSessionCookie( idToken, { expiresIn })
@@ -109,9 +109,8 @@ module.exports = {
 
                                 res.setHeader('Cache-Control', 'private')
                                 res.cookie('__session', sessionCookie, options)                           
-                                req.decodedCookie =  decodedIdToken
-
-                                console.log('console log res cookies after sign in ---> ', res.cookie)
+                             
+                                
                                 res.end(JSON.stringify({ status: 'success' }))
                               
 
@@ -130,7 +129,7 @@ module.exports = {
                     res.status(401).json({
                         message: "Your session expired - please log in again",
                        // redirect: false,
-                        redirect_url: "/admin/signin"
+                        redirect_url: "/"
                     })
                 })   
             

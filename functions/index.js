@@ -61,42 +61,36 @@ setEnvironment()
 //Get user info and set csurf cooke
 app.use( async( req, res, next ) => {
     //set conditionals for navbar header
-    res.locals.admin = false
+   
     res.locals.employer = false
     res.locals.lead = false
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
     //get session cookie
     const sessionCookie = req.cookies.session || "" 
-    //get the session cookie
-    const decodedCookie = req.cookies.decoded || ""
+    
 
     if( sessionCookie !=="" ){
         admin
             .auth()
             .verifySessionCookie( sessionCookie, true /** checkRevoked */)
-            .then(() => {
-                if( decodedCookie.admin ){
-                    res.locals.admin = true
-                    next()
-                } else {
-                    res.locals.employer = true
-                    next()
-                }               
+            .then(() => {           
+                //res.locals.admin = true
+                next()                            
             })
             .catch((error) => {
                 console.log('ERROR IN THE INDEX ....JS.....', error)
-                res.clearCookie("session")
-                res.clearCookie("decoded")        
+                res.clearCookie("session")                    
                // res.redirect("/");
                 next()
             });
     } else {
-        res.clearCookie("session")
-        res.clearCookie("decoded")        
+        res.locals.admin = false
+        res.clearCookie("session")         
        // res.redirect("/")
        next()
     }
+
 })  
 
 // console.log('Before routes...')
