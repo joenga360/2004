@@ -28,7 +28,6 @@ module.exports = {
            
             if( docs.length > 0 ) {
 
-                  let init =  0
                 //filter students who registered today
                 const registrants = docs.filter( registrant => {
                     if ( moment.tz(registrant.data().enrolledOn.toDate(), "America/Los_Angeles").format("MM/DD/YYYY") === today){
@@ -234,13 +233,12 @@ module.exports = {
                                                     address, city, enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
                                                     state, zip, tel, email, first, last, dob, payments, comments, status 
                                                 })           
-            console.log('STUDENT ID ---> ', student.id)
             //create postdata to send to mailchimp
             const postData = studentData( email, first, last, tel, course.name, course.start_date, course.end_date, student.id, course_id, status )
             //add student to the mailchimp
-            await subscribe( postData, process.env.STUDENT_LIST )
+            await subscribe( postData, STUDENT_LIST )
             //add this student to the registered segment of the list audience
-            await segment(email, segmentURL(amount, course.name), process.env.STUDENT_LIST, add = true )
+            await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )
             
             res.status(201).json({
                  message: `Admin has successfully added the student to ${course_name}.`,  
@@ -332,13 +330,12 @@ module.exports = {
         })
       }
     },
-
     /**
      * transfer student to a  by admin
      * params: course_id for old course, course_id for new course and student id
      * returns: student in new course
      */
-     transferStudent: async ( req, res, next ) => {
+    transferStudent: async ( req, res, next ) => {
          try {
              console.log( 'REQ PARAMS  -> ', req.body )
             //get req.params 
@@ -402,5 +399,99 @@ module.exports = {
                   'message': 'An error has occured'
               })
          }
-    }
+    },
+
+    /**
+    * unenroll student
+    * params: id of the course and student
+    * data: none
+    */
+    unenrollStudent: async ( req, res, next ) => {
+        try {
+            //get the course id and student id
+            const { course_id , student_id } = req.params
+
+            //get the student
+            const result = await db.collection('students').doc( student_id ).get()
+
+            //get the student data
+            const student =  result.data()
+
+            //course information contatined in payment array
+            const payments = student.payments.filter( x => {
+                if( x.course_id == course_id ){
+                    return x = {}
+                } else return x.course_id
+            })
+            console.log('NEW PAYMENTS -> ', payments)               
+            await db.collection('students').doc(student_id).update( { payments } )
+            //get the course
+            return res.redirect('/courses/'+course_id)
+
+        } catch (error) {
+            console.log('ERROR -> ERROR ', error)
+            res.status(500).json({
+                'message': 'An error has occured'
+            })
+        }
+    },
+     /**
+    * search student
+    * params: none
+    * data: email
+    */
+    searchStudent: async ( req, res, next ) => {
+        try {
+            console.log('student SEARCH EMAIL ', req.body)
+
+            //get the course id and student id
+            const email = req.body.email
+
+            //get the student
+            const result = await db.collection('students').where("email", "==", email).get()
+
+            //get the student data
+            const students =  result.docs
+
+            //if the students length is greater than 0
+            if( students.length > 0 ){
+                //filter students who registered today
+                const registrants = students.map( registrant => {
+                    return {
+                        'name': registrant.data().first+" "+ registrant.data().last,
+                        'email': registrant.data().email,
+                        'id': registrant.id,
+                        'comments': registrant.data().comments,
+                        'tel': registrant.data().tel,
+                        'payment': registrant.data().payments.reduce(( sum, payment ) => {                           
+                            //
+                            let total = Object.entries(sum).length > 0 ? parseInt(sum.amount) + parseInt(payment.amount) : parseInt(payment.amount)                          
+                          
+                            return sum = { 'amount': total, "name": payment.course_name, "course_id": payment.course_id }
+
+                        }, {})
+                    }
+                })   
+                //return of students
+                res.render('admin/student/searchresults', 
+                        { 
+                            students: registrants,                             
+                            seo_info: seo_page.admin_portal_seo_info 
+                        })
+            } else {
+                //return message no student found
+                res.render('admin/student/searchresults', 
+                        { 
+                            message: "No student found with that email.",                             
+                            seo_info: seo_page.admin_portal_seo_info 
+                        })
+            }
+
+        } catch (error) {
+            console.log('ERROR -> ERROR ', error)
+            res.status(500).json({
+                'message': 'An error has occured'
+            })
+        }
+    }  
 }

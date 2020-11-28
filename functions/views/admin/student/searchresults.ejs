@@ -25,7 +25,7 @@
                         <p class="card-text"><strong>Comments: </strong> <%=student.comments%></p>                          
                     </div>            
                     
-                    <% if(student.payments.length > 0 ) { %>
+                    <% if( student.payments.length > 0 ) { %>
                     <div class="row" >
                         <table class="table table-sm">
                             <thead>
@@ -49,6 +49,14 @@
                     <% } %>                                 
                 </div> 
             </div> 
+            <% } else { %>
+                <div class="card-body">
+                    <div class="row">
+                        <p class="card-text">
+                            <%=message%>
+                        </p>
+                    </div>
+                </div>
             <% } )%>          
         </div>
     </div>

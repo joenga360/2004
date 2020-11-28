@@ -10,5 +10,9 @@ router.route('/start/:course_id').post( /*authenticate.isAdmin, */ studentContro
 router.route('/update/:course_id').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
 //admin transfers a student
 router.route('/transfer').patch( authenticate.isAdmin,  studentController.transferStudent ) 
+//admin unenroll a student
+router.route('/unenroll/:student_id/:course_id').get( authenticate.isAdmin,  studentController.unenrollStudent ) 
+//admin search a student
+router.route('/search').post( authenticate.isAdmin,  studentController.searchStudent ) 
 
 module.exports = router

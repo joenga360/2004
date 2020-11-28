@@ -1,10 +1,59 @@
-<!-- <div class="p-3 col-md-6 col-sm-10">                     -->
-    <form class="mb-4" method='POST' action="/students/search" >
+<div class="m-3 col-md-10">                    
+    <form class="mb-4" method='POST' id="search_student">
         <div class="input-group">
-        <input type="text" class="form-control form-control-lg" placeholder="Search student using first, last, email or tel #" name="student_query" required>   
+        <input type="text" class="form-control form-control-lg" placeholder="Search student using email" name="student_email" id="student_email" required>   
             <div class="input-group-append">
-                <button class="btn btn-outline-primary btn-md" type="submit" >Search</button>
+                <button class="btn btn-outline-primary btn-lg" type="submit" >Search</button>
             </div>
         </div> 
     </form> 
-<!-- </div> -->
+</div>
+
+<script type="application/javascript">
+
+    //load document
+    $(document).ready(() => {
+        //listen to form submission
+        $("#search_student").on('submit', e => {
+            //prevent default behavior
+            e.preventDefault()
+            //get data from the form
+            const email = document.getElementById("student_email").value  
+            debugger
+            return fetch("/students/search", {
+                method: "POST",
+                credentials: 'same-origin',
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-Token": Cookies.get("XSRF-TOKEN")
+                },
+                body: JSON.stringify({ email })
+            })
+          
+            // $.ajax({
+            //         type: 'POST', 
+            //         url: "/students/search",
+            //         credentials: 'same-origin', // <-- includes cookies in the request
+            //         headers: {
+            //             'CSRF-Token': Cookies.get("XSRF-TOKEN")
+            //         },
+            //         dataType: "json",
+            //         data: email,
+            //     }).done(function (response) {
+
+            //         // if (response.redirect !== undefined && response.redirect) {                    
+                        
+            //         //     window.location.replace(response.redirect_url)
+            //         // } else {      
+                        
+            //         //     alert('No student exists with that email.')
+
+            //           //  window.location.replace('admin/dashboard')
+            //        // }                                   
+            //     }) 
+
+
+        })
+    })
+</script>    

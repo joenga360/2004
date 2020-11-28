@@ -21,9 +21,11 @@
                     <!--CNA DAY CLASSES  -->                                                
                     <ul class="list-group list-group-flush justify-content-between cna_ul">
                         <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
+                     
                         <% courses.cna.day_courses.forEach(course =>{ %>
                             <li class="list-group-item text-center"><a href= "/courses/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
                         <% }) %>  
+                  
                     </ul>  
                     <!-- CPR DAY CLASSES -->                          
                     <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display:none;">
