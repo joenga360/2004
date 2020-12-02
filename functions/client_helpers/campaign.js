@@ -72,7 +72,7 @@ const campaignText = {
             "You can take the theory part of the class online and get skill tested  at our location (this is called blended learning/course).",
             "Our cards are American Heart Association cards."
         ],
-        "keywords": [ "Basic Life Support", "BLS", "AED", "CPR", "Cardio Pulmonary Resuscitation", "Automated External Defibrillator"]
+        "keywords": [ "Heartcode BLS Course Skill Testing", "Basic Life Support", "BLS", "AED", "CPR", "Cardio Pulmonary Resuscitation", "Automated External Defibrillator"]
     },
 
     "recruit":{
@@ -97,9 +97,9 @@ function courseName(x){
 
     const courseKeys = { 
         "cna":"CNA",
-        "cpr":"Adult CPR/FA",
-        "bls":"Basic Life Support (BLS)",
-        "bridging":"HCA-CNA Bridging"
+        "cpr":"Heartcode Adult CPR/First Aid/AED",
+        "bls":"Heartcode BLS Course Skill Testing",
+        "bridging":"HCA to CNA Bridging"
     }
 
     return courseKeys[x]
