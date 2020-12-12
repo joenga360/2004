@@ -1,8 +1,12 @@
 const firebase = require("firebase")
 const moment = require('moment')
+const NodeCache = require( "node-cache" )
+const myCache = new NodeCache()
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { studentData, segment, segmentURL, subscribe , tagsDifference, tagStudent } = require("../helpers/subscribe")
+const { getQbo, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
+//const{ registrantSignUp } = require('../config/accounting')
 //create reference for firestore database
 const db = firebase.firestore()
 
@@ -92,6 +96,7 @@ module.exports = {
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
       try{
+            
             //get the course id
             const course_id = req.params.course_id
             //get results of search of courses collection using the course id
@@ -156,18 +161,25 @@ module.exports = {
                                                 enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
                                                 comments, email, first, last, tel, payments, status 
                                             })
-                           
-             //create postdata to send to mailchimp
-             const postData = studentData( email, first, last, tel, course.name, course.start_date, course.end_date, student.id, course_id )
-             //send student data to mailchimp list/audience for students
-             await subscribe( postData, STUDENT_LIST )
-             //add this student to the registered segment of the list audience
-             await segment(email, segmentURL(amount, course.name), STUDENT_LIST)                                
-        
+            
+            console.log('above student ---> ', student.id)
+            //create a customer in quickbooks                                 
+            // registrantSignUp(student.id, email, first, last, tel)                                
+            //create postdata to send to mailchimp
+            const postData = studentData( email, first, last, tel, course.name, course.start_date, course.end_date, student.id, course_id )
+            //send student data to mailchimp list/audience for students
+            await subscribe( postData, STUDENT_LIST )
+            //add this student to the registered segment of the list audience
+            await segment( email, segmentURL(amount, course.name), STUDENT_LIST )   
+
+            const qb_results = qbWebSignUp( student.id, first, last, tel, email, comments )
+
+            console.log(qb_results)
+                                            
             res.status(201).json({
                 redirect: true,
                 redirect_url: (stripeToken && amount > 0) ? '/confirm-payment' :'/success',
-                message: 'You have signed up for '+course_name
+                message: 'You have signed up for '+course.name
             })
             //res.render('', {seo_info: seo_page.payment_page_seo_info} )
 
@@ -176,7 +188,7 @@ module.exports = {
             res.status(500).json({
                 "redirect":false,
                 "redirect_url":"localhost:3000/courses",
-                "message": "Did not sign up for "+course_name
+                "message": "Did not sign up for "+ course.name
             })
         }
     },

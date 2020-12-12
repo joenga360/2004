@@ -263,6 +263,8 @@
                         url: '/students/register/'+course.courseId,
                         credentials: 'same-origin', // <-- includes cookies in the request
                         headers: {
+                            // Accept: "application/json",
+                            // "Content-Type": "application/json",
                             "CSRF-Token": Cookies.get("XSRF-TOKEN")
                         },
                         dataType: "json",

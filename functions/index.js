@@ -9,6 +9,7 @@ const csrf = require('csurf')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const firebase = require("firebase")
+const cookieSession = require('cookie-session')
 const { setEnvironment }= require('./config/var')
 
 const app = express()
@@ -28,7 +29,6 @@ firebase.initializeApp({
     appId: "1:1077932241776:web:a77060932c8b12b73055b5",
     measurementId: "G-7WCNC0TMEM"
   })
-
   
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -67,15 +67,14 @@ app.use( async( req, res, next ) => {
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
     //get session cookie
-    const sessionCookie = req.cookies.session || "" 
-    
+    const sessionCookie = req.cookies.session || ""     
 
     if( sessionCookie !=="" ){
         admin
             .auth()
             .verifySessionCookie( sessionCookie, true /** checkRevoked */)
             .then(() => {           
-                //res.locals.admin = true
+                res.locals.admin = true
                 next()                            
             })
             .catch((error) => {
@@ -92,7 +91,7 @@ app.use( async( req, res, next ) => {
     }
 
 })  
-
+app.use(cookieSession({name: 'session', keys: ['key1']}))
 // console.log('Before routes...')
 app.use('/', require('./routes/site'))
 app.use('/admin', require('./routes/admin'))

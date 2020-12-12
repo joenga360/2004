@@ -1,10 +1,26 @@
 const seo_page = require('../client_helpers/seo_page_info')
 const moment = require("moment")
 const { course_classifier } = require('../helpers/course_classifier.js')
+const { getQbo } =  require('../helpers/accounting')
 const firebase = require('firebase')
-const course = require('./course')
+const request = require('request')
+const QuickBooks = require('../quickbooks')
 //create reference for firestore database
 const db = firebase.firestore()
+const NodeCache = require( "node-cache" )
+const myCache = new NodeCache()
+
+QuickBooks.setOauthVersion('2.0')
+
+const Tokens = require('csrf')
+const csrf = new Tokens()
+
+// OAUTH 2 makes use of redirect requests
+function generateAntiForgery (session) {
+    session.secret = csrf.secretSync()
+    return csrf.create( session.secret )
+}
+
 /**
  * Log into admin to get a sense of all course schedule pages
  * There is a course transfer schedule for admin, student who did not start a class.  Is there one for employer? Delete it if it exists
@@ -87,6 +103,29 @@ module.exports = {
     editCourseView: (req, res, next ) => {
         res.render('admin/course/edit', { seo_info: seo_page.admin_portal_seo_info })
     },
+
+    /**
+     * 
+     */
+    getQBORequestToken: ( req, res, next ) => {
+        console.log('REQ SESSION IN GET REQUEST ---> ', req.session)
+        const redirecturl = QuickBooks.AUTHORIZATION_URL +
+            '?client_id=' + CONSUMER_KEY +
+            '&redirect_uri=' + encodeURIComponent('http://localhost:5000/admin/callback/') +  //Make sure this path matches entry in application dashboard
+            '&scope=com.intuit.quickbooks.accounting' +
+            '&response_type=code' +
+            '&state=' + generateAntiForgery(req.session);
+        res.redirect(redirecturl);
+    },
+     /**
+     * get quickbooks view for admin to issue consent
+     * params: none
+     * returns: page, seo information
+     */
+    getQboPage: ( req, res, next ) => {
+        res.render('admin/intuit', {  seo_info: seo_page.admin_portal_seo_info, appCenter: QuickBooks.APP_CENTER_BASE });
+    },
+    
     /**
      * get student registeration form for admin to sign up student
      * params: String: course id 
@@ -166,6 +205,55 @@ module.exports = {
             console.log(error)
             throw(error)
         }        
+    },
+    /**
+     * get token from qbo account
+     * params: none
+     * returns: Object: qbo for interacting with EHCT quickbook online account
+     */
+
+    qboCallback: ( req, res, next ) => {
+
+        const auth = (new Buffer( CONSUMER_KEY + ':' +  CONSUMER_SECRET ).toString('base64'));
+
+        const postBody = {
+            url: 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization: 'Basic ' + auth,
+            },
+            form: {
+                grant_type: 'authorization_code',
+                code: req.query.code,
+                redirect_uri: 'http://localhost:5000/admin/callback/'  //Make sure this path matches entry in application dashboard
+            }
+        }
+
+        request.post(postBody, function (e, r, data) {
+            var accessToken = JSON.parse(r.body);
+        
+            const qboObject = {
+              token: accessToken.access_token,    
+              companyid: req.query.realmId,
+              refresh_token: accessToken.refresh_token
+            }
+            //set qbo object in the cache
+            myCache.set( "qbo-cache", qboObject );
+            //get the cache and save it to a variable
+            const qboCache = myCache.get('qbo-cache')
+            // save the access token somewhere on behalf of the logged in user
+            const qbo = getQbo( qboCache ) 
+        
+            qbo.findAccounts(function (_, accounts) {
+              accounts.QueryResponse.Account.forEach(function (account) {
+                console.log(account.Name);
+              })
+            })
+        
+        })
+        
+        res.send('<!DOCTYPE html><html lang="en"><head></head><body><script>window.opener.location.reload(); window.close();</script></body></html>')
     },
     /**
      * gets view to display student search results

@@ -25,5 +25,5 @@ router.get('/course/:name',  SiteController.getLeadCourses)
 router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm)
 //get regular sign up page
 router.get('/signup/:course_id', SiteController.getCourseRegistrationForm)
-
+//get the quickbooks login page
 module.exports = router
