@@ -1,23 +1,23 @@
 const QuestionService = require('../client_helpers/QuestionService')
 const SkillService = require('../client_helpers/SkillService')
 const seo_page = require('../client_helpers/seo_page_info')
-const campaign = require('../client_helpers/campaign')
 const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
 const { course_classifier } = require('../helpers/course_classifier')
-const { campaignText, courseName } = require('../client_helpers/campaign') 
+const { campaignText, campaign, courseName } = require('../client_helpers/campaign') 
+const { catalog, upsell }  = require('../client_helpers/catalog') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
 const db = firebase.firestore()
 
 
 module.exports = {
+
     //1. Get the home page
     getHomePage: (req, res) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         res.render('site/home', {seo_info: seo_page.home_page_seo_info})
     },
-
     //2. Get why post page
     getWhyPostPage: (req, res) => {
         res.render('site/whypost',  {seo_info: seo_page.whypost_page_seo_info})
@@ -192,7 +192,7 @@ module.exports = {
         }  
     }, 
     
-    getCourses: async (req, res, next) => { 
+    getCourses: async ( req, res, next) => { 
         try {
             res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
             const today = moment().startOf('day').toDate()            
@@ -230,5 +230,10 @@ module.exports = {
             console.log(error)
         }
     },
+
+    //get course catalog page
+    getCatalog: async ( req, res, next ) => {
+        res.render('site/catalog', { courses: catalog, seo_info: seo_page.catalog_page_seo_info})
+    }
  
 }

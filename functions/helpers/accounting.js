@@ -1,9 +1,9 @@
 const moment = require('moment')
 var QuickBooks = require('../quickbooks')
-const NodeCache = require( "node-cache" )
-const myCache = new NodeCache()
+// const NodeCache = require( "node-cache" )
+// const myCache = new NodeCache()
 QuickBooks.setOauthVersion('2.0')
-
+const request = require('request')
 
 const getQbo =  (args) => {
     return new QuickBooks(
@@ -18,9 +18,40 @@ const getQbo =  (args) => {
         '2.0',
         args.refresh_token
     )
-
 }
 module.exports = {    
+
+    getRequestBody: async (req, res, next) => {
+        
+        const auth = (new Buffer( CONSUMER_KEY + ':' +  CONSUMER_SECRET ).toString('base64'));
+
+        const postBody = {
+            url: 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization: 'Basic ' + auth,
+            },
+            form: {
+                grant_type: 'authorization_code',
+                code: req.query.code,
+                redirect_uri: 'http://localhost:5000/admin/callback/'  //Make sure this path matches entry in application dashboard
+            }
+        }
+        
+        await request.post(postBody, function (e, r, data) {
+            const accessToken = JSON.parse(r.body)        
+        
+            const qboObject = {
+              token: accessToken.access_token,    
+              companyid: req.query.realmId,
+              refresh_token: accessToken.refresh_token
+            }
+ 
+            return getQbo(qboObject)        
+      
+        })
+    },
 
     /**
      * params: user's id, email, first name, last name, tel, and comments
@@ -29,7 +60,7 @@ module.exports = {
     qbWebSignUp : ( id, first, last, tel, email, comments ) => {
         
         //return new web sign ups
-        const newStudent = {
+        return newStudent = {
             Id: id,
             DisplayName: first + " " + last, 
             GivenName: first,
@@ -40,18 +71,8 @@ module.exports = {
               },
             sparse: true,
             PrimaryEmailAddr: { Address: email }
-        } 
-        
-        const qboCache = myCache.get('qbo-cache')
-        // save the access token somewhere on behalf of the logged in user
-        console.log('qboCache ---> ', qboCache)
-        const qbo = getQbo( qboCache ) 
+        }        
 
-        qbo.createCustomer(newStudent, (err, customer) => {
-            if(err) return err
-            console.log('customer ---->', customer)
-            return customer
-        })
     },
 
     /**

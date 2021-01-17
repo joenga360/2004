@@ -1,14 +1,14 @@
 const seo_page = require('../client_helpers/seo_page_info')
 const moment = require("moment")
 const { course_classifier } = require('../helpers/course_classifier.js')
-const { getQbo } =  require('../helpers/accounting')
+const { getRequestBody } =  require('../helpers/accounting')
 const firebase = require('firebase')
-const request = require('request')
+
 const QuickBooks = require('../quickbooks')
 //create reference for firestore database
 const db = firebase.firestore()
-const NodeCache = require( "node-cache" )
-const myCache = new NodeCache()
+// const NodeCache = require( "node-cache" )
+// const myCache = new NodeCache()
 
 QuickBooks.setOauthVersion('2.0')
 
@@ -107,14 +107,13 @@ module.exports = {
     /**
      * 
      */
-    getQBORequestToken: ( req, res, next ) => {
-        console.log('REQ SESSION IN GET REQUEST ---> ', req.session)
+    getQBORequestToken: ( req, res, next ) => {      
         const redirecturl = QuickBooks.AUTHORIZATION_URL +
             '?client_id=' + CONSUMER_KEY +
             '&redirect_uri=' + encodeURIComponent('http://localhost:5000/admin/callback/') +  //Make sure this path matches entry in application dashboard
             '&scope=com.intuit.quickbooks.accounting' +
             '&response_type=code' +
-            '&state=' + generateAntiForgery(req.session);
+            '&state=' + req.csrfToken() //generateAntiForgery(req.session);
         res.redirect(redirecturl);
     },
      /**
@@ -214,45 +213,8 @@ module.exports = {
 
     qboCallback: ( req, res, next ) => {
 
-        const auth = (new Buffer( CONSUMER_KEY + ':' +  CONSUMER_SECRET ).toString('base64'));
-
-        const postBody = {
-            url: 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization: 'Basic ' + auth,
-            },
-            form: {
-                grant_type: 'authorization_code',
-                code: req.query.code,
-                redirect_uri: 'http://localhost:5000/admin/callback/'  //Make sure this path matches entry in application dashboard
-            }
-        }
-
-        request.post(postBody, function (e, r, data) {
-            var accessToken = JSON.parse(r.body);
-        
-            const qboObject = {
-              token: accessToken.access_token,    
-              companyid: req.query.realmId,
-              refresh_token: accessToken.refresh_token
-            }
-            //set qbo object in the cache
-            myCache.set( "qbo-cache", qboObject );
-            //get the cache and save it to a variable
-            const qboCache = myCache.get('qbo-cache')
-            // save the access token somewhere on behalf of the logged in user
-            const qbo = getQbo( qboCache ) 
-        
-            qbo.findAccounts(function (_, accounts) {
-              accounts.QueryResponse.Account.forEach(function (account) {
-                console.log(account.Name);
-              })
-            })
-        
-        })
-        
+        const qbo = getRequestBody(req, res, next)
+        console.log(qbo)
         res.send('<!DOCTYPE html><html lang="en"><head></head><body><script>window.opener.location.reload(); window.close();</script></body></html>')
     },
     /**

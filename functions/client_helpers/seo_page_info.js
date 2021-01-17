@@ -55,6 +55,23 @@ module.exports = {
         ]
     },
 
+    
+    catalog_page_seo_info: {
+        title: 'Course Catalog',
+        titleTemplate: 'CNA, CPR, First Aid and DSHS Course Schedules!',
+        meta: [                   
+            { name: "description", content: "Descriptions, job outlooks, and costs for CNA, DSHS, CPR, First Aid courses offered by  " },
+            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 hours training, caregiver training, home care aide training, mental health training, dementia training" },
+            { name: "author", content: "Don Gatuna" }          
+        
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/classes' }
+        ]
+    },
+
+
     jobs_page_seo_info: {
             title: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs',
             titleTemplate: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs',

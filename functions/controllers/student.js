@@ -1,11 +1,11 @@
 const firebase = require("firebase")
 const moment = require('moment')
-const NodeCache = require( "node-cache" )
-const myCache = new NodeCache()
+// const NodeCache = require( "node-cache" )
+// const myCache = new NodeCache()
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { studentData, segment, segmentURL, subscribe , tagsDifference, tagStudent } = require("../helpers/subscribe")
-const { getQbo, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
+const {   getRequestBody, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
 //const{ registrantSignUp } = require('../config/accounting')
 //create reference for firestore database
 const db = firebase.firestore()
@@ -172,9 +172,15 @@ module.exports = {
             //add this student to the registered segment of the list audience
             await segment( email, segmentURL(amount, course.name), STUDENT_LIST )   
 
-            const qb_results = qbWebSignUp( student.id, first, last, tel, email, comments )
+            const newStudent = qbWebSignUp( student.id, first, last, tel, email, comments )
 
-            console.log(qb_results)
+            const qbo = getRequestBody(req, res, next)
+            
+            qbo.createCustomer(newStudent, (err, customer) => {
+                if(err) return err
+                console.log('customer ---->', customer)
+                // return customer
+            })
                                             
             res.status(201).json({
                 redirect: true,

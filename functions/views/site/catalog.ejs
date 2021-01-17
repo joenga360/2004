@@ -1,0 +1,18 @@
+<section>
+  <% courses.forEach(course => { %> 
+    <div class="card">
+      <h4 class="card-header"><%= course.name %></h4>
+      <div class="card-body">
+        <h5 class="card-title">Learning Mode: <%=course.mode %></h5>
+        <p class="card-text"><strong>Description: </strong><%= course.description %></p>
+        <p class="card-text"><strong>Length: </strong> <%=course.length %>| <strong>Cost: </strong> <%=course.cost%></p>
+        <p class="card-text"><strong>Skill labs: </strong> <%=course.labs %>| <strong>Clinical: </strong> <%=course.clinical%></p>
+        <p class="card-text"><strong></strong></p>
+        <p class="card-text"><strong></strong></p>
+        <p class="card-text"><strong></strong></p>
+        <p class="card-text"><strong></strong></p>
+        <a href="<%=course.url%>" class="btn btn-primary">View upcoming classes</a>
+      </div>
+    </div>
+  <% } %>     
+</section>
