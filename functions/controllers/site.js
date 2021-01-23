@@ -20,9 +20,8 @@ module.exports = {
     },
     //2. Get why post page
     getWhyPostPage: (req, res) => {
-        res.render('site/whypost',  {seo_info: seo_page.whypost_page_seo_info})
+        res.render('site/whypost',  { seo_info: seo_page.whypost_page_seo_info })
     },
-
     //3. Get the questions page
     getQuestionsPage: (req, res) => {
         //construct quiz using 10 questions
@@ -51,7 +50,7 @@ module.exports = {
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
         try {  
-            console.log('params --> ', req.params)
+            
             //get the course id
             const { course_id, course }  = req.params  
             //find the course
@@ -230,10 +229,9 @@ module.exports = {
             console.log(error)
         }
     },
-
     //get course catalog page
-    getCatalog: async ( req, res, next ) => {
-        res.render('site/catalog', { courses: catalog, seo_info: seo_page.catalog_page_seo_info})
+    getCatalog: ( req, res, next ) => {
+        res.render('site/catalog', { courses: catalog, seo_info: seo_page.catalog_page_seo_info })
     }
  
 }

@@ -5,7 +5,7 @@ const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { studentData, segment, segmentURL, subscribe , tagsDifference, tagStudent } = require("../helpers/subscribe")
-const {   getRequestBody, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
+// const {   getRequestBody, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
 //const{ registrantSignUp } = require('../config/accounting')
 //create reference for firestore database
 const db = firebase.firestore()
@@ -95,8 +95,7 @@ module.exports = {
      * data: student information and stripe token if payment is made
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
-      try{
-            
+      try{            
             //get the course id
             const course_id = req.params.course_id
             //get results of search of courses collection using the course id
@@ -115,9 +114,17 @@ module.exports = {
             const amount = payment > 0 ? parseInt( payment ) : 0
             
             //create course description to send to stripe
-            const course_name = moment.utc(course.start_date.toDate()).format("MMM DD") +' ' + course.name + ' ' + course.type + ' course'  
+            const course_name = moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course' 
+
             //create a payment array
             const payments = []
+
+            //add status data - default to FALSE
+            const status = {
+                course_start: false,
+                walk_in: false,
+                web_sign_up: true
+            }  
 
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ){
@@ -142,50 +149,37 @@ module.exports = {
            
 
             } else {
-
                 //add course id to the student array of payment objects
                 payments.unshift({ 
                     course_id, course_name, amount, 
                     created : firebase.firestore.Timestamp.fromDate(new Date())
-                })                            
+                })                  
+                
+                //add student to object
+                const student = await db.collection('students').add({   
+                    enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
+                    comments, email, first, last, tel, payments, status 
+                })         
+
+                //create postdata to send to mailchimp
+                const postData = studentData( email, first, last, tel, course.name,  course.start_date, course.end_date, student.id, course_id )
+
+              
+                //send student data to mailchimp list/audience for students
+                await subscribe( postData, STUDENT_LIST )
+                //segment
+                await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )
             }             
 
-            //add status data - default to FALSE
-            const status = {
-                course_start: false,
-                walk_in: false,
-                web_sign_up: true
-            }  
-            //add student to object
-            const student = await db.collection('students').add({   
-                                                enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
-                                                comments, email, first, last, tel, payments, status 
-                                            })
-            
-            console.log('above student ---> ', student.id)
-            //create a customer in quickbooks                                 
-            // registrantSignUp(student.id, email, first, last, tel)                                
-            //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.name, course.start_date, course.end_date, student.id, course_id )
-            //send student data to mailchimp list/audience for students
-            await subscribe( postData, STUDENT_LIST )
+           
             //add this student to the registered segment of the list audience
-            await segment( email, segmentURL(amount, course.name), STUDENT_LIST )   
+            //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )         
 
-            const newStudent = qbWebSignUp( student.id, first, last, tel, email, comments )
-
-            const qbo = getRequestBody(req, res, next)
-            
-            qbo.createCustomer(newStudent, (err, customer) => {
-                if(err) return err
-                console.log('customer ---->', customer)
-                // return customer
-            })
                                             
             res.status(201).json({
                 redirect: true,
                 redirect_url: (stripeToken && amount > 0) ? '/confirm-payment' :'/success',
-                message: 'You have signed up for '+course.name
+                message: 'You have signed up for '+ course.name
             })
             //res.render('', {seo_info: seo_page.payment_page_seo_info} )
 
@@ -194,7 +188,7 @@ module.exports = {
             res.status(500).json({
                 "redirect":false,
                 "redirect_url":"localhost:3000/courses",
-                "message": "Did not sign up for "+ course.name
+                "message": "Did not sign up for the class."
             })
         }
     },
@@ -243,9 +237,8 @@ module.exports = {
 
             const amount = payment > 0 ? parseInt(payment) : 0
             
-            payments.unshift({  created : firebase.firestore.Timestamp.fromDate(new Date()), course_name, course_id, amount })               
-
-           
+            payments.unshift({  created : firebase.firestore.Timestamp.fromDate(new Date()), course_name, course_id, amount })  
+                       
             //save new student and the course after adding the new student
             const student = await db.collection('students').add({    
                                                     address, city, enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
@@ -418,7 +411,6 @@ module.exports = {
               })
          }
     },
-
     /**
     * unenroll student
     * params: id of the course and student

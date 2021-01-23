@@ -9,8 +9,8 @@ const csrf = require('csurf')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const firebase = require("firebase")
-const cookieSession = require('cookie-session')
-const { setEnvironment }= require('./config/var')
+// const cookieSession = require('cookie-session')
+const { setEnvironment } = require('./config/var')
 
 const app = express()
 
@@ -43,32 +43,31 @@ app.use(expressLayouts)
 app.engine('ejs', engines.ejs)
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-
+//app.use(express.static("./public"))
 //set favicon
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(favicon("./public/favicon.ico"))
 //the order here is very important
 const csrfProtection = csrf({ cookie:true })
 
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(bodyParser.json())
 app.use(cookieParser())
 
-
 app.use(csrfProtection)
-//app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static("./public"))
+app.use(express.static(path.join(__dirname, 'public')))
+
 //set the environment variables
 setEnvironment()   
 //Get user info and set csurf cooke
-app.use( async( req, res, next ) => {
-    //set conditionals for navbar header
-   
-    res.locals.employer = false
-    res.locals.lead = false
+app.all( "*", async( req, res, next ) => {
+
     //set csurf cookie
     res.cookie("XSRF-TOKEN", req.csrfToken())
+    //set conditionals for navbar header   
+    res.locals.employer = false
+    res.locals.lead = false
+   
     //get session cookie
     const sessionCookie = req.cookies.session || ""     
 
@@ -92,9 +91,9 @@ app.use( async( req, res, next ) => {
        // res.redirect("/")
        next()
     }
-
 })  
-app.use(cookieSession({name: 'session', keys: ['key1']}))
+
+// app.use(cookieSession({name: 'session', keys: ['key1']}))
 // console.log('Before routes...')
 app.use('/', require('./routes/site'))
 app.use('/admin', require('./routes/admin'))

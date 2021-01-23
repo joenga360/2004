@@ -4,35 +4,37 @@
     <div class="row justify-content-center">
         <div class="col-sm-10 col-md-4">
             <div class="card bg-light">
-                <h3 class="card-header bg-info text-white">Find and hire CNAs and caregivers</h3>
+                <h3 class="card-header bg-dark text-white">Post your job opening for FREE</h3>
                 <div class="card-body">
-                    <p class="card-text"><span><strong>Create both a job post and a profile</strong></span> to recruit the right caregiver(s)/CNAs.  A job post is a specific announcement about your job opening and a profile introduces your organization to caregivers in the local community.  When you log in, make sure to read <span class="text-danger"><strong>"Posting Tips". </strong></span></p>
+                    <!-- <p class="card-text"><strong>If you hire caregivers/CNAs, the next time you have a job opening, post it <a href='/job'>here</a>.</strong></p>
                     <h5 class="card-title">
-                        <u>Create a job post</u>
-                    </h5>
-                    <p class="card-text">A job post costs only $ 25 to create.  If you have a profile, all your job posts will be linked to it - we strongly recommend you do this because a new job post lists at the top of the page.</p>
-
-                    <h5 class="card-title">
-                        <u>Create a profile</u>
-                    </h5>
-                    <p class="card-text">Creating a profile is FREE of charge.  Think of profile as your company introduction to the caregiver.</p>
+                        <u class="text-dark">Create a job post</u>
+                    </h5> -->
+                    
+                    <p class="card-text">COVID19 has left a lot of folks from travel and tourism, hospitality, food and restaurant, and other service industries without work.  
+                        <br><br>
+                        Some of these folks are now seriously considering working as a caregiver or a CNA.  Posting your opening here for FREE lets these folks know if they take a chance to be a CNA or caregiver, they are assured a job.
+                    </p>
                     
                     <p class="card-text text-primary"><strong>Our site is growing in popularity across the state and your job posts and profile will be seen by:</strong> </p>
                         <ol>
-                            <li class="text-primary">caregivers looking for work after completing their training</li>
+                            <li class="text-primary">new caregiver graduates</li>
                             <li class="text-primary">caregivers preparing for the CNA or HCA state license exam </li>
                             <li class="text-primary">caregivers renewing their CPR certification</li>
-                            <li class="text-primary">caregivers looking for their first job or seeking supplemental income</li>
+                            <li class="text-primary">caregivers looking for supplemental income</li>
                         </ol>
-                    <p class="card-text"><strong>Your job is shareable through Facebook and Email </strong></p>
+                    <!-- <p class="card-text"><strong>Your job is shareable through Facebook and Email </strong></p> -->
                     <!-- <p class="card-text"><strong>Our current and former students receive email notification about job openings posted in our site</strong></p>     -->               
                         
-                    <p class="card-text">So, sign up, share your job opening with your community and start recruiting competent caregivers.</p>
-                    <% if (isAuthenticated) { %>
-                    <a href= '/postjob' class="btn btn-primary float-right"> Find Caregivers </a>
-                    <% } else { %>
-                    <a href='/signup' class="btn btn-primary float-right"> Find Caregivers </a>
-                    <% } %>
+                    <!-- <p class="card-text">So, sign up, share your job opening with your community and start recruiting competent caregivers.</p>
+                 -->
+                 <p class="card-text">
+                    <a href= '/job' class="btn btn-primary float-right"> Find Caregivers </a>
+                 </p>
+                    
+               
+                   
+               
                 </div>
             </div>              
         </div>

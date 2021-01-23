@@ -1,25 +1,10 @@
 const seo_page = require('../client_helpers/seo_page_info')
 const moment = require("moment")
 const { course_classifier } = require('../helpers/course_classifier.js')
-const { getRequestBody } =  require('../helpers/accounting')
 const firebase = require('firebase')
-
-const QuickBooks = require('../quickbooks')
 //create reference for firestore database
 const db = firebase.firestore()
-// const NodeCache = require( "node-cache" )
-// const myCache = new NodeCache()
 
-QuickBooks.setOauthVersion('2.0')
-
-const Tokens = require('csrf')
-const csrf = new Tokens()
-
-// OAUTH 2 makes use of redirect requests
-function generateAntiForgery (session) {
-    session.secret = csrf.secretSync()
-    return csrf.create( session.secret )
-}
 
 /**
  * Log into admin to get a sense of all course schedule pages
@@ -104,32 +89,7 @@ module.exports = {
         res.render('admin/course/edit', { seo_info: seo_page.admin_portal_seo_info })
     },
 
-    /**
-     * 
-     */
-    getQBORequestToken: ( req, res, next ) => {      
-        const redirecturl = QuickBooks.AUTHORIZATION_URL +
-            '?client_id=' + CONSUMER_KEY +
-            '&redirect_uri=' + encodeURIComponent('http://localhost:5000/admin/callback/') +  //Make sure this path matches entry in application dashboard
-            '&scope=com.intuit.quickbooks.accounting' +
-            '&response_type=code' +
-            '&state=' + req.csrfToken() //generateAntiForgery(req.session);
-        res.redirect(redirecturl);
-    },
-     /**
-     * get quickbooks view for admin to issue consent
-     * params: none
-     * returns: page, seo information
-     */
-    getQboPage: ( req, res, next ) => {
-        res.render('admin/intuit', {  seo_info: seo_page.admin_portal_seo_info, appCenter: QuickBooks.APP_CENTER_BASE });
-    },
-    
-    /**
-     * get student registeration form for admin to sign up student
-     * params: String: course id 
-     * returns: Object: course info, seo info, page view
-     */
+  
     getStudentRegisterForm: async ( req, res, next ) => {
         try{
              //get the course id
@@ -205,18 +165,7 @@ module.exports = {
             throw(error)
         }        
     },
-    /**
-     * get token from qbo account
-     * params: none
-     * returns: Object: qbo for interacting with EHCT quickbook online account
-     */
-
-    qboCallback: ( req, res, next ) => {
-
-        const qbo = getRequestBody(req, res, next)
-        console.log(qbo)
-        res.send('<!DOCTYPE html><html lang="en"><head></head><body><script>window.opener.location.reload(); window.close();</script></body></html>')
-    },
+  
     /**
      * gets view to display student search results
      * params: none

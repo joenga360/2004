@@ -3,30 +3,85 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-sm-8">
                 <div class="card">
-                    <div class="card-header bg-success">
-                        <h3 class="text-black"><%=jobPost.title %></h3>
+                    <div class="card-header bg-dark">
+                        <h3 class="text-light"><%=jobPost.title %></h3>
                     </div>
                     <div class="card-body">                    
-                        <h4 class="card-title "><strong><%=jobPost.facility_name %></strong></h4>                        
-                        <h5>Description</h5>
+                        <h4 class="card-title "><strong>Employer: <%=jobPost.facility_name %></strong></h4>                        
+                        <h5>Job Description</h5>
                         <p class="card-text"><%=jobPost.description %></p> 
-                        <h5>Requirements</h5>    
+                        <h5>Job Requirements</h5>    
                         <p class="card-text"><%=jobPost.requirements %></p>
                        
                         <h5>Compensation </h5>                            
                         <p class="card-text"> <%= jobPost.compensation %> </p> 
-                        <p class="card-text">Offers reimbursement? <%=jobPost.reimbursement%></p>
+                        <% if ( jobPost.reimbursement == 'Yes' ) { %>
+                            <p class="card-text font-weight-bold">Tuition reimbursement is available upon hiring.  Inquire for more information.</p>
+                        <% } %>
+                        <% if ( jobPost.inhouse_training == 'Yes' ) { %>
+                            <p class="card-text font-weight-bold">Upon hiring and during your employment with us, we offer in house training.</p>
+                        <% } %>
                         <h5>Schedule </h5>
                         <p class="card-text"><%= jobPost.schedule %></p>                            
                         <!-- <p class="card-text">  </p>  -->
                         <div class="card">
                             <div class="card-body">
                                 <h5><strong>Location:</strong> <%= jobPost.address %> </h5>
-                                <h5 class="text-danger"><strong>Contact:</strong> <%= jobPost.tel%></h5>                              
+                                <h5 class="text-danger"><strong>Contact:</strong> <%= jobPost.tel %></h5>                              
                             </div>
-                        </div>                   
+                        </div>  
+                        <div class="m-3">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
+                                Apply for this job
+                            </button>
+                        </div>         
+                                     
                     </div>
-                </div>                
+                    
+                </div>  
+                
+                    
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Fill out this form</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-signup" id="employer-sign-up">                                       
+                                    <div class="form-label-group">
+                                        <input type="text" class="form-control" name='name' placeholder="Name of your organization or facility" autofocus required>
+                                        <label for="inputName"><strong> Preferred name:</strong></label>
+                                    </div>  
+            
+                                    <div class="form-label-group">
+                                        <input type="email" class="form-control" placeholder="Email address" name="email" autofocus required>
+                                        <label for="inputEmail"><strong>Email:</strong></label>
+                                    </div>
+            
+                                    <div class="form-label-group">
+                                        <input type="tel" class="form-control" placeholder="Password" name="password" id="password"  required>
+                                        <label for="inputPassword"><strong>Phone:</strong></label>
+                                    </div>   
+            
+                                    <div class="form-group">
+                                        <label for="comments">Certifications/Licenses:</label>                                        
+                                        <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter any certifications/licenses you possess." ></textarea>
+                                    </div>        
+                                </form>
+                            </div>
+                            <div class="modal-footer">                           
+                                <button type="button" class="btn btn-primary">Submit Application</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>        

@@ -57,13 +57,12 @@ module.exports = {
 
     
     catalog_page_seo_info: {
-        title: 'Course Catalog',
-        titleTemplate: 'CNA, CPR, First Aid and DSHS Course Schedules!',
+        title: 'Caregiver Courses Catalog',
+        titleTemplate: 'CNA, CPR, First Aid and DSHS course information, descriptions and details!',
         meta: [                   
-            { name: "description", content: "Descriptions, job outlooks, and costs for CNA, DSHS, CPR, First Aid courses offered by  " },
-            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 hours training, caregiver training, home care aide training, mental health training, dementia training" },
-            { name: "author", content: "Don Gatuna" }          
-        
+            { name: "description", content: "Descriptions, job outlook, length, details and costs for CNA, DSHS caregiver courses, CPR, First Aid courses offered by Excel Health Careers Training." },
+            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Home Care Assistant, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 Hours Training, caregiver training, Mental Health, Dementia, Safety and Orientation Training." },
+            { name: "author", content: "Don Gatuna" }      
         ],
 
         links: [
