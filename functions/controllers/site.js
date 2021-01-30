@@ -16,7 +16,7 @@ module.exports = {
     //1. Get the home page
     getHomePage: (req, res) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
-        res.render('site/home', {seo_info: seo_page.home_page_seo_info})
+        res.render('site/home', { seo_info: seo_page.home_page_seo_info })
     },
     //2. Get why post page
     getWhyPostPage: (req, res) => {
@@ -49,20 +49,20 @@ module.exports = {
     },    
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
-        try {  
+        try {              
             
             //get the course id
-            const { course_id, course }  = req.params  
+            const { course_id, course } = req.params  
             //find the course
             const query = await db.collection('courses').doc(course_id).get()
             //construct data about class - remove student array
             const results = query.data()
-           // console.log("COURSE -> ", results)
-
+           
             const data = {
+                csrfToken: req.csrfToken(),
                 courseId: query.id,                                                
-                start_date: moment(results.start_date.toDate()).tz('America/Los_Angeles').format("MMM D"),                                        
-                end_date: results.end_date !== null ? moment(results.end_date.toDate()).tz('America/Los_Angeles').format("MMM D")  : "",
+                start_date: moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D"),                                        
+                end_date: results.end_date !== null ? moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") : "",
                 name: results.name,
                 type: results.type
             }      
@@ -70,7 +70,8 @@ module.exports = {
             const lead = course != undefined ? true : false
             console.log('LEAD IS -> ', lead)
             res.render('site/studentsignup', 
-                        {  
+                        {   
+                            csrfToken: req.csrfToken(),
                             seo_info: seo_page.register_page_seo_info, 
                             lead: lead,
                             course: data,
@@ -118,13 +119,12 @@ module.exports = {
        // const campaignText = campaignText["recruit"]["header"]
         res.render('site/adminsignup', { campaignText: campaignText, seo_info: seo_page.admin_signup_page_seo_info })    
         //res.status(200).json({campaignText})
-    },   
-    
+    },       
     //12. Get CNA lead course schedule page
     getLeadCourses: async ( req, res ) => {          
         try{     
            
-            res.set('Cache-Control', 'public, max-age=300, s-maxage=600')                                 
+            //res.set('Cache-Control', 'public, max-age=300, s-maxage=600')                                 
             
             //get start of today
             const today = moment().startOf('day')

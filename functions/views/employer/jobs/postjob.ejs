@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="compensation"><strong>Compensation </strong></label>
                         <!-- <input type="text" class="form-control" name="compensation" id="compensation"> -->
-                        <input type="text" class="form-control" name="compensation" id="compensation" placeholder="E.g., $175/day for 4 days or $17/hour.  You can also add 'Negotiable'."  required>   
+                        <input type="text" class="form-control" name="compensation" id="compensation" placeholder = "E.g., $175/day for 4 days or $17/hour.  You can also add 'Negotiable'."  required>   
                                        
                     </div> 
                     
@@ -105,7 +105,9 @@
             $inputs.each(function(){
                  //$(this).find(':input') //<-- Should return all input elements in that specific form.
                  console.log("Name ", this.name, "Value ", this.value)
-                 if(this.name !== '' && this.value !== '') jobPost[this.name] = this.value                  
+                 if(this.name !== '' && this.value !== '') {
+                    jobPost[this.name] = this.value 
+                 }                  
             })
 
             console.log("Job Form ", jobPost)

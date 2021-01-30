@@ -96,6 +96,8 @@ module.exports = {
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
       try{            
+
+            console.log( 'STUDENT GETTING HERE....', req.body )
             //get the course id
             const course_id = req.params.course_id
             //get results of search of courses collection using the course id

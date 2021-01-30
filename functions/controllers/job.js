@@ -157,54 +157,54 @@ module.exports = {
         }
     },
     //create a job
-    postJob: async(req, res )=>{
+    postJob: async( req, res ) => {
+        console.log( 'req object -> ', req.body )
         try{       
             
             //check to see if there's captcha
-            if (!req.body.captcha || req.body.captcha == '') {
-                return res.json({ 
-                    success: false, 
-                    redirect: false, 
-                    url: '/job/contact', 
-                    message: 'Please select captcha' 
-                })
-            }
+            // if (!req.body.captcha || req.body.captcha == '') {
+            //     return res.json({ 
+            //         success: false, 
+            //         redirect: false, 
+            //         url: '/job/contact', 
+            //         message: 'Please select captcha' 
+            //     })
+            // }
                 
 
             // Secret key
-            const secretKey = '6LdF1toZAAAAALtt_-2-UyT-3l8VPTFXgujlxYbv'
+            // const secretKey = '6LdF1toZAAAAALtt_-2-UyT-3l8VPTFXgujlxYbv'
 
             // Verify URL
-            const query = stringify({
-                secret: secretKey,
-                response: req.body.captcha,
-                remoteip: req.connection.remoteAddress
-            })
+            // const query = stringify({
+            //     secret: secretKey,
+            //     response: req.body.captcha,
+            //     remoteip: req.connection.remoteAddress
+            // })
 
-            const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
+            // const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
 
             // Make a request to verifyURL
-            const body = await fetch(verifyURL).then(res => res.json())
+            // const body = await fetch(verifyURL).then(res => res.json())
 
             // If not successful
-            if (body.success !== undefined && !body.success){
-                return res.json({   
-                    success: false, 
-                    redirect: false,
-                    url: '/job',
-                    message: 'Failed captcha verification' 
-                })
-            }
+            // if (body.success !== undefined && !body.success){
+            //     return res.json({   
+            //         success: false, 
+            //         redirect: false,
+            //         url: '/job',
+            //         message: 'Failed captcha verification' 
+            //     })
+            // }
                
 
             // If successful
            // return res.json({ success: true, message: 'Captcha passed' })
-
-   
+            
             //get the job post and poster details
             const { 
-                    compensation, description,  requirements, schedule, title, 
-                    facility_name, address, email, tel, settings
+                    address, compensation, description, requirements, schedule, title, 
+                    facility_name, email, tel, settings
                 } = req.body   
 
             const reimbursement = req.body.reimbursement ? req.body.reimbursement : "" 
@@ -214,8 +214,8 @@ module.exports = {
             // save job post in the collection
             const result = await db.collection('jobs').add({
                 created : firebase.firestore.Timestamp.fromDate(new Date()),
-                compensation, description, requirements, schedule, title,
-                facility_name, address, email, tel, settings, reimbursement, inhouse_training
+                address, compensation, description, requirements, schedule, title,
+                facility_name, email, tel, settings, reimbursement, inhouse_training
             })
 
             //send back           
@@ -325,7 +325,11 @@ module.exports = {
     },
     
     getJobContact:  (req, res, next) => {
-        res.render('employer/jobs/contact',  {seo_info: seo_page.jobs_page_seo_info})
+        res.render('employer/jobs/contact',  
+            {
+                seo_info: seo_page.jobs_page_seo_info,
+                csrfToken: req.csrfToken()
+            })
     }
     
 }

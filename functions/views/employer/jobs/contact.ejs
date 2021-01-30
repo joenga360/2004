@@ -4,17 +4,17 @@
                          
                 <div class="col-sm-5">                   
                     <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 3 of 3 </span> </p>
-                    <h5 class="lead text-center text-primary p-3">Add contact information to your job post.</h5>            
-                    <!--BEGINNING OF THE FORM-->
-                    
+                    <h5 class="lead text-center text-primary p-3">Add contact information to your job post.</h5>   
+                    <meta name="csrf-token" content="<%= csrfToken %>">
+                    <!--BEGINNING OF THE FORM-->                   
                     <form id="profile-form" ref="form">
                         <!-- NAME OF FACILITY -->
                         <div class="form-group">
                             <label for="facility_name">Name of Facility</label>                                   
                             <input type="text" class="form-control" name="facility_name" placeholder="Enter name of facility" required>                                                     
                         </div>  
-                        <!--ADDRESS-->
-                                                        
+
+                        <!--ADDRESS-->                                                        
                         <div class="form-group">
                             <label for="address">Address</label>                                   
                             <input type="text" class="form-control" name="address" placeholder="Enter address of recruiting staff/office" required>                                                     
@@ -75,8 +75,9 @@
                             <button class="btn btn-success btn-block py-3" type="submit"><strong>Post Job Opening</strong> </button>
                              
                         </div> 
+                        <!-- <input type="hidden" name="_csrf" value="<>               -->
                         <!-- <div class="form-group"> -->
-                        <div class="g-recaptcha" data-sitekey="6LdF1toZAAAAABDpzizcERm-DAEbEZAY3yIGqDPY"></div>  
+                        <!-- <div class="g-recaptcha" data-sitekey="6LdF1toZAAAAABDpzizcERm-DAEbEZAY3yIGqDPY"></div>   -->
                         <!-- </div>   -->
                     </form>
                 </div>                
@@ -96,7 +97,8 @@
             //at least one checkbox must be checked to process the form
             if ($('input:checkbox').is(':checked')) {
 
-                      
+                // Read the CSRF token from the <meta> tag
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')                      
                 //restore it as an object
                 const jobPost = JSON.parse(jobPosting)
                 // get all input in the form
@@ -117,14 +119,13 @@
 
                 //const captcha = 
                 //get the captcha value
-                profile.captcha = document.querySelector('#g-recaptcha-response').value
+                // profile.captcha = document.querySelector('#g-recaptcha-response').value
                 debugger
                 profile.settings = []
                 $checkboxes.each(function() {
                    // profile[this.name] = this.value   
                    profile.settings.push(this.value)   
                 })         
-
                 
                 $otherInputs.each( function() {
                     // console.log('OUTSIDE IF -> ', this.name, 'AND -> ', this.value)
@@ -139,13 +140,29 @@
                 //join profile data with job post data
                 const jobData = Object.assign(profile, jobPost)
                 debugger
-               // console.log("profile ", profile)
+               
+                //console.log("jobData ", jobData)
+                debugger
+
+                // Make a request using the Fetch API
+                // fetch('/job', {
+                //     credentials: 'same-origin', // <-- includes cookies in the request
+                //     headers: {
+                //          Accept: "application/json",
+                //         //"Content-Type": "application/json", 
+                //         'CSRF-Token': token // <-- is the csrf token as a header
+                //     },
+                //     method: 'POST',
+                //     body: jobData
+                // })
                $.ajax({
                         type: 'POST', 
                         url: '/job',
                         credentials: 'same-origin', // <-- includes cookies in the request
-                        headers: {                            
-                            'CSRF-Token':  Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
+                        headers: {     
+                             Accept: "application/json",
+                            // "Content-Type": "application/json",         
+                            'CSRF-Token': token // Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
                         },
                         dataType: "json",
                         data: jobData,
@@ -171,10 +188,8 @@
                             //localStorage.clear()
 
                             window.location.replace(response.url)
-                        }   
-                    
-                    })   
-       
+                        }                       
+                    })         
             
             } else {
                 alert('Please select the type of your organizaiton!')

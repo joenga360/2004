@@ -44,6 +44,7 @@ app.engine('ejs', engines.ejs)
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 //app.use(express.static("./public"))
+app.use(express.static(path.join(__dirname, 'public')))
 //set favicon
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(favicon("./public/favicon.ico"))
@@ -55,35 +56,36 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.use(csrfProtection)
-app.use(express.static(path.join(__dirname, 'public')))
 
 //set the environment variables
 setEnvironment()   
 //Get user info and set csurf cooke
 app.all( "*", async( req, res, next ) => {
 
-    //set csurf cookie
-    res.cookie("XSRF-TOKEN", req.csrfToken())
     //set conditionals for navbar header   
     res.locals.employer = false
     res.locals.lead = false
+
+    // console.log('req token', req.csrfToken())
+    //set csurf cookie
+    // res.cookie("XSRF-TOKEN", req.csrfToken())
    
     //get session cookie
     const sessionCookie = req.cookies.session || ""     
 
-    if( sessionCookie !=="" ){
+    if( sessionCookie !== "" ) {
         admin
             .auth()
             .verifySessionCookie( sessionCookie, true /** checkRevoked */)
             .then(() => {           
                 res.locals.admin = true
-                next()                            
+               // next()                            
             })
             .catch((error) => {
                 console.log('ERROR IN THE INDEX ....JS.....', error)
                 res.clearCookie("session")                    
                // res.redirect("/");
-                next()
+                //next()
             });
     } else {
         res.locals.admin = false

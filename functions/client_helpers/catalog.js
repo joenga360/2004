@@ -14,7 +14,7 @@ module.exports = {
             "url": "www.excelcna.com/learn/cna",
             "clinical": "Due to COVID19, find a paid (not volunteer) job with your NAR license and 40 hours of that paid work under RN/LPN supervision will substitute for clinical training.",
             "labs": "24 hours",
-            "upsell": "Improve your job prospects by getting Mental Health, Dementia, Safety and Orientation, Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
+            "upsell": "Improve your job prospects by getting Mental Health, Dementia, Safety and Orientation, Traumatic Brain Injury, Navigating Through Challenging Behavior, Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
 
         },  
 
@@ -28,7 +28,7 @@ module.exports = {
             "url": "www.excelcna.com/learn/hca",
             "clinical": "None.",
             "labs": "16 - 20 hours",
-            "upsell": "Improve your job prospects by getting Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
+            "upsell": "Improve your job prospects by getting Traumatic Brain Injury, Navigating Through Challenging Behavior, Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
 
         },
 
@@ -43,7 +43,6 @@ module.exports = {
             "url": "www.excelcna.com/learn/bridging",
             "clinical": "Due to COVID19, find a paid (not volunteer) job with your HCA license and 8 hours of that paid work under RN/LPN supervision will substitute for clinical training.",
             "labs": "8 + hours"
-
         },
        
 
