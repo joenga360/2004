@@ -137,7 +137,8 @@ module.exports = {
                                 .where('name','==', `${course_name}` )                                       
                                 .orderBy('start_date')   
                                 .get()  
-            //
+           
+            //get documents
             const docs = results.docs
 
             //sort the docs to get classes starting today or later
@@ -193,6 +194,7 @@ module.exports = {
     
     getCourses: async ( req, res, next) => { 
         try {
+
             res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
             const today = moment().startOf('day').toDate()            
 
@@ -232,6 +234,6 @@ module.exports = {
     //get course catalog page
     getCatalog: ( req, res, next ) => {
         res.render('site/catalog', { courses: catalog, seo_info: seo_page.catalog_page_seo_info })
-    }
+    }   
  
 }

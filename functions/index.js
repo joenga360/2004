@@ -79,13 +79,13 @@ app.all( "*", async( req, res, next ) => {
             .verifySessionCookie( sessionCookie, true /** checkRevoked */)
             .then(() => {           
                 res.locals.admin = true
-               // next()                            
+                next()                            
             })
             .catch((error) => {
                 console.log('ERROR IN THE INDEX ....JS.....', error)
                 res.clearCookie("session")                    
                // res.redirect("/");
-                //next()
+                next()
             });
     } else {
         res.locals.admin = false

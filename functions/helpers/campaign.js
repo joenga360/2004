@@ -93,13 +93,22 @@ const campaignText = {
     }    
 }
 
+//Gets the abbreviated name of a course and returns the complete name of the course
+
 function courseName(x){
 
     const courseKeys = { 
-        "cna":"CNA",
-        "cpr":"Adult CPR/FA",
-        "bls":"Basic Life Support (BLS)",
-        "bridging":"HCA-CNA Bridging"
+        
+        "bls": "Basic Life Support (BLS)",
+        "bridging": "HCA to CNA Bridging",
+        "core": "DSHS Core Basic Training",
+        "ceu": "DSHS 12 Hours Continuous Education Units",
+        "cna": "CNA",
+        "cpr": "Adult CPR/FA",        
+        "delegation": "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+        "dementia": "DSHS Dementia Specialty Training",
+        "diabetes": "DSHS Nurse Delegation Special Focus on Diabetes",
+        "so": "DSHS Safety and Orientation Training"
     }
 
     return courseKeys[x]

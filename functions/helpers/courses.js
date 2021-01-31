@@ -4,7 +4,7 @@
  */
 const Courses = {
   CNA: {
-    cost: 675,
+    cost: 725,
     discount: 625,
     length: ['3 weeks', '6 weekends'],
     location: ['Des Moines', 'Tacoma'],

@@ -1,20 +1,25 @@
 <section class="p-5 mt-3">
+  <h1 class="text-sm-center text-dark font-weight-bold">CNA, DSHS caregiver and CPR/First Aid courses</h1>
   <% courses.forEach(course => { %> 
     <div class="container-fluid p-3">  
       <div class="row justify-content-center">
         <div class="col-sm-8 col-md-6">
           <div class="card">
-            <h4 class="card-header bg-dark text-white"><%=course.name %></h4>
+            <h4 class="card-header bg-dark text-white"><%= course.name %> course</h4>
             <div class="card-body">
               <h5 class="card-title">Learning Mode: <%=course.mode %></h5>
               <p class="card-text"><strong>Cost: </strong> $ <%=course.cost%>.00</p>
+                            
+              <p class="card-text"><strong>Requirements: </strong><%= course.requirements%></p>
+                
+              
               <p class="card-text"><strong>Length: </strong> <%=course.length %> </p>
-              <p class="card-text"><strong>Skill labs: </strong> <%=course.labs %> | <strong>Clinical: </strong> <%=course.clinical%></p>
+              <p class="card-text"><strong>School skill labs: </strong> <%=course.labs %> | <strong>Clinical: </strong> <%=course.clinical%></p>
               <p class="card-text"><strong>Description: </strong><%= course.description %></p>          
             
-              <% if(course.name == "CNA/Certified Nurse Assistant Training" || course.name == "HCA to CNA Bridging course" || course.name == "DSHS Home Care Aide Training") { %>
-                <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>
-              <% } %>       
+              <% if( course.name == "Certified Nurse Assistant Training/CNA" || course.name == "HCA to CNA Bridging course" || course.name == "DSHS Home Care Aide/75 Hours Training" ) { %>
+                <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>                
+              <% } %>      
               
               <a href="<%=course.url%>" class="btn btn-primary"> View upcoming classes </a>
             </div>
