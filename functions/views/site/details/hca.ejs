@@ -1,0 +1,52 @@
+<section class="p-5 mt-3">    
+    <h1 class="text-sm-center text-dark font-weight-bold"><%= course.name %></h1>
+    <div class="container-fluid p-3">  
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-md-6">
+            <div class="card">
+                <h4 class="card-header bg-dark text-white"><%= course.name %> course</h4>
+                <div class="card-body">
+                    <h5 class="card-title">Learning Mode: <%= course.mode %></h5>
+                    <p class="card-text"><strong>Cost: </strong> $ <%= course.cost%>.00</p>
+                    <p class="card-text"><strong>Schedule: </strong><%= course.schedule %></p>
+                    <p class="card-text"><strong>Requirements: </strong><%= course.requirements %></p>  
+                    <p class="card-text"><strong>To see next classes, click: <a href="//<%=course.url %>" > <%=course.url %> </a> </strong> </p>                               
+                    <p class="card-text"><strong>Description: </strong><%= course.description %></p>  
+                    <% if( course.name == "Certified Nurse Assistant/CNA Training" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours Training" ) { %>               
+                        <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>  
+                        <p class="card-text font-weight-bold text-dark bg-warning p-2"><%= course.upsell %></p>             
+                    <% } %>    
+                </div>
+            </div>
+            </div> 
+        </div>
+    </div> 
+</section>
+
+<script type="application/javascript">
+    $(document).ready(() => { 
+        const course = <%-JSON.stringify(course)%>
+        console.log("STUPID COURSE ", course.name)
+
+        const script = document.createElement('script');
+        script.type = "application/ld+json";
+
+        const courseJson = {
+            "@context": "http://schema.org",
+            "@type": "Course",
+            "name": course.name,
+            "description": course.description,
+            "provider": {
+                "@type": "Organization",
+                "name": "Excel Health Careers Training",
+                "sameAs": course.url
+            }
+        }
+
+        script.innerHTML = JSON.stringify(courseJson);
+        document.getElementsByTagName('body')[0].appendChild(script);
+
+   
+    })
+</script>
+

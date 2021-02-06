@@ -148,7 +148,7 @@
                             <% if(transfer){ %>
                                 <% courses.bridging.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%=course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -284,9 +284,9 @@
                 type: 'PATCH', 
                 url: '/students/transfer',
                 credentials: 'same-origin', // <-- includes cookies in the request
-                headers: {
-                    'CSRF-Token':  Cookies.get("XSRF-TOKEN")
-                },
+                // headers: {
+                //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
+                // },
                 dataType: "json",
                 data: studentData
             }).done(function (response) {

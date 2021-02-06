@@ -252,7 +252,7 @@ module.exports = {
     },
 
     cna_page_seo_info: {
-        title: "CNA Course Training Schedules",
+        title: "CNA, Nurse Aide, Nurse Assistant Course Training Schedules",
         titleTemplate: 'Upcoming CNA Classes Offered During Day, Weekend, and Evening Times',
         meta: [                   
             { name: "description", content: "CNA Courses offered during day, evening and weekend schedules." },
@@ -264,6 +264,34 @@ module.exports = {
         links: [
             { rel: 'canonical', href: 'https://www.excelcna.com/class/cna/3' }
         ]
-    }   
+    },
+    
+    hca_page_seo_info: {
+        title: "Home Care Aide/75 Hours Course Training Schedules",
+        titleTemplate: 'Upcoming HCA Classes Offered During Day, Weekend, and Evening Times',
+        meta: [                   
+            { name: "description", content: "HCA Courses offered during day and weekend schedules." },
+            { name: "keywords", content: "HCA classes, 75 Hours courses, Home Care Aide schools, Home Care Aide training, Home Care Assistant classes, HCA program, Home Care Assistant schools, HCA training, 75 hours training courses, Home Care Aide classes" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/hca' }
+        ]
+    },
+    
+    delegation_page_seo_info: {
+        title: "Nurse Delegation (CORE) for ",
+        titleTemplate: 'Upcoming HCA Classes Offered During Day, Weekend, and Evening Times',
+        meta: [                   
+            { name: "description", content: "Details about DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "keywords", content: "DSHS Nurse Delegation, Nurse Delegation course, Nurse Delegation class" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/delegation' }
+        ]
+    } 
 
 }

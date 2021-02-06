@@ -5,7 +5,7 @@ const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
 const { course_classifier } = require('../helpers/course_classifier')
 const { campaignText, campaign, courseName } = require('../client_helpers/campaign') 
-const { catalog, upsell }  = require('../client_helpers/catalog') 
+const { catalog, courseCode, upsell }  = require('../client_helpers/catalog') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
 const db = firebase.firestore()
@@ -49,35 +49,67 @@ module.exports = {
     },    
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
-        try {              
-            
+        try {          
             //get the course id
             const { course_id, course } = req.params  
-            //find the course
-            const query = await db.collection('courses').doc(course_id).get()
-            //construct data about class - remove student array
-            const results = query.data()
-           
-            const data = {
-                csrfToken: req.csrfToken(),
-                courseId: query.id,                                                
-                start_date: moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D"),                                        
-                end_date: results.end_date !== null ? moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") : "",
-                name: results.name,
-                type: results.type
-            }      
-            
+
+            //get the long name of course stored in database
+            const course_name = courseName(course)
+            //get course registration fee
+            const fees  = registration_fee[course_name]
+
             const lead = course != undefined ? true : false
-            console.log('LEAD IS -> ', lead)
-            res.render('site/studentsignup', 
-                        {   
-                            csrfToken: req.csrfToken(),
-                            seo_info: seo_page.register_page_seo_info, 
-                            lead: lead,
-                            course: data,
-                            fees: registration_fee,
-                            STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
-                        })
+
+            if(
+                course_name == "BLS Course Skill Testing" || 
+                course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
+                course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+            ){
+              
+                const title = `${course_name} Sign Up Form`
+
+                const data = {
+                    courseId: course_id,
+                    fees,
+                    title,
+                    name: course_name
+                }
+
+                res.render('site/studentsignup', 
+                {   
+                    // csrfToken: req.csrfToken(),
+                    seo_info: seo_page.register_page_seo_info, 
+                    lead: lead,
+                    course: data,                                
+                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                })
+
+            } else {
+                //find the course
+                const query = await db.collection('courses').doc(course_id).get()
+                //construct data about class - remove student array
+                const results = query.data()
+                
+                const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +"-"+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
+                 
+
+                const data = {              
+                    courseId: query.id,                                                
+                    title,
+                    fees,
+                    name: course_name                  
+                }  
+                
+                res.render('site/studentsignup', 
+                {   
+                    // csrfToken: req.csrfToken(),
+                    seo_info: seo_page.register_page_seo_info, 
+                    lead: lead,
+                    course: data,                                
+                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                })
+            }      
             
         } catch (error) {
             console.log(error)
@@ -86,7 +118,7 @@ module.exports = {
     },
     //8. Get the receipt page
     getReceiptPage: (req, res) => {
-        res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
+      
         res.render('site/success', { seo_info: seo_page.payment_page_seo_info })
     },
     //9. Get the videos page
@@ -110,28 +142,34 @@ module.exports = {
     //10. Get the employer sign in page
     getAdminSignInPage: (req, res) => {
       //  res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
-        res.render('site/adminsignin', {seo_info: seo_page.admin_signin_page_seo_info })
+        res.render('site/adminsignin', {
+                                            // csrfToken: req.csrfToken(),
+                                            seo_info: seo_page.admin_signin_page_seo_info 
+                                        })
     },
     //11. Get the employer sign up page
     getAdminSignUpPage: (req, res) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         const campaignText = campaign.campaignText.recruit
        // const campaignText = campaignText["recruit"]["header"]
-        res.render('site/adminsignup', { campaignText: campaignText, seo_info: seo_page.admin_signup_page_seo_info })    
+        res.render('site/adminsignup', 
+                                    { 
+                                        // csrfToken: req.csrfToken(),
+                                        campaignText: campaignText, 
+                                        seo_info: seo_page.admin_signup_page_seo_info 
+                                    })    
         //res.status(200).json({campaignText})
     },       
+
     //12. Get CNA lead course schedule page
     getLeadCourses: async ( req, res ) => {          
-        try{     
-           
-            //res.set('Cache-Control', 'public, max-age=300, s-maxage=600')                                 
-            
+        try{                   
             //get start of today
             const today = moment().startOf('day')
             //get the long name of course stored in database
             const course_name = courseName(req.params.name)
 
-            console.log('COURSE NAME -> ', course_name)
+            // console.log('COURSE NAME -> ', course_name)
             //get courses by name 
             const results = await db.collection('courses') 
                                 .where('name','==', `${course_name}` )                                       
@@ -166,8 +204,7 @@ module.exports = {
             console.log('classes -> ', classes.length)
             if( classes.length > 0 ){
                 res.locals.lead = true
-                res.render('site/leadcourseschedules', {
-                //res.status(201).json({
+                res.render('site/leadcourseschedules', {                
                     course: courses[req.params.name],
                     name: course_name,
                     items: items,
@@ -178,10 +215,7 @@ module.exports = {
             }else{
                 res.status(404).json({
                     message: `No ${course_name} courses at the moment.  Check with us later.`
-                })
-                //req.flash("error", "No courses at the moment.")
-
-               // res.redirect('/')             
+                })                   
             }            
         }catch(err){
             console.log(err)
@@ -191,7 +225,7 @@ module.exports = {
             })
         }  
     }, 
-    
+    //not finished
     getCourses: async ( req, res, next) => { 
         try {
 
@@ -223,7 +257,15 @@ module.exports = {
                 //res.status(201).json({message: "Future public courses", courses: course_classifier(classes) })
                 res.render('site/schedule', {
                     classes:  course_classifier(classes),
-                    choices: ["CNA", "HCA-CNA Bridging", "Adult CPR/FA", "Basic Life Support (BLS)"],                                       
+                    choices: [
+                        "Certified Nurse Assistant/CNA",
+                        "DSHS Home Care Aide/75 Hours",                        
+                        "HCA to CNA Bridging",                        
+                        "DSHS 12 Hours Continuous Education Units", 
+                        "DSHS Dementia Specialty", 
+                        "DSHS Mental Health Specialty", 
+                        "DSHS Safety and Orientation"
+                    ],                                       
                     seo_info: seo_page.schedule_page_seo_info                                         
                 })
             }          
@@ -233,7 +275,127 @@ module.exports = {
     },
     //get course catalog page
     getCatalog: ( req, res, next ) => {
-        res.render('site/catalog', { courses: catalog, seo_info: seo_page.catalog_page_seo_info })
-    }   
- 
+        const itemList = catalog.map(x => {
+            return {
+                "@type": "ListItem",
+                "position": catalog.indexOf(x) + 1,
+                "item": {
+                        "url": x.url,
+                        "name": x.name,
+                        "@id": x.url,
+                        "type": "Course",
+                        "description": x.description,
+                        "provider":"Excel Health Careers Training"
+                    }
+            }
+        })
+
+        //res.send(itemList)
+
+        res.render('site/catalog', { courses: catalog, itemList: itemList, seo_info: seo_page.catalog_page_seo_info })
+    },
+    //get course details page
+    getCourseDetailsPage: ( req, res, next  ) => {
+        //get the req param and use it to return the course
+        const course = courseCode.indexOf(req.params.course)
+
+        console.log('COURSE ', course )
+
+        res.render('site/details/hca', { course: catalog[course], seo_info: seo_page[req.params.course + "_page_seo_info"] } )
+    },
+    //
+    getCatalogCourse : async ( req, res, next ) =>{
+        try {             
+              //get the long name of course stored in database
+              const course_name = courseName(req.params.course)
+
+              if(
+                    course_name == "BLS Course Skill Testing" || 
+                    course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                    course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
+                    course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+                ){
+                    //get courses by name 
+                    const results = await db.collection('reservations') 
+                                            .where('name','==', course_name )                     
+                                            .get()  
+
+                    //get document
+                   //console.log('FUCKING RESULTS ', results.data())
+                    //const course = 
+                   // results.forEach(x => console.log( 'X ', x.data(), 'id ', x.id ) )
+                    
+                    const course = results.docs.map( x => { 
+                        
+                       return { data: x.data(), id: x.id } 
+                    } )
+
+                    console.log( 'and ', course)
+                    //return course
+                    res.render('site/leadcourseschedules', {
+                        course: course[0].data,
+                        name: course[0].data.name,
+                        course_id: course[0].id,
+                        seo_info: seo_page[req.params.course + "_page_seo_info"]   
+                    })
+
+              } else {
+
+                    //get start of today
+                    const today = moment().startOf('day')
+
+                    //get courses by name 
+                    const results = await db.collection('courses') 
+                                            //.where('name','==', 'CNA' /*`${course_name}`*/ )                                       
+                                            .orderBy('start_date')   
+                                            .get()  
+
+                    //get documents
+                    const docs = results.docs
+
+                    
+
+                    //sort the docs to get classes starting today or later
+                    const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name == 'CNA'/*`${course_name}`*/)
+                                        .map( doc => {                                    
+                                            return {                            
+                                                'end_date': doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                                'name': doc.data().name,                            
+                                                'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
+                                                'type': doc.data().type,
+                                                'id': doc.id
+                                            }                        
+                                        }) 
+                                        
+                    //classify the courses as either day, evening, weekend
+                    const courses = course_classifier( classes )
+
+                    console.log('CLASSES ', courses)
+                    //return classes, seo information and campaign information
+                    console.log('classes -> ', classes.length)
+                    if( classes.length > 0 ){
+                        res.locals.lead = true
+                        res.render('site/leadcourseschedules', {
+                            //res.status(201).json({
+                            course: courses[req.params.course],
+                            name: course_name,                                      
+                            seo_info: seo_page[req.params.course + "_page_seo_info"]                                              
+                        })
+
+                    } else {
+                        res.status(404).json({
+                        message: `No ${course_name} courses at the moment.  Check with us later.`
+                    })                   
+                }  
+
+              }                       
+            
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: `There has been an error getting the courses.`,
+                err
+            })
+        }
+    }  
 }

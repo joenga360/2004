@@ -27,8 +27,12 @@ router.get('/register/:course/:course_id', SiteController.getCourseRegistrationF
 router.get('/signup/:course_id', SiteController.getCourseRegistrationForm)
 //get the the videos page
 router.get("/videos", SiteController.getVideosPage)
+//get the all courses - single day, multiple day, and reservations - in catalog
+router.get('/learn/:course', SiteController.getCatalogCourse)
 
 //get the the why post page
 router.get("/whypost", SiteController.getWhyPostPage)
+//get the hca page
+router.get("/page/:course", SiteController.getCourseDetailsPage )
 
 module.exports = router

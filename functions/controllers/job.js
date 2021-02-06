@@ -260,9 +260,7 @@ module.exports = {
                 error
             })
         }
-    },
-
-   
+    },  
 
     /**
      * GET JOB PAGES
@@ -328,7 +326,7 @@ module.exports = {
         res.render('employer/jobs/contact',  
             {
                 seo_info: seo_page.jobs_page_seo_info,
-                csrfToken: req.csrfToken()
+                //csrfToken: req.csrfToken()
             })
     }
     

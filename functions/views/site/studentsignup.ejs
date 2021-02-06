@@ -1,16 +1,9 @@
 <section class="p-4 mt-3">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-sm-12">                 
-                
-                <% if(course.end_date) { %>
-                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> - <%=course.end_date%> <%=course.name%> <%=course.type%> Class</h3>
-                <% } else { %> 
-                    <h3 class="text-dark text-center">Sign Up For <%=course.start_date%> <%=course.name%> <%=course.type%> Class </h3>      
-                <% } %>
-                <br> 
-                <br>        
-                <meta name="csrf-token" content="<%= csrfToken %>">
+            <div class="col-sm-12">              
+                <h3 class="text-dark text-center"><%= course.title %> </h3>
+                <br> <br>           
 
                 <!--BEGINNING OF THE FORM-->
                 <form id="course_sign_up" >
@@ -52,8 +45,7 @@
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-10 col-lg-4">
                             <div class="form-group">
-                                <label for="comments">Comments</label>
-                                
+                                <label for="comments">Comments</label>                                
                                 <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter your comments or questions" ></textarea>
                             </div>          
                         </div>
@@ -79,7 +71,7 @@
                             </div>
                                 
                         </div>
-                    </div>                       
+                    </div>                    
                     
                     <!-- ADD TO THE WAITLIST BUTTON -->
                     <div class="row justify-content-center mt-2">
@@ -128,14 +120,14 @@
          //get the course
         const course = (<%-JSON.stringify(course)%>)
 
-        const fees = (<%-JSON.stringify(fees)%>)  
+        // const fees = (<%-JSON.stringify(course.fees)%>)  
 
         //this event register a student who pays registration fees
         $("#btnRegister").on('click', e => { 
             //prevent default behavior
             e.preventDefault()
             // Read the CSRF token from the <meta> tag
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')      
+            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')      
             //REQUIRED FIELD: get student's first name
             const first = $('#first').val()
             //REQUIRED FIELD: get student's last name
@@ -167,7 +159,7 @@
                 const studentData = { first, last, email, tel, comments }
                 //debugger                
                 //add course costs 
-                studentData.payment = fees[course.name]
+                studentData.payment = course.fees
                 //add stripe token from stripe
                 studentData.stripeToken = stripeToken
                 debugger
@@ -181,22 +173,22 @@
                             "id": course.courseId,
                             "name": course.name,     
                             "category": "Courses", //course_name,
-                            "variant": course.type,     
+                            // "variant": course.type,     
                             "quantity": 1,
-                            "price": studentData.payment
+                            "price": course.fees
                         }
                     ]
                 })
 
                 $.ajax({
                     type: 'POST', 
-                    url: '/students/register/'+course.courseId,
+                    url: '/students/register/'+ course.courseId,
                     credentials: 'same-origin', // <-- includes cookies in the request
-                    headers: {
-                        Accept: "application/json",
-                       // "Content-Type": "application/json",
-                        'CSRF-Token': token
-                    },
+                    // headers: {
+                    //     Accept: "application/json",
+                    //    // "Content-Type": "application/json",
+                    //     'CSRF-Token': token
+                    // },
                     dataType: "json",
                     data: studentData,
                 }).done(function (response) {
@@ -225,7 +217,7 @@
             const price = 15   
 
             // Read the CSRF token from the <meta> tag
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')   
+            //const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')   
             //REQUIRED FIELD: get student's first name
             const first = $('#first').val()
             //REQUIRED FIELD: get student's last name
@@ -256,7 +248,7 @@
                             "id": course.courseId,
                             "name": course.name,     
                             "category": "Courses", //course_name,
-                            "variant": course.type,     
+                            // "variant": course.type,     
                             "quantity": 1,
                             "price": price
                         }
@@ -271,11 +263,11 @@
                         type: 'POST', 
                         url: '/students/register/'+course.courseId,
                         credentials: 'same-origin', // <-- includes cookies in the request
-                        headers: {
-                            Accept: "application/json",
-                            // "Content-Type": "application/json",
-                            "CSRF-Token": token
-                        },
+                        // headers: {
+                        //     Accept: "application/json",
+                        //     // "Content-Type": "application/json",
+                        //     "CSRF-Token": token
+                        // },
                         dataType: "json",
                         data: studentData,
                     }).done(function (response) {

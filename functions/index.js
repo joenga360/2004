@@ -55,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-app.use(csrfProtection)
+// app.use(csrfProtection)
 
 //set the environment variables
 setEnvironment()   

@@ -1,4 +1,4 @@
-<section>
+<section>  
     <div class="container mt-5 col-sm-10 col-md-6 col-lg-4 p-5">
         <form class="form-signin" >
             <div class="text-center mb-4">        
@@ -55,7 +55,9 @@
             //get the password
             const password = document.getElementById("password").value
             debugger        
-           
+             // Read the CSRF token from the <meta> tag
+            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')  
+            
             firebase
                 .auth()
                 .signInWithEmailAndPassword(email, password)
@@ -69,7 +71,7 @@
                       headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+                       // "CSRF-Token": token,
                       },
                       body: JSON.stringify({ idToken }),
                     })

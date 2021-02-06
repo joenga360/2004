@@ -110,7 +110,7 @@ module.exports = {
                                 res.setHeader('Cache-Control', 'private')
                                 res.cookie('__session', sessionCookie, options)                           
                              
-                                
+                                console.log('We are getting here....')
                                 res.end(JSON.stringify({ status: 'success' }))
                               
 

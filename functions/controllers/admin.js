@@ -23,9 +23,26 @@ module.exports = {
      */   
     addCourseView: (req, res, next ) => {
         //courses array - contains official names of courses
-        const courses = ["CNA", "HCA-CNA Bridging", "Basic Life Support (BLS)", "Adult CPR/FA"]
+        const courses = [
+            "Certified Nurse Assistant/CNA", 
+            "DSHS Home Care Aide/75 Hours",
+            "HCA to CNA Bridging", 
+            "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+            "DSHS Nurse Delegation Special Focus on Diabetes",
+            "DSHS Core Basic",
+            "Adult CPR/First Aid/AED Course Skill Testing",
+            "BLS Course Skill Testing",
+            "DSHS 12 Hours Continuous Education Units",
+            "DSHS Dementia Specialty",
+            "DSHS Mental Health Specialty",
+            "DSHS Safety and Orientation"
+        ]
         //return the course view page
-        res.render('admin/course/add', { seo_info: seo_page.admin_portal_seo_info, courses: courses})
+        res.render('admin/course/add', {  
+            //csrfToken: req.csrfToken(), 
+            seo_info: seo_page.admin_portal_seo_info, 
+            courses: courses
+        })
     },
 
     /**
@@ -64,7 +81,20 @@ module.exports = {
                 //return the course view page               
                 res.render('admin/course/schedules', {
                     courses: course_classifier (classes),//groups courses by name, type e.g., CPR has even, day and weekend and BLS only day
-                    choices: ["CNA", "HCA-CNA Bridging", "Adult CPR/FA", "Basic Life Support (BLS)"],                   
+                    choices: [
+                        "Certified Nurse Assistant/CNA", 
+                        "DSHS Home Care Aide/75 Hours",
+                        "HCA to CNA Bridging", 
+                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+                        "DSHS Nurse Delegation Special Focus on Diabetes",
+                        "DSHS Core Basic",
+                        "Adult CPR/First Aid/AED Course Skill Testing",
+                        "BLS Course Skill Testing",
+                        "DSHS 12 Hours Continuous Education Units",
+                        "DSHS Dementia Specialty",
+                        "DSHS Mental Health Specialty",
+                        "DSHS Safety and Orientation"
+                    ],                   
                     seo_info: seo_page.schedule_page_seo_info ,
                     transfer: req.params.type === 'transfer' ? true: false                             
                 })
@@ -86,7 +116,10 @@ module.exports = {
      * returns: page, seo information
      */
     editCourseView: (req, res, next ) => {
-        res.render('admin/course/edit', { seo_info: seo_page.admin_portal_seo_info })
+        res.render('admin/course/edit', { 
+            // csrfToken: req.csrfToken(), 
+            seo_info: seo_page.admin_portal_seo_info 
+        })
     },
 
   
@@ -107,7 +140,13 @@ module.exports = {
                 type: course.type
             }  
             //return the page with the relevant information
-            res.render('admin/student/register', { update: false, seo_info: seo_page.admin_portal_seo_info, course: data, student: {} })            
+            res.render('admin/student/register', 
+                                        { 
+                                            // csrfToken: req.csrfToken(),
+                                            update: false, 
+                                            seo_info: seo_page.admin_portal_seo_info, 
+                                            course: data, student: {} 
+                                        })            
 
         } catch (error){
             console.log(error)
@@ -133,7 +172,6 @@ module.exports = {
             //get the course data
             const student_results = studentQuery.data()
             //construct data about student - remove payment array
-            console.log('student results -> ', student_results)
             const student = {
                 id: studentQuery.id,               
                 address: student_results.address, 
@@ -158,7 +196,14 @@ module.exports = {
                 type: course_results.type
             }  
             //return the page with the relevant information
-            res.render('admin/student/register', { update : true, seo_info : seo_page.admin_portal_seo_info, student : student, course : course })            
+            res.render('admin/student/register', 
+                                { 
+                                    // csrfToken: req.csrfToken(),
+                                    update : true, 
+                                    seo_info : seo_page.admin_portal_seo_info, 
+                                    student : student, 
+                                    course : course 
+                                })            
 
         } catch (error){
             console.log(error)

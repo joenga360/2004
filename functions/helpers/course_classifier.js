@@ -17,23 +17,46 @@ module.exports = {
                 type: course.type
             }
         })
+     
        
-        return {
-            bls : courses.filter(course => course.name === "Basic Life Support (BLS)" && course.type === "Weekend"),
-            bridging : {
-                day_courses : courses.filter(course => course.name === "HCA-CNA Bridging" && course.type === "Day"),
-                weekend_courses: courses.filter(course => course.name === "HCA-CNA Bridging" && course.type === "Weekend")
-            },
+        return {            
+       
             cna : {
-                day_courses : courses.filter(course => course.name === "CNA" && course.type === "Day"),
-                evening_courses : courses.filter(course => course.name === "CNA" && course.type === "Evening"),
-                weekend_courses: courses.filter(course => course.name === "CNA" && course.type === "Weekend")
-            },  
-            cpr : {
-                day_courses : courses.filter(course => course.name === "Adult CPR/FA" && course.type === "Day"),
-                evening_courses : courses.filter(course => course.name === "Adult CPR/FA" && course.type === "Evening"),
-                weekend_courses: courses.filter(course => course.name === "Adult CPR/FA" && course.type === "Weekend")                                        
-            }
+                day_courses : courses.filter(course => course.name === "Certified Nurse Assistant/CNA" || course.name == "CNA" && course.type === "Day"),
+                evening_courses : courses.filter(course => course.name === "Certified Nurse Assistant/CNA" || course.name == "CNA"  && course.type === "Evening"),
+                weekend_courses: courses.filter(course => course.name === "Certified Nurse Assistant/CNA" || course.name == "CNA"  && course.type === "Weekend")
+            }, 
+
+            hca : {
+                day_courses : courses.filter(course => course.name === "DSHS Home Care Aide/75 Hour"  && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name === "DSHS Home Care Aide/75 Hour" && course.type === "Weekend")
+            },
+
+            bridging : {
+                day_courses : courses.filter(course => course.name === "HCA to CNA Bridging" && course.type === "Day"),                
+                weekend_courses: courses.filter(course => course.name === "HCA to CNA Bridging" && course.type === "Weekend")                                        
+            },            
+            
+            mh : {
+                day_courses : courses.filter(course => course.name === "DSHS Mental Health Specialty" && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name === "DSHS Mental Health Specialty" && course.type === "Weekend")
+            },
+
+            so : {
+                day_courses : courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Weekend")
+            },
+
+            dementia : {
+                day_courses : courses.filter(course => course.name === "DSHS Dementia Specialty" && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name ===  "DSHS Dementia Specialty" && course.type === "Weekend")
+            },
+
+            ceu : {
+                day_courses : courses.filter(course => course.name === "DSHS 12 Hours Continuous Education Units" && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name ===  "DSHS 12 Hours Continuous Education Units" && course.type === "Weekend")
+            },
+
         }
     },
 /**

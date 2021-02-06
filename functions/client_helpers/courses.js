@@ -7,20 +7,36 @@
  //Registration fees
 
 const registration_fee = {
-    "CNA": 75,       
-    'Adult CPR/FA': 80,    
-    "HCA-CNA Bridging": 75,   
-    "Basic Life Support (BLS)": 65,
-    "Job posting": 25
+   
+    "Certified Nurse Assistant/CNA" : 75,
+    "DSHS Home Care Aide/75 Hour" : 75,
+    "Adult CPR/First Aid/AED Course Skill Testing" : 50,
+    "BLS Course Skill Testing" : 40,
+    "HCA to CNA Bridging" : 75,
+    "DSHS Nurse Delegation (CORE) for NAs and HCAs" : 110, 
+    "DSHS Nurse Delegation Special Focus on Diabetes" : 110, 
+    "DSHS Core Basic" : 75,        
+    "DSHS 12 Hours Continuous Education Units" : 105, 
+    "DSHS Dementia Specialty" : 100, 
+    "DSHS Mental Health Specialty" : 100,
+    "DSHS Safety and Orientation" : 60 
 }
 
 //Regular tuition
 
 const regular_price = {
-    "CNA": 725,       
-    'Adult CPR/FA': 80,    
-    "HCA-CNA Bridging": 450,   
-    "Basic Life Support (BLS)": 65    
+    "Certified Nurse Assistant/CNA" : 725,
+    "DSHS Home Care Aide/75 Hour" : 575,
+    "Adult CPR/First Aid/AED Course Skill Testing" : 50,
+    "BLS Course Skill Testing" : 40,
+    "HCA to CNA Bridging" : 535,
+    "DSHS Nurse Delegation (CORE) for NAs and HCAs" : 110, 
+    "DSHS Nurse Delegation Special Focus on Diabetes" : 110, 
+    "DSHS Core Basic" : 375,        
+    "DSHS 12 Hours Continuous Education Units" : 105, 
+    "DSHS Dementia Specialty" : 100, 
+    "DSHS Mental Health Specialty" : 100,
+    "DSHS Safety and Orientation" : 60    
 }
 
 

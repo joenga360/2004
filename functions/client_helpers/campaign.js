@@ -96,10 +96,18 @@ const campaignText = {
 function courseName(x){
 
     const courseKeys = { 
-        "cna":"CNA",
-        "cpr":"Heartcode Adult CPR/First Aid/AED",
-        "bls":"Heartcode BLS Course Skill Testing",
-        "bridging":"HCA to CNA Bridging"
+        "cna":"Certified Nurse Assistant/CNA",
+        "hca": "DSHS Home Care Aide/75 Hours",
+        "cpr":"Adult CPR/First Aid/AED Course Skill Testing",
+        "bls":"BLS Course Skill Testing",
+        "bridging":"HCA to CNA Bridging",
+        "delegation": "DSHS Nurse Delegation (CORE) for NAs and HCAs", 
+        "diabetes": "DSHS Nurse Delegation Special Focus on Diabetes", 
+        "core": "DSHS Core Basic",        
+        "ceu": "DSHS 12 Hours Continuous Education Units", 
+        "dementia": "DSHS Dementia Specialty", 
+        "mh": "DSHS Mental Health Specialty", 
+        "so": "DSHS Safety and Orientation"
     }
 
     return courseKeys[x]

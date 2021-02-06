@@ -8,43 +8,31 @@
 
 <url>
   <loc>https://www.excelcna.com/</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
+  <lastmod>2021-02-02T00:00:06+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 
 <url>
   <loc>https://www.excelcna.com/questions</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
-  <priority>0.80</priority>
+  <lastmod>2021-02-02T23:07:06+00:00</lastmod>
+  <priority>0.70</priority>
 </url>
 
 <url>
   <loc>https://www.excelcna.com/courses</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
+  <lastmod>2021-02-02T23:07:06+00:00</lastmod>
+  <priority>0.60</priority>
+</url>
+
+<url>
+  <loc>https://www.excelcna.com/catalog</loc>
+  <lastmod>2021-02-02T23:07:06+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 
 <url>
-  <loc>https://www.excelcna.com/class/cna/1</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-
-<url>
-  <loc>https://www.excelcna.com/class/cna/2</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-
-<url>
-  <loc>https://www.excelcna.com/class/cna/3</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-
-<url>
-  <loc>https://www.excelcna.com/class/cna/4</loc>
-  <lastmod>2020-09-04T23:07:06+00:00</lastmod>
+  <loc>https://www.excelcna.com/class/cna</loc>
+  <lastmod>2021-02-02T23:07:06+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 

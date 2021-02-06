@@ -53,6 +53,7 @@ module.exports = {
             })
         }
     },
+
     /**
      * get single course using id 
      * params: course id
@@ -124,6 +125,7 @@ module.exports = {
             if(course){
                 res.render('admin/course/students', 
                                 {
+                                    // csrfToken: req.csrfToken(),
                                     seo_info: seo_page.admin_portal_seo_info, 
                                     course: course, 
                                     students: students, 
@@ -257,14 +259,40 @@ module.exports = {
                
                 res.render('admin/course/time-schedules', {
                     courses: course_classifier (classes),//groups courses by name, type e.g., CPR has even, day and weekend and BLS only day
-                    choices: ["CNA", "HCA-CNA Bridging", "Adult CPR/FA", "Basic Life Support (BLS)"],                   
+                    choices: [
+                        "Certified Nurse Assistant/CNA", 
+                        "DSHS Home Care Aide/75 Hours",
+                        "HCA to CNA Bridging", 
+                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+                        "DSHS Nurse Delegation Special Focus on Diabetes",
+                        "DSHS Core Basic",
+                        "Adult CPR/First Aid/AED Course Skill Testing",
+                        "BLS Course Skill Testing",
+                        "DSHS 12 Hours Continuous Education Units",
+                        "DSHS Dementia Specialty",
+                        "DSHS Mental Health Specialty",
+                        "DSHS Safety and Orientation"
+                    ],                   
                     seo_info: seo_page.schedule_page_seo_info                                                 
                 })
             }
             else{
                 res.render('admin/course/time-schedules', {
                     courses: [],//groups courses by name, type e.g., CPR has even, day and weekend and BLS only day
-                    choices: ["CNA", "HCA-CNA Bridging", "Adult CPR/FA", "Basic Life Support (BLS)"],                   
+                    choices: [
+                        "Certified Nurse Assistant/CNA", 
+                        "DSHS Home Care Aide/75 Hours",
+                        "HCA to CNA Bridging", 
+                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+                        "DSHS Nurse Delegation Special Focus on Diabetes",
+                        "DSHS Core Basic",
+                        "Adult CPR/First Aid/AED Course Skill Testing",
+                        "BLS Course Skill Testing",
+                        "DSHS 12 Hours Continuous Education Units",
+                        "DSHS Dementia Specialty",
+                        "DSHS Mental Health Specialty",
+                        "DSHS Safety and Orientation"
+                    ],                   
                     seo_info: seo_page.schedule_page_seo_info                                                 
                 })
             }            

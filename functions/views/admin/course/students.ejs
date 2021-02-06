@@ -23,6 +23,7 @@
                                     <input type="text" name="dates" id="course_dates" value="<%=course.start_date%>">
                                 <% } %>
                                 <input type="hidden" name="course_id" id="course_id" value="<%=course.course_id%>">
+
                                 <button class="btn btn-primary btn-sm mx-4" id="editClassDatesBtn" type="submit">Edit</button>    
                             </form>  
                         </div>                                        
@@ -126,9 +127,9 @@ $(document).ready(()=>{
             type: 'PATCH', 
             url: '/courses/update',
             credentials: 'same-origin', // <-- includes cookies in the request
-            headers: {
-                'CSRF-Token': Cookies.get("XSRF-TOKEN")
-            },
+            // headers: {
+            //     'CSRF-Token': Cookies.get("XSRF-TOKEN")
+            // },
             dataType: "json",
             data: data,
         }).done(function (response) {

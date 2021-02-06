@@ -1,4 +1,4 @@
-<section class="bg-light text-dark py-5 mt-5">
+<section class="bg-light text-dark py-5 mt-5">    
     <!--COURSE START AND END DATES-->
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -17,7 +17,7 @@
                                 </select>                        
                             </div>                
                         </div>
-                <br><br>
+                        <br><br>                        
                         <div class="row">                                             
                             <div class="col-md">
                                 <p class='display-text'>Day Classes</p>
@@ -83,7 +83,7 @@
     //load document
     $(document).ready(() => {
         //listen to form submission
-        $("#add-course-form").on('submit', e => {
+        $("#add-course-form").on('submit', e => {           
             //prevent default behavior
             e.preventDefault()
             //get data from the form
@@ -99,6 +99,9 @@
                 if(data.name === 'weekend' && data.value !== "") weekend.push(data.value)
                 if(data.name === 'course' && data.value !== "") course = data.value 
             })
+
+             // Read the CSRF token from the <meta> tag
+            //const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')  
             //create data to send to backend
             const postData = { 
                                 course, 
@@ -108,29 +111,28 @@
                             }
             debugger
             $.ajax({
-                    type: 'POST', 
-                    url: '/courses/add',
-                    credentials: 'same-origin', // <-- includes cookies in the request
-                    headers: {
-                        'CSRF-Token':  Cookies.get("XSRF-TOKEN")
-                    },
-                    dataType: "json",
-                    data: postData,
-                }).done(function (response) {
-                    if (response.redirect !== undefined && response.redirect) {
-                        debugger
-                        alert(response.message)
-                        
-                        window.location.replace(response.redirect_url)
-                    } else {
-                        //if something is wrong - alert user and redirect user to course schedule page                       
-                        alert('Something went wrong - sign in again!')
+                type: 'POST', 
+                url: '/courses/add',
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    Accept: "application/json",
+                    //'CSRF-Token':  token
+                },
+                dataType: "json",
+                data: postData,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    debugger
+                    alert(response.message)
+                    
+                    window.location.replace(response.redirect_url)
+                } else {
+                    //if something is wrong - alert user and redirect user to course schedule page                       
+                    alert('Something went wrong - sign in again!')
 
-                        window.location.replace('auth/signout')
-                    }                                   
-                }) 
-
-
+                    window.location.replace('auth/signout')
+                }                                   
+            }) 
         })
     })
 </script>    
