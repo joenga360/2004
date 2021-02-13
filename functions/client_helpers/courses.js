@@ -8,8 +8,8 @@
 
 const registration_fee = {
    
-    "Certified Nurse Assistant/CNA" : 75,
-    "DSHS Home Care Aide/75 Hour" : 75,
+    "CNA" : 75,
+    "DSHS Home Care Aide/75 Hours" : 75,
     "Adult CPR/First Aid/AED Course Skill Testing" : 50,
     "BLS Course Skill Testing" : 40,
     "HCA to CNA Bridging" : 75,
@@ -25,8 +25,8 @@ const registration_fee = {
 //Regular tuition
 
 const regular_price = {
-    "Certified Nurse Assistant/CNA" : 725,
-    "DSHS Home Care Aide/75 Hour" : 575,
+    "CNA" : 725,
+    "DSHS Home Care Aide/75 Hours" : 575,
     "Adult CPR/First Aid/AED Course Skill Testing" : 50,
     "BLS Course Skill Testing" : 40,
     "HCA to CNA Bridging" : 535,

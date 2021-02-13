@@ -1,4 +1,8 @@
 const moment = require('moment-timezone')
+const { courseName } = require('../client_helpers/campaign') 
+const firebase = require("firebase")
+const db = firebase.firestore()
+
 
 module.exports = {
 /**
@@ -18,6 +22,7 @@ module.exports = {
             }
         })
      
+        console.log('THE COURSES ARRAY', courses )
        
         return {            
        
@@ -28,8 +33,8 @@ module.exports = {
             }, 
 
             hca : {
-                day_courses : courses.filter(course => course.name === "DSHS Home Care Aide/75 Hour"  && course.type === "Day"),
-                weekend_courses: courses.filter(course => course.name === "DSHS Home Care Aide/75 Hour" && course.type === "Weekend")
+                day_courses : courses.filter(course => course.name === "DSHS Home Care Aide/75 Hours"  && course.type === "Day"),
+                weekend_courses: courses.filter(course => course.name === "DSHS Home Care Aide/75 Hours" && course.type === "Weekend")
             },
 
             bridging : {
@@ -95,5 +100,63 @@ module.exports = {
         }).filter(course => course != undefined) //somehow without the filter, courses without dates are being added
 
         return courses
+    },
+
+    courseDbName : async ( code, id ) => {
+
+        try {
+             //get the full name of the course
+            const full_course_name = courseName(code)
+
+            //get the code
+            if(
+                full_course_name == "BLS Course Skill Testing" || 
+                full_course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                full_course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
+                full_course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+            ) {
+                //get courses by name 
+                const results = await db.collection( 'reservations' ).doc( id ).get() 
+                //convert data of results
+                const course = results.data()  
+                
+                console.log('NAME OF COURSE --> ', course)
+                //if the course does NOT exist, let the user know so - redirect to the courses page
+                if(!course){                 
+                    return res.status(201).json({ message: 'No such course exists' })   
+                } 
+
+                //create course description to send to stripe
+                return {
+                    title: course.name +' course',
+                    results : {
+                        data: results.data(),
+                        id: results.id
+                    }
+                } 
+                                        
+            } else {
+                //get results of search of courses collection using the course id
+                const results = await db.collection('courses').doc( id ).get() 
+                //convert data of results
+                const course = results.data()
+                //if the course does NOT exist, let the user know so - redirect to the courses page
+                if(!course){                 
+                    return res.status(201).json({ message: 'No such course exists' })   
+                }           
+                //create course description to send to stripe
+
+                return {
+                    title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',
+                    results : {
+                        data: results.data(),
+                        id: results.id
+                    }
+                } 
+               
+            }
+        } catch (error) {
+            console.log('error ', error)
+        }
     }
 }

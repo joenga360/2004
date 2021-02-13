@@ -101,14 +101,15 @@ function courseName(x){
         
         "bls": "Basic Life Support (BLS)",
         "bridging": "HCA to CNA Bridging",
-        "core": "DSHS Core Basic Training",
+        "core": "DSHS Core Basic",
         "ceu": "DSHS 12 Hours Continuous Education Units",
         "cna": "CNA",
         "cpr": "Adult CPR/FA",        
         "delegation": "DSHS Nurse Delegation (CORE) for NAs and HCAs",
-        "dementia": "DSHS Dementia Specialty Training",
+        "dementia": "DSHS Dementia Specialty",
         "diabetes": "DSHS Nurse Delegation Special Focus on Diabetes",
-        "so": "DSHS Safety and Orientation Training"
+        "mh": "DSHS Mental Health Specialty",
+        "so": "DSHS Safety and Orientation"
     }
 
     return courseKeys[x]

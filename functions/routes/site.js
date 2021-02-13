@@ -23,13 +23,15 @@ router.get('/confirm-payment', SiteController.getReceiptPage)
 router.get('/course/:name',  SiteController.getLeadCourses)
 //get lead page for courses
 router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm)
+
+//get lead page for courses
+router.get('/train/:course/:course_id', SiteController.getCourseRegistrationForm)
 //get regular sign up page
 router.get('/signup/:course_id', SiteController.getCourseRegistrationForm)
 //get the the videos page
 router.get("/videos", SiteController.getVideosPage)
 //get the all courses - single day, multiple day, and reservations - in catalog
 router.get('/learn/:course', SiteController.getCatalogCourse)
-
 //get the the why post page
 router.get("/whypost", SiteController.getWhyPostPage)
 //get the hca page

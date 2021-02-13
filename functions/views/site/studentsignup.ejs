@@ -2,9 +2,8 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-sm-12">              
-                <h3 class="text-dark text-center"><%= course.title %> </h3>
-                <br> <br>           
-
+                <h3 class="text-dark text-center"><%= course.title %> Course</h3>
+                <br>
                 <!--BEGINNING OF THE FORM-->
                 <form id="course_sign_up" >
                         <!--FIRST AND LAST NAMES-->
@@ -65,7 +64,7 @@
                               <!-- We'll put the error messages in this element -->
                             <div id="card-errors" role="alert" ></div>
                             <div class="mt-2">                               
-                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= fees[course.name] %>.00 Registration Fee</strong></button> 
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
                                 <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
                                 <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
                             </div>
@@ -118,7 +117,9 @@
 
     $(document).ready(() => {       
          //get the course
-        const course = (<%-JSON.stringify(course)%>)
+        const course = (<%-JSON.stringify( course )%>)
+        const code = (<%-JSON.stringify( code )%>)
+        console.log('STUPID COURSE ', course, 'and code ', code)
 
         // const fees = (<%-JSON.stringify(course.fees)%>)  
 
@@ -182,7 +183,7 @@
 
                 $.ajax({
                     type: 'POST', 
-                    url: '/students/register/'+ course.courseId,
+                    url: '/students/register/'+ code +'/'+ course.courseId,
                     credentials: 'same-origin', // <-- includes cookies in the request
                     // headers: {
                     //     Accept: "application/json",
@@ -261,7 +262,7 @@
                 
                 $.ajax({
                         type: 'POST', 
-                        url: '/students/register/'+course.courseId,
+                        url: '/students/register/'+ code +'/'+ course.courseId,
                         credentials: 'same-origin', // <-- includes cookies in the request
                         // headers: {
                         //     Accept: "application/json",

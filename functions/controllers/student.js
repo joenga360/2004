@@ -1,12 +1,10 @@
 const firebase = require("firebase")
 const moment = require('moment')
-// const NodeCache = require( "node-cache" )
-// const myCache = new NodeCache()
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
-const { studentData, segment, segmentURL, subscribe , tagsDifference, tagStudent } = require("../helpers/subscribe")
-// const {   getRequestBody, qbWebSignUp, qbAdminSignUp, qbNewPayment, qbNewItem  } = require('../helpers/accounting')
-//const{ registrantSignUp } = require('../config/accounting')
+const { studentData, segment, segmentURL, subscribe  } = require("../helpers/subscribe")
+const { courseDbName } = require('../helpers/course_classifier')
+
 //create reference for firestore database
 const db = firebase.firestore()
 
@@ -95,65 +93,50 @@ module.exports = {
      * data: student information and stripe token if payment is made
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
-      try{            
-
-            console.log( 'STUDENT GETTING HERE....', req.body )
-            //get the course id
-            const course_id = req.params.course_id
-            //get results of search of courses collection using the course id
-            const results = await db.collection('courses').doc( course_id ).get() 
-            //convert data of results
-            const course = results.data()
-            //if the course does NOT exist, let the user know so - redirect to the courses page
-            if(!course){
-                // req.flash('error', 'No such course')
-                // res.redirect('/courses') 
-                return res.status(201).json({ message: 'No such course exists' })   
-            }
+        try{        
+            //get req params
+            const { code, id } = req.params 
+            //get the long name of course stored in database
+            const course_name = await courseDbName(code, id)
+            console.log('course name', course_name)
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
             //trim first and last 
-            const amount = payment > 0 ? parseInt( payment ) : 0
-            
-            //create course description to send to stripe
-            const course_name = moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course' 
-
+            const amount = payment > 0 ? parseInt( payment ) : 0            
             //create a payment array
             const payments = []
-
             //add status data - default to FALSE
             const status = {
                 course_start: false,
                 walk_in: false,
                 web_sign_up: true
-            }  
+            }            
 
             //check if there is a stripe token and the amount
-            if( stripeToken && amount > 0 ){
+            if( stripeToken && amount > 0 ) {
                 //use registrant's email, first and last name and telephone to create a customer using stripe api
                 const customer = await createCustomer( email, first, last, tel )     
-               
+            
                 //create a card using customer created from above process
                 const card = await createCard( customer, stripeToken )
-               
+            
                 //create a charge
                 const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course_name )                
-               
+            
                 //add payment information
                 payments.unshift({
                     course_name,
-                    course_id, amount,
+                    id, amount,
                     chargeId,
                     last4: card.last4,
                     cardId: card.id,
                     created : firebase.firestore.Timestamp.fromDate(new Date())
-                })                                     
-           
+                })    
 
             } else {
                 //add course id to the student array of payment objects
                 payments.unshift({ 
-                    course_id, course_name, amount, 
+                    id, course_name, amount, 
                     created : firebase.firestore.Timestamp.fromDate(new Date())
                 })                  
                 
@@ -164,26 +147,21 @@ module.exports = {
                 })         
 
                 //create postdata to send to mailchimp
-                const postData = studentData( email, first, last, tel, course.name,  course.start_date, course.end_date, student.id, course_id )
-
-              
+                const postData = studentData( email, first, last, tel, course.name,  course.start_date, course.end_date, student.id, course_id )              
                 //send student data to mailchimp list/audience for students
                 await subscribe( postData, STUDENT_LIST )
                 //segment
                 await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )
-            }             
-
-           
+            } 
+       
             //add this student to the registered segment of the list audience
-            //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )         
-
-                                            
+            //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )  
+                                                        
             res.status(201).json({
                 redirect: true,
                 redirect_url: (stripeToken && amount > 0) ? '/confirm-payment' :'/success',
                 message: 'You have signed up for '+ course.name
             })
-            //res.render('', {seo_info: seo_page.payment_page_seo_info} )
 
         } catch (error){     
             console.log("Stupid error ", error)      

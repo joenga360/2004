@@ -96,7 +96,7 @@ const campaignText = {
 function courseName(x){
 
     const courseKeys = { 
-        "cna":"Certified Nurse Assistant/CNA",
+        "cna":"CNA",
         "hca": "DSHS Home Care Aide/75 Hours",
         "cpr":"Adult CPR/First Aid/AED Course Skill Testing",
         "bls":"BLS Course Skill Testing",
@@ -109,9 +109,8 @@ function courseName(x){
         "mh": "DSHS Mental Health Specialty", 
         "so": "DSHS Safety and Orientation"
     }
-
+    
     return courseKeys[x]
-
 }
 
 function sortCampaigns(course, url){

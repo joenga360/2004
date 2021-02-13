@@ -185,7 +185,7 @@ module.exports = {
             // const data = JSON.stringify(postData)
             const response = await client.lists.addListMember(list_id, postData);
         
-            console.log('SUBSCRIBE RESPONSE', response);
+            console.log('SUBSCRIBE RESPONSE', response.status, 'and', response.statusCode);
 
 
             // add a new member to the list

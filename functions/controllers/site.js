@@ -4,7 +4,7 @@ const seo_page = require('../client_helpers/seo_page_info')
 const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
 const { course_classifier } = require('../helpers/course_classifier')
-const { campaignText, campaign, courseName } = require('../client_helpers/campaign') 
+const { campaign, courseName } = require('../client_helpers/campaign') 
 const { catalog, courseCode, upsell }  = require('../client_helpers/catalog') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
@@ -49,15 +49,14 @@ module.exports = {
     },    
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
-        try {          
+        try {             
             //get the course id
             const { course_id, course } = req.params  
-
             //get the long name of course stored in database
-            const course_name = courseName(course)
+            const course_name = courseName(course)           
             //get course registration fee
             const fees  = registration_fee[course_name]
-
+            console.log('COURSE NAME', course_name, "and fees ", fees)
             const lead = course != undefined ? true : false
 
             if(
@@ -67,7 +66,7 @@ module.exports = {
                 course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
             ){
               
-                const title = `${course_name} Sign Up Form`
+                const title = `${ course_name } Sign Up Form`
 
                 const data = {
                     courseId: course_id,
@@ -77,13 +76,15 @@ module.exports = {
                 }
 
                 res.render('site/studentsignup', 
-                {   
-                    // csrfToken: req.csrfToken(),
-                    seo_info: seo_page.register_page_seo_info, 
-                    lead: lead,
-                    course: data,                                
-                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
-                })
+                    {   
+                        // csrfToken: req.csrfToken(),
+                        code: course,
+                        seo_info: seo_page.register_page_seo_info, 
+                        lead: lead,
+                        course: data,                                
+                        STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                    }
+                )
 
             } else {
                 //find the course
@@ -91,24 +92,26 @@ module.exports = {
                 //construct data about class - remove student array
                 const results = query.data()
                 
-                const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +"-"+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
-                 
-
+                const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" - "+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
+                
                 const data = {              
-                    courseId: query.id,                                                
+                    courseId: course_id,                                               
                     title,
                     fees,
                     name: course_name                  
-                }  
+                } 
                 
+               
                 res.render('site/studentsignup', 
-                {   
-                    // csrfToken: req.csrfToken(),
-                    seo_info: seo_page.register_page_seo_info, 
-                    lead: lead,
-                    course: data,                                
-                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
-                })
+                    {   
+                        // csrfToken: req.csrfToken(),
+                        code: course,
+                        seo_info: seo_page.register_page_seo_info, 
+                        lead: lead,
+                        course: data,                                
+                        STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                    }
+                )
             }      
             
         } catch (error) {
@@ -169,54 +172,72 @@ module.exports = {
             //get the long name of course stored in database
             const course_name = courseName(req.params.name)
 
-            // console.log('COURSE NAME -> ', course_name)
-            //get courses by name 
-            const results = await db.collection('courses') 
-                                .where('name','==', `${course_name}` )                                       
-                                .orderBy('start_date')   
-                                .get()  
-           
-            //get documents
-            const docs = results.docs
+            if(
+                course_name == "BLS Course Skill Testing" || 
+                course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
+                course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+            ){
+                //get courses by name 
+                const results = await db.collection('reservations') 
+                                        .where('name','==', course_name )                     
+                                        .get()  
 
-            //sort the docs to get classes starting today or later
-            const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name === course_name)
-                                .map( doc => {                                    
-                                    return{                            
-                                        'end_date': doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
-                                        'name': doc.data().name,                            
-                                        'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
-                                        'type': doc.data().type,
-                                        'id': doc.id
-                                    }                        
-                                }) 
-                   
-            //classify the courses as either day, evening, weekend
-            const courses = course_classifier( classes )                
-            //get a random number between 1 and 4 - includes both 1 & 4
-            const number = Math.floor( Math.random() * 4 + 1)
-        
-            //get the header of campaign information 
-            const header = req.params.name === 'cna' ?  campaignText['CNA']['headers'][number] : campaignText[req.params.name].header
-            //get the lists of CNA campaign lists
-            const items = req.params.name === 'cna' ? campaignText['CNA']['lists'][number] : campaignText[req.params.name].items
-            //return classes, seo information and campaign information
-            console.log('classes -> ', classes.length)
-            if( classes.length > 0 ){
-                res.locals.lead = true
-                res.render('site/leadcourseschedules', {                
-                    course: courses[req.params.name],
-                    name: course_name,
-                    items: items,
-                    header: header,                   
-                    seo_info: seo_page[req.params.name + "_page_seo_info"]                                              
+                const course = results.docs.map( x => { 
+                    return { data: x.data(), id: x.id } 
                 })
 
-            }else{
-                res.status(404).json({
-                    message: `No ${course_name} courses at the moment.  Check with us later.`
-                })                   
-            }            
+                console.log( 'reservations ', course)
+                //return course
+                res.render('site/leadcourseschedules', {
+                    course: course[0].data,
+                    name: course[0].data.name,
+                    course_id: course[0].id,
+                    code: req.params.course,
+                    seo_info: seo_page[req.params.course + "_page_seo_info"]   
+                })
+            
+            } else {
+                 //get courses by name 
+                const results = await db.collection('courses') 
+                                        .where( 'name','==',`${ course_name }` )                                       
+                                        .orderBy('start_date')   
+                                        .get()  
+
+                //get documents
+                const docs = results.docs
+
+                //sort the docs to get classes starting today or later
+                const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name === `${course_name}` )
+                                    .map( doc => {                                    
+                                        return{                            
+                                            'end_date': doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                            'name': doc.data().name,                            
+                                            'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
+                                            'type': doc.data().type,
+                                            'id': doc.id
+                                        }                        
+                                    }) 
+
+                //classify the courses as either day, evening, weekend
+                const courses = course_classifier( classes )                
+            
+                if( classes.length > 0 ){
+                    res.locals.lead = true
+                    res.render('site/leadcourseschedules', {                
+                        course: courses[req.params.name],
+                        name: course_name,
+                        code: req.params.course,                   
+                        seo_info: seo_page[req.params.name + "_page_seo_info"]                                              
+                    })
+                }else{
+                    res.status(404).json({
+                        message: `No ${course_name} courses at the moment.  Check with us later.`
+                    })                   
+                }            
+
+            }
+           
         }catch(err){
             console.log(err)
             res.status(500).json({
@@ -299,8 +320,6 @@ module.exports = {
         //get the req param and use it to return the course
         const course = courseCode.indexOf(req.params.course)
 
-        console.log('COURSE ', course )
-
         res.render('site/details/hca', { course: catalog[course], seo_info: seo_page[req.params.course + "_page_seo_info"] } )
     },
     //
@@ -312,30 +331,25 @@ module.exports = {
               if(
                     course_name == "BLS Course Skill Testing" || 
                     course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
-                    course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
+                    course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
                     course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
                 ){
                     //get courses by name 
                     const results = await db.collection('reservations') 
                                             .where('name','==', course_name )                     
                                             .get()  
-
-                    //get document
-                   //console.log('FUCKING RESULTS ', results.data())
-                    //const course = 
-                   // results.forEach(x => console.log( 'X ', x.data(), 'id ', x.id ) )
                     
-                    const course = results.docs.map( x => { 
-                        
+                    const course = results.docs.map( x => {                        
                        return { data: x.data(), id: x.id } 
                     } )
 
-                    console.log( 'and ', course)
+                    console.log( 'reservations ', course)
                     //return course
                     res.render('site/leadcourseschedules', {
                         course: course[0].data,
                         name: course[0].data.name,
                         course_id: course[0].id,
+                        code: req.params.course,
                         seo_info: seo_page[req.params.course + "_page_seo_info"]   
                     })
 
@@ -346,17 +360,15 @@ module.exports = {
 
                     //get courses by name 
                     const results = await db.collection('courses') 
-                                            //.where('name','==', 'CNA' /*`${course_name}`*/ )                                       
+                                            .where('name','==', `${course_name}`)                                       
                                             .orderBy('start_date')   
                                             .get()  
 
                     //get documents
                     const docs = results.docs
 
-                    
-
                     //sort the docs to get classes starting today or later
-                    const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name == 'CNA'/*`${course_name}`*/)
+                    const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
                                         .map( doc => {                                    
                                             return {                            
                                                 'end_date': doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
@@ -370,7 +382,6 @@ module.exports = {
                     //classify the courses as either day, evening, weekend
                     const courses = course_classifier( classes )
 
-                    console.log('CLASSES ', courses)
                     //return classes, seo information and campaign information
                     console.log('classes -> ', classes.length)
                     if( classes.length > 0 ){
@@ -378,15 +389,16 @@ module.exports = {
                         res.render('site/leadcourseschedules', {
                             //res.status(201).json({
                             course: courses[req.params.course],
-                            name: course_name,                                      
+                            name: course_name,       
+                            code: req.params.course,                
                             seo_info: seo_page[req.params.course + "_page_seo_info"]                                              
                         })
 
                     } else {
                         res.status(404).json({
-                        message: `No ${course_name} courses at the moment.  Check with us later.`
-                    })                   
-                }  
+                            message: `No ${course_name} courses at the moment.  Check with us later.`
+                        })                   
+                    }  
 
               }                       
             
