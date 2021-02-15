@@ -56,7 +56,7 @@ module.exports = {
 
         {
             "name" : "DSHS Nurse Delegation (CORE) for NAs and HCAs",
-            "cost" : 110.00,
+            "cost" : 120.00,
             "length": "9 hours",
             "description": "The nurse delegation for IPs for nurse assistants and home care aides introduce you to the nurse delegation law and the caregiver's role in delegation, client care and the body systems, medication administration, and treatments.",
             "mode": "Self study",
@@ -69,7 +69,7 @@ module.exports = {
 
         {
             "name" : "DSHS Nurse Delegation Special Focus on Diabetes",
-            "cost" : 110.00,
+            "cost" : 120.00,
             "length": "3 hours",
             "description": "The nurse delegation with special focus on diabetes introduces nurse assistants and home care aides to the health condition of diabetes and its treatment, insulin.  The caregiver or the aide will learn how to evaluate the client, set up and administer the medication, document the administration, and observe client for side effects.  The course provides the caregiver with resources for managing diabetes.",
             "mode": "Self study",
@@ -134,7 +134,7 @@ module.exports = {
 
         {
             "name" : "DSHS Dementia Specialty",
-            "cost": 100.00,
+            "cost": 105.00,
             "length" : "8 hours",
             "description" : "The DSHS Dementia Specialty Training introduces the learner to different types of Dementia, attendant hallucinations and delusions, how to work with families of a resident suffering from Dementia, sexuality and intimacy, Dementia medications, treatments and therapies, how to provide activities of daily living (ADLs) and how to communicate with people who have Dementia, trauma informed care, how to approach challenging behaviors and tips of dealing with specific challenging behaviors.",
             "mode":"Online.",
@@ -147,7 +147,7 @@ module.exports = {
 
         {
             "name" : "DSHS Mental Health Specialty",
-            "cost": 100.00,
+            "cost": 105.00,
             "length" : "8 hours",
             "description" : "The DSHS Mental Health Specialty Training introduces the learner to different types of mental disorders, how to provide compassionate and trauma informed care, the supports for wellness, getting help and self-care, suicide prevention, communication dynamics, setting boundaries, and crisis management.",
             "mode":"Online.",

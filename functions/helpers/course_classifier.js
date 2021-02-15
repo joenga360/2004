@@ -102,6 +102,13 @@ module.exports = {
         return courses
     },
 
+    /**
+     * 
+     * @param {String} code 
+     * @param {String} id 
+     * @returns {}
+     */
+
     courseDbName : async ( code, id ) => {
 
         try {
@@ -120,7 +127,6 @@ module.exports = {
                 //convert data of results
                 const course = results.data()  
                 
-                console.log('NAME OF COURSE --> ', course)
                 //if the course does NOT exist, let the user know so - redirect to the courses page
                 if(!course){                 
                     return res.status(201).json({ message: 'No such course exists' })   
@@ -129,10 +135,9 @@ module.exports = {
                 //create course description to send to stripe
                 return {
                     title: course.name +' course',
-                    results : {
-                        data: results.data(),
-                        id: results.id
-                    }
+                    data : results.data(),
+                    id: results.id,
+                   // start_date: moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")                   
                 } 
                                         
             } else {
@@ -143,15 +148,15 @@ module.exports = {
                 //if the course does NOT exist, let the user know so - redirect to the courses page
                 if(!course){                 
                     return res.status(201).json({ message: 'No such course exists' })   
-                }           
+                }    
+
                 //create course description to send to stripe
 
                 return {
-                    title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',
-                    results : {
-                        data: results.data(),
-                        id: results.id
-                    }
+                    title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',                  
+                    data: results.data(),
+                    id: results.id
+                 
                 } 
                
             }

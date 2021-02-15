@@ -58,7 +58,7 @@ module.exports = {
     
     catalog_page_seo_info: {
         title: 'Caregiver Courses Catalog',
-        titleTemplate: 'CNA, CPR, First Aid and DSHS course information, descriptions and details!',
+        titleTemplate: 'CNA, HCA, CPR, First Aid and DSHS course information, descriptions and details!',
         meta: [                   
             { name: "description", content: "Descriptions, job outlook, length, details and costs for CNA, DSHS caregiver courses, CPR, First Aid courses offered by Excel Health Careers Training." },
             { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Home Care Assistant, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 Hours Training, caregiver training, Mental Health, Dementia, Safety and Orientation Training." },
@@ -66,7 +66,7 @@ module.exports = {
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/classes' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/courses' }
         ]
     },
 
@@ -196,10 +196,10 @@ module.exports = {
     },
 
     whypost_page_seo_info : {
-        title: 'Hire CNAs and Caregivers',
+        title: 'Hire CNAs, HCAs, Aides and Caregivers',
         titleTemplate: 'Hire CNAs and Caregivers',
         meta: [                   
-            {name: "description", content: "Recruit CNAs, Home Care Aides, Caregivers and Personal Companions in your community."},
+            {name: "description", content: "Recruit CNAs, Home Care Aides, HCAs, Caregivers and Personal Companions in your community."},
             {name: "keywords", content: "Recruit CNA, Find NAC, Hire Caregivers, Hire Certified Nurse Aide, Find Personal Companion, Hire Certified Nurse Assistant, Find Nurse Aide, Hire Nurse Assistant, Hire Caregiver"},
             {name: "author", content: "Don Gatuna"}          
         
@@ -210,7 +210,7 @@ module.exports = {
     },
 
     bls_page_seo_info: {
-        title: 'AHA Basic Life Support (BLS) Weekday/Weekday Course Schedules',
+        title: 'Basic Life Support (BLS) Weekday/Weekday Course Schedules',
         titleTemplate: 'Basic Life Support (BLS) Course Schedules',
         meta: [                   
             { name: "description", content: "Basic Life Support Courses offered during weekday and weekend." },
@@ -223,8 +223,23 @@ module.exports = {
         ]
     },
 
+    
+    ceu_page_seo_info: {
+        title: 'Caregiver Continuous Education Units (CEU) Schedules',
+        titleTemplate: '12 Hours Continuous Education Units (CEU) Schedules',
+        meta: [                   
+            { name: "description", content: "Caregiver Continuous Education Units (CEU) offered during weekday and weekend schedules." },
+            { name: "keywords", content: "Caregiver CEU, Continuous Education, Continuous Education Units, DSHS 12 CEUs" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/course/cpr' }
+        ]
+    },
+
     cpr_page_seo_info: {
-        title: 'AHA Adult CPR/First Aid Weekday/Weekday Course Schedules',
+        title: 'CPR/First Aid Weekday/Weekday Course Schedules',
         titleTemplate: 'AHA Adult CPR/First Aid Course Schedules',
         meta: [                   
             { name: "description", content: "CPR, First Aid, AED Courses offered during day, evening and weekend schedules." },
@@ -281,8 +296,22 @@ module.exports = {
     },
     
     delegation_page_seo_info: {
-        title: "Nurse Delegation (CORE) for ",
-        titleTemplate: 'Upcoming HCA Classes Offered During Day, Weekend, and Evening Times',
+        title: "Nurse Delegation Self Study (CORE) for NARs, HCAs and CNAs",
+        titleTemplate: 'Upcoming Nurse Delegation Classes',
+        meta: [                   
+            { name: "description", content: "Details about DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "keywords", content: "Self-study nurse delegation, DSHS Nurse Delegation, Nurse Delegation course, Nurse Delegation class" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/delegation' }
+        ]
+    },
+
+    diabetes_page_seo_info: {
+        title: "Nurse Delegation Special Focus on Diabetes course",
+        titleTemplate: 'Upcoming Nurse Delegation With Emphasis on Diabetes Classes for NARs, HCAs and CNAs',
         meta: [                   
             { name: "description", content: "Details about DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
             { name: "keywords", content: "DSHS Nurse Delegation, Nurse Delegation course, Nurse Delegation class" },
@@ -292,6 +321,49 @@ module.exports = {
         links: [
             { rel: 'canonical', href: 'https://www.excelcna.com/page/delegation' }
         ]
-    } 
+    },
+
+    mh_page_seo_info: {
+        title: "Mental Health Specialty course",
+        titleTemplate: 'Upcoming Mental Health specialty course schedules for NARs, HCAs and CNAs',
+        meta: [                   
+            { name: "description", content: "Details about DSHS Mental Health specialty for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "keywords", content: "DSHS Mental Health Specialty course, Mental Health course, Mental Health class" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/mh' }
+        ]
+    },
+
+    dementia_page_seo_info: {
+        title: "Dementia Specialty course",
+        titleTemplate:  'Upcoming Dementia specialty course schedules for NARs, HCAs and CNAs',
+        meta: [                   
+            { name: "description", content: "Details about DSHS Dementia Specialty for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs course." },
+            { name: "keywords", content: "DSHS Dementia Specialty course, Dementia course, Dementia class" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/dementia' }
+        ]
+    },
+
+    so_page_seo_info: {
+        title: "Safety Orientation course",
+        titleTemplate:  'Upcoming Safety and Orientation specialty course schedules for NARs, HCAs and CNAs',
+        meta: [                   
+            { name: "description", content: "Details about DSHS Safety and Orientation Training for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs course." },
+            { name: "keywords", content: "DSHS Safety course, Safety course, Safety class, DSHS Orientation course, Orientation course, Orientation class" },
+            { name: "author", content: "Don Gatuna" }          
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/so' }
+        ]
+    }
+
 
 }

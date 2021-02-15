@@ -14,11 +14,12 @@ module.exports = {
     //email, first, last, tel, course.name, course.start_date, course.end_date
     studentData: (email, first_name, last_name, tel, course, start_date, end_date, student_id, course_id) => {
         //format start date
-        const start =  moment.utc(start_date.toDate()).format('MM/DD/YYYY')           
+        const start = (start_date != 'Reserve') ? moment.utc(start_date.toDate()).format('MM/DD/YYYY') :   
+                                                  moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")     
    
         //format end date
         const end =  end_date ? moment.utc(end_date.toDate()).format('MM/DD/YYYY') : null
-        
+        console.log('start-date ', start_date, 'start ', start)
         //construct and return data // tags,    
         return mc_data = {
                

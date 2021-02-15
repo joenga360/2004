@@ -10,7 +10,7 @@
                     <p class="card-text"><strong>Cost: </strong> $ <%= course.cost%>.00</p>
                     <p class="card-text"><strong>Schedule: </strong><%= course.schedule %></p>
                     <p class="card-text"><strong>Requirements: </strong><%= course.requirements %></p>  
-                    <p class="card-text"><strong>To see next classes, click: <a href="//<%=course.url %>" > <%=course.url %> </a> </strong> </p>                               
+                    <p class="card-text"><strong>To see next classes, click: <a href = "/learn/<%=code %>" > www.excelcna.com/learn/<%=code%></a> </strong> </p>                               
                     <p class="card-text"><strong>Description: </strong><%= course.description %></p>  
                     <% if( course.name == "Certified Nurse Assistant/CNA Training" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours Training" ) { %>               
                         <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>  

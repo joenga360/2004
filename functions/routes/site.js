@@ -23,7 +23,6 @@ router.get('/confirm-payment', SiteController.getReceiptPage)
 router.get('/course/:name',  SiteController.getLeadCourses)
 //get lead page for courses
 router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm)
-
 //get lead page for courses
 router.get('/train/:course/:course_id', SiteController.getCourseRegistrationForm)
 //get regular sign up page

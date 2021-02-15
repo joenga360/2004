@@ -124,6 +124,7 @@ module.exports = {
       
         res.render('site/success', { seo_info: seo_page.payment_page_seo_info })
     },
+    
     //9. Get the videos page
     getVideosPage: (req, res) => {
         
@@ -142,6 +143,7 @@ module.exports = {
         res.render('site/videos', {videos: videos, seo_info: seo_page.videos_page_seo_info})
         //res.status(200).json({videos})
     },
+
     //10. Get the employer sign in page
     getAdminSignInPage: (req, res) => {
       //  res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
@@ -150,6 +152,7 @@ module.exports = {
                                             seo_info: seo_page.admin_signin_page_seo_info 
                                         })
     },
+
     //11. Get the employer sign up page
     getAdminSignUpPage: (req, res) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
@@ -194,7 +197,7 @@ module.exports = {
                     name: course[0].data.name,
                     course_id: course[0].id,
                     code: req.params.course,
-                    seo_info: seo_page[req.params.course + "_page_seo_info"]   
+                    seo_info: seo_page[req.params.name + "_page_seo_info"]   
                 })
             
             } else {
@@ -320,7 +323,11 @@ module.exports = {
         //get the req param and use it to return the course
         const course = courseCode.indexOf(req.params.course)
 
-        res.render('site/details/hca', { course: catalog[course], seo_info: seo_page[req.params.course + "_page_seo_info"] } )
+        res.render('site/details/hca', { 
+                                        code: req.params.course, 
+                                        course: catalog[course], 
+                                        seo_info: seo_page[req.params.course + "_page_seo_info"]
+                                    } )
     },
     //
     getCatalogCourse : async ( req, res, next ) =>{
@@ -383,7 +390,7 @@ module.exports = {
                     const courses = course_classifier( classes )
 
                     //return classes, seo information and campaign information
-                    console.log('classes -> ', classes.length)
+                    console.log('classes -> ', courses[req.params.course])
                     if( classes.length > 0 ){
                         res.locals.lead = true
                         res.render('site/leadcourseschedules', {

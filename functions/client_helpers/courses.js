@@ -13,12 +13,12 @@ const registration_fee = {
     "Adult CPR/First Aid/AED Course Skill Testing" : 50,
     "BLS Course Skill Testing" : 40,
     "HCA to CNA Bridging" : 75,
-    "DSHS Nurse Delegation (CORE) for NAs and HCAs" : 110, 
-    "DSHS Nurse Delegation Special Focus on Diabetes" : 110, 
+    "DSHS Nurse Delegation (CORE) for NAs and HCAs" : 120, 
+    "DSHS Nurse Delegation Special Focus on Diabetes" : 120, 
     "DSHS Core Basic" : 75,        
     "DSHS 12 Hours Continuous Education Units" : 105, 
-    "DSHS Dementia Specialty" : 100, 
-    "DSHS Mental Health Specialty" : 100,
+    "DSHS Dementia Specialty" : 105, 
+    "DSHS Mental Health Specialty" : 105,
     "DSHS Safety and Orientation" : 60 
 }
 

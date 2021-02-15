@@ -96,10 +96,15 @@
                 </div> 
             </div>                
         </div>  
-        <% } else if(name == "DSHS Dementia Specialty" || name == "DSHS Mental Health Specialty" || name == "DSHS Safety and Orientation") { %>
+        <% } else if 
+                    (  name == "DSHS Dementia Specialty" || 
+                        name == "DSHS Mental Health Specialty" || 
+                        name == "DSHS Safety and Orientation" 
+                    )
+        { %>
         <div class="row justify-content-center">
             <div class="row">              
-                <div class="col-sm-12 col-md-4">
+                <div class="col-sm-12">
                 <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>                  
                     <ul class="list-group list-group-flush justify-content-between">
                         <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 10:00 a.m. - 6:30 p.m.</li>  
@@ -112,30 +117,39 @@
                 </div>                   
             </div>                
         </div> 
-        <% } else if (name == "DSHS 12 Hours Continuous Education Units"){ %>
+        <% } else if ( name == "DSHS 12 Hours Continuous Education Units" ){ %>
         <div class="row justify-content-center">
             <div class="row">              
-                <div class="col-sm-12 col-md-4">
+                <div class="col-sm-12 ">
                 <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>                  
                     <ul class="list-group list-group-flush justify-content-between">
-                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong><br> Tue/Wed | Sat/Sun <br> 12:00 - 6:30 p.m.</li>  
-                        <% course.forEach(course => { %>                       
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> Wed/Thur <br> 10:00 a.m. - 6:30 p.m.</li>  
+                        <% course.day_courses.forEach(course => { %>                       
                         <li class="list-group-item" >
-                            <a href="/train/<%=code%>/<%= course.courseId %>"><%=course.start_date%> - <%= course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                            <a href="/train/<%=code%>/<%= course.courseId %>"><%= course.start_date %> - <%= course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                        </li>
+                        <% }) %>
+
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> Sat/Sun <br> 12:00 p.m. - 6:30 p.m.</li>  
+                        <% course.weekend_courses.forEach(course => { %>                       
+                        <li class="list-group-item" >
+                            <a href="/train/<%=code%>/<%= course.courseId %>"><%= course.start_date%> - <%= course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
                         </li>
                         <% }) %>
                     </ul>
                 </div>                   
             </div>                
         </div>  
-        <% } else { %> 
+        <% } else if (
+                        name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
+                        name == "DSHS Nurse Delegation (CORE) for NAs and HCAs"
+                    ) 
+        { %> 
         <div class="container-fluid">
             <div class="row justify-content-center">              
                 <div class="col-sm-12 col-md-4">
-                    <div class="alert alert-primary" role="alert">
-                        A simple primary alert—check it out!
-                    </div>
-                <p class="diplay text-center mr-4">*Click on course dates to sign up. Reserve date and time to take/complete the course.*</p>                  
+                   
+                <p class="diplay text-left bg-warning">Our nurse delegation/diabetes are self-study.  Priority is given to students who sign up to reserve study materials.</p>                  
                     <ul class="list-group list-group-flush justify-content-between">
                         <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
                         <li  class="list-group-item" >
@@ -147,7 +161,23 @@
             </div>                
         </div>   
 
-       <% } %>             
+        <% } else { %>  
+            <div class="container-fluid">
+                <div class="row justify-content-center">              
+                    <div class="col-sm-12 col-md-4">
+                        
+                    <p class="diplay text-left">*Sign up to reserve date and time to complete your CPR/FA or BLS skill testing.  Priority is given to students who sign up to reserve study materials.</p>                  
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
+                            <li  class="list-group-item" >
+                                <a href="/train/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                            </li>
+                         
+                        </ul>
+                    </div>                   
+                </div>                
+            </div> 
+        <% } %>              
     </div> 
 </section>      
 

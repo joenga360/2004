@@ -65,14 +65,11 @@ app.all( "*", async( req, res, next ) => {
     //set conditionals for navbar header   
     res.locals.employer = false
     res.locals.lead = false
-
-    // console.log('req token', req.csrfToken())
-    //set csurf cookie
-    // res.cookie("XSRF-TOKEN", req.csrfToken())
    
     //get session cookie
     const sessionCookie = req.cookies.session || ""     
 
+    console.log('session cookie in index.js', sessionCookie)
     if( sessionCookie !== "" ) {
         admin
             .auth()

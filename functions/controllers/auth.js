@@ -105,11 +105,12 @@ module.exports = {
                             .then((sessionCookie) => {
 
                                 // Set cookie policy for session cookie.
-                                const options = { maxAge: expiresIn, httpOnly: true , secure: COOKIE_SECURE_BOOLEAN }
-
-                                res.setHeader('Cache-Control', 'private')
-                                res.cookie('__session', sessionCookie, options)                           
-                             
+                                const options = { maxAge: expiresIn , httpOnly: true , /*secure: COOKIE_SECURE_BOOLEAN*/ }
+                                console.log( 'session cookie', sessionCookie, 'options ', options )
+                               // res.setHeader('Cache-Control', 'private')
+                                console.log('session cookie ', sessionCookie)
+                               // res.cookie('__session', sessionCookie, options)                           
+                                res.cookie('session', sessionCookie, options)  
                                 console.log('We are getting here....')
                                 res.end(JSON.stringify({ status: 'success' }))
                               

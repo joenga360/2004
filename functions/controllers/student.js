@@ -17,7 +17,8 @@ module.exports = {
      */
     getDailyRegistrants: async ( req, res, next ) => {
         try {
-            console.log('ARE WE GETTING HERE.....')
+
+            console.log('we are getting in daily registrants --')
             //get today's date
             const today = moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")
 
@@ -89,7 +90,7 @@ module.exports = {
     },
     /**
      * student register self for an upcoming course
-     * params: id of the course
+     * params: id of the course, code
      * data: student information and stripe token if payment is made
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
@@ -97,11 +98,12 @@ module.exports = {
             //get req params
             const { code, id } = req.params 
             //get the long name of course stored in database
-            const course_name = await courseDbName(code, id)
-            console.log('course name', course_name)
+            const course = await courseDbName(code, id)
+
+            console.log('course --> ', course)
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
-            //trim first and last 
+            //check if there is an amount
             const amount = payment > 0 ? parseInt( payment ) : 0            
             //create a payment array
             const payments = []
@@ -121,12 +123,13 @@ module.exports = {
                 const card = await createCard( customer, stripeToken )
             
                 //create a charge
-                const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course_name )                
+                const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course.title )                
             
                 //add payment information
                 payments.unshift({
-                    course_name,
-                    id, amount,
+                    course_name: course.title,
+                    course_id: course.id, 
+                    amount,
                     chargeId,
                     last4: card.last4,
                     cardId: card.id,
@@ -136,31 +139,34 @@ module.exports = {
             } else {
                 //add course id to the student array of payment objects
                 payments.unshift({ 
-                    id, course_name, amount, 
+                    course_id : course.id, 
+                    course_name : course.title, 
+                    amount, 
                     created : firebase.firestore.Timestamp.fromDate(new Date())
-                })                  
-                
-                //add student to object
-                const student = await db.collection('students').add({   
-                    enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
-                    comments, email, first, last, tel, payments, status 
-                })         
-
-                //create postdata to send to mailchimp
-                const postData = studentData( email, first, last, tel, course.name,  course.start_date, course.end_date, student.id, course_id )              
-                //send student data to mailchimp list/audience for students
-                await subscribe( postData, STUDENT_LIST )
-                //segment
-                await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )
+                })                             
             } 
+
+            //add student to object
+            const student = await db.collection('students')
+                                    .add({   
+                                        enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
+                                        comments, email, first, last, tel, payments, status 
+                                    }) 
+
+             //create postdata to send to mailchimp
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id )              
+             //send student data to mailchimp list/audience for students
+            await subscribe( postData, STUDENT_LIST )
+             //segment
+            await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )
        
             //add this student to the registered segment of the list audience
             //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )  
                                                         
             res.status(201).json({
                 redirect: true,
-                redirect_url: (stripeToken && amount > 0) ? '/confirm-payment' :'/success',
-                message: 'You have signed up for '+ course.name
+                redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
+                message: 'You have signed up for '+ course.title
             })
 
         } catch (error){     
@@ -180,22 +186,10 @@ module.exports = {
     studentCourseSignUpByAdmin: async( req, res, next ) => {
         try{            
             //get the course id 
-            const course_id =  req.params.course_id
-            //fetch course using the above course id
-            const results = await db.collection('courses').doc( course_id ).get()  
-
-            const course = results.data()
-            //if the course does NOT exist, let the user know so - redirect to the courses page
-            if(course == null){
-                return res.status(401).json({
-                    message: 'No course with that ID',
-                    request:{
-                        url: `To view courses for signing up, visit the courses page.`,
-                        method: "GET"
-                    }
-                })
-            }
-            
+            const { course_id, code }  = req.params
+           
+            const course = courseDbName( code, course_id )
+                        
             //get the req.body data
             const { address, birthdate, city, comments, email, first, last, payment, state, tel, zip } = req.body 
             //add status data - did the student walk in before course starts and did they start class
@@ -209,30 +203,32 @@ module.exports = {
             //construct student date of birth date
             const DoB = moment.tz(dobArray[0] +" "+ dobArray[1]+" "+ dobArray[2], "YYYY MM DD", "America/Los_Angeles")
             const dob = DoB.toDate()
-      
-            //create course description to send to stripe
-            const course_name = moment.utc(course.start_date.toDate()).format("MMM DD") +' ' + course.name + ' ' + course.type + ' course' 
-            
+                  
             const payments = []
 
             const amount = payment > 0 ? parseInt(payment) : 0
             
-            payments.unshift({  created : firebase.firestore.Timestamp.fromDate(new Date()), course_name, course_id, amount })  
+            payments.unshift({  created : firebase.firestore.Timestamp.fromDate(new Date()), 
+                                course_name: course.data.title, 
+                                course_id, amount 
+                            })  
                        
             //save new student and the course after adding the new student
-            const student = await db.collection('students').add({    
-                                                    address, city, enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
-                                                    state, zip, tel, email, first, last, dob, payments, comments, status 
-                                                })           
+            const student = await db.collection('students')
+                                    .add({    
+                                        address, city, 
+                                        enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
+                                        state, zip, tel, email, first, last, dob, payments, comments, status 
+                                    })           
             //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.name, course.start_date, course.end_date, student.id, course_id, status )
+            const postData = studentData( email, first, last, tel, course.data.title, course.data.start_date, course.data.end_date, student.id, course_id, status )
             //add student to the mailchimp
             await subscribe( postData, STUDENT_LIST )
             //add this student to the registered segment of the list audience
-            await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )
+            //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )
             
             res.status(201).json({
-                 message: `Admin has successfully added the student to ${course_name}.`,  
+                 message: `Admin has successfully added the student to ${course.data.title}.`,  
                  redirect: true,
                  redirect_url: "/courses/"+course_id             
         
