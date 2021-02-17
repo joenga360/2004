@@ -59,17 +59,16 @@ app.use(cookieParser())
 
 //set the environment variables
 setEnvironment()   
-//Get user info and set csurf cooke
+
 app.all( "*", async( req, res, next ) => {
 
     //set conditionals for navbar header   
-    res.locals.employer = false
+    res.locals.admin = false
     res.locals.lead = false
    
     //get session cookie
     const sessionCookie = req.cookies.session || ""     
-
-    console.log('session cookie in index.js', sessionCookie)
+  
     if( sessionCookie !== "" ) {
         admin
             .auth()
@@ -81,7 +80,7 @@ app.all( "*", async( req, res, next ) => {
             .catch((error) => {
                 console.log('ERROR IN THE INDEX ....JS.....', error)
                 res.clearCookie("session")                    
-               // res.redirect("/");
+                //res.redirect("/");
                 next()
             });
     } else {
@@ -92,6 +91,7 @@ app.all( "*", async( req, res, next ) => {
     }
 })  
 
+
 // app.use(cookieSession({name: 'session', keys: ['key1']}))
 // console.log('Before routes...')
 app.use('/', require('./routes/site'))
@@ -100,5 +100,8 @@ app.use('/auth', require('./routes/auth'))
 app.use('/courses', require('./routes/course'))
 app.use('/job', require('./routes/job'))
 app.use('/students', require('./routes/student'))
+
+//Get user info and set csurf cooke
+
 
 exports.app = functions.https.onRequest(app)

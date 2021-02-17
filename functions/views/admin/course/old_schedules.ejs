@@ -14,47 +14,78 @@
                         <% }) %>                            
                     </select>
                 </div>
-                <!-- CNA CLASSES -->
+                <!-- CNA & Adult CPR/FA CLASSES -->
                 <div class="row justify-content-center" id="main_course_div">
-                    <!--CNA DAY CLASSES  -->
+                    <!--CNA & Adult CPR/FA DAY CLASSES  -->
                     <div class="col-md-4 col-sm-12"> 
-                        <!--CNA DAY CLASSES  -->                                                
-                        <ul class="list-group list-group-flush justify-content-between cna_ul">
-                            <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
-                            <% if(transfer) { %> 
-                                <% courses.cna.day_courses.forEach( course =>{ %>
-                                    <li class="list-group-item" >
-                                        <%=course.start_date %> - <%=course.end_date %> 
-                                        <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                    </li>
-                                <% }) %>
-                            <% } else { %>
-                                <% courses.cna.day_courses.forEach(course =>{ %>
-                                    <li class="list-group-item text-center"><a href= "/admin/student_register/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
-                                <% }) %>
-                            <% } %>
-                        </ul>  
-                                              
+                    <!--CNA DAY CLASSES  -->                                                
+                    <ul class="list-group list-group-flush justify-content-between cna_ul">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
+                        <% if(transfer) { %> 
+                            <% courses.cna.day_courses.forEach(course =>{ %>
+                                <li class="list-group-item" >
+                                    <%=course.start_date %> - <%=course.end_date %> 
+                                    <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <% courses.cna.day_courses.forEach(course =>{ %>
+                                <li class="list-group-item text-center"><a href= "/admin/student_register/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>  
+                    <!-- CPR DAY CLASSES -->                          
+                    <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display:none;">
+                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS </strong><br> 9:00 a.m. - 3:00 p.m.</li>     
+                        <% if(transfer) { %> 
+                            <% courses.cpr.day_courses.forEach(course => { %>
+                                <li class="list-group-item" >
+                                    <%= course.start_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <% courses.cpr.day_courses.forEach(course =>{ %>
+                                <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" class="course_link" > <%= course.start_date %></a></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>                        
                     </div>
-                    <!-- CNA EVENING CLASSES -->
+                    <!-- CNA & Adult CPR/FA EVENING CLASSES -->
                     <div class="col-md-4 col-sm-12">   
-                        <!-- CNA EVENING CLASSES -->                                                         
-                        <ul class="list-group list-group-flush justify-content-between cna_ul">
-                            <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks long <br> 3:00 p.m. - 9:00 p.m.</li>  
-                            <% if (transfer) { %> 
-                                <% courses.cna.evening_courses.forEach(course => { %>
-                                    <li class="list-group-item" >
-                                        <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                    </li>
-                                <% }) %>
-                            <% } else { %>
-                                <% courses.cna.evening_courses.forEach(course => { %>
-                                    <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" class="course_link" > <%= course.start_date %> - <%= course.end_date %></a></li>
-                                <% }) %>
-                            <% } %>                                             
-                        </ul>
+                    <!-- CNA EVENING CLASSES -->                                                         
+                    <ul class="list-group list-group-flush justify-content-between cna_ul">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks long <br> 3:00 p.m. - 9:00 p.m.</li>  
+                        <% if(transfer) { %> 
+                            <% courses.cna.evening_courses.forEach(course => { %>
+                                <li class="list-group-item" >
+                                    <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <% courses.cna.evening_courses.forEach(course =>{ %>
+                                <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" class="course_link" > <%= course.start_date %> - <%= course.end_date %></a></li>
+                            <% }) %>
+                        <% } %>                                             
+                    </ul>
+                
+                    <!-- CPR/FA EVENING CLASSES -->
+                    <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display:none;">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong> <br> 3:00 p.m. - 9:00 p.m.</li>   
+                        <% if(transfer) { %> 
+                            <% courses.cpr.evening_courses.forEach(course => { %>
+                                <li class="list-group-item" >
+                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <% courses.cpr.evening_courses.forEach(course => { %>
+                                <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" class="course_link" > <%= course.start_date %> </a></li>
+                            <% }) %>
+                        <% } %>                    
+                    </ul>
+
                     </div> 
-                    <!-- CNA WEEKEND CLASSES -->
+                    <!-- CNA & Adult CPR/FA WEEKEND CLASSES -->
                     <div class="col-md-4 col-sm-12">
                         <!-- CNA WEEKEND CLASS -->
                         <ul class="list-group list-group-flush justify-content-between cna_ul">
@@ -70,7 +101,22 @@
                                     <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" > <%= course.start_date %> - <%= course.end_date %></a></li>
                                 <% }) %>
                             <% } %>                                   
-                        </ul>                        
+                        </ul>
+                        <!-- CPR/FA WEEKEND CLASS -->
+                        <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display: none;">
+                            <li class="list-group-item list-group-item-primary text-dark"> <strong> WEEKEND CLASS </strong><br> 10:00 a.m. - 4:00 p.m.</li>  
+                            <% if(transfer) { %> 
+                                <% courses.cpr.weekend_courses.forEach(course => { %>
+                                    <li class="list-group-item" >
+                                        <%= course.start_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    </li>
+                                <% }) %>
+                            <% } else { %>
+                                <% courses.cpr.weekend_courses.forEach(course => { %>
+                                    <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>" > <%= course.start_date %> </a></li>
+                                <% }) %>
+                            <% } %>                                                 
+                        </ul>
                     </div> 
                 </div>
                 <!-- BRIDGING CLASSES -->
@@ -115,106 +161,20 @@
                         </ul>                
                     </div>  
                 </div>
-
-                <!-- HCA/75 HOURS CLASSES -->
-                <div class="row justify-content-center" id="hca_div" style="display:none;">
-                    <!-- HCA/75 HOURS WEEKDAY (DAY) CLASSES -->
-                    <div class="col-md-5 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between">
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br> [Mon, Tue, Wed][Wed, Thu, Fri] <br> 10:00 a.m. - 5:30 p.m.</li>      
-                            <% if(transfer){ %>
-                                <% courses.hca.day_courses.forEach(course => { %>  
-                                <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                </li>
-                                <% }) %>
-                            <% } else { %> 
-                                <% courses.hca.day_courses.forEach(course => { %>                            
-                                <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
-                                </li> 
-                                <% }) %> 
-                            <% } %>               
-                                                
-                        </ul>                
-                    </div>
-                    <!-- HCA/75 HOURS WEEKEND CLASSES -->
-                    <div class="col-md-5 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between">                                
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br>  [Fri, Sat, Sun, Mon][Fri, Sat, Sun] <br> 11:00 a.m. - 7:30 p.m.</li>      
-                            <% if(transfer){ %>
-                                <% courses.hca.weekend_courses.forEach(course => { %>  
-                                <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                </li>
-                                <% }) %>
-                            <%} else { %> 
-                                <% courses.hca.weekend_courses.forEach(course => { %>                            
-                                <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
-                                </li> 
-                                <% }) %> 
-                            <% } %>                                               
-                        </ul>                
-                    </div>  
-                </div>
-             
-                <!-- CEU CLASSES -->
-                <div class="row justify-content-center" id="ceu_div" style="display:none;">
-                    <!-- CEU WEEKDAY (DAY) CLASSES -->
-                    <div class="col-md-5 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between">
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br> [Mon, Tue, Wed][Wed, Thu, Fri] <br> 10:00 a.m. - 5:30 p.m.</li>      
-                            <% if(transfer) { %>
-                                <% courses.ceu.day_courses.forEach(course => { %>  
-                                <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                </li>
-                                <% }) %>
-                            <% } else { %> 
-                                <% courses.ceu.day_courses.forEach(course => { %>                            
-                                <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
-                                </li> 
-                                <% }) %> 
-                            <% } %>               
-                                                
-                        </ul>                
-                    </div>
-                    <!-- HCA/75 HOURS WEEKEND CLASSES -->
-                    <div class="col-md-5 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between">                                
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br>  [Fri, Sat, Sun, Mon][Fri, Sat, Sun] <br> 11:00 a.m. - 7:30 p.m.</li>      
-                            <% if(transfer) { %>
-                                <% courses.ceu.weekend_courses.forEach(course => { %>  
-                                <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
-                                </li>
-                                <% }) %>
-                            <%} else { %> 
-                                <% courses.ceu.weekend_courses.forEach(course => { %>                            
-                                <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
-                                </li> 
-                                <% }) %> 
-                            <% } %>                                               
-                        </ul>                
-                    </div>  
-                </div>
-                <!-- SO CLASSES -->  
-                <div class="row justify-content-center" id="so_div" style="display:none;">
+                <!-- BLS CLASSES -->  
+                <div class="row justify-content-center" id="bls_div" style="display:none;">
                     <!-- BLS WEEKEND CLASSES -->                 
                     <div class="col-md-6 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between so_ul">
+                        <ul class="list-group list-group-flush justify-content-between bls_ul">
                             <li class="list-group-item list-group-item-primary text-dark"><strong>WEEKDAY/WEEKEND CLASS </strong><br> Tue / Sat <br> 11:00 a.m. - 3:00 p.m.</li>                       
                             <% if(transfer){ %>
-                                <% courses.so.forEach(course => { %>  
+                                <% courses.bls.forEach(course => { %>  
                                     <li class="list-group-item" >
                                         <%= course.start_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
                                     </li>
                                 <% }) %>
                             <%} else { %> 
-                                <% courses.so.forEach(course => { %>                            
+                                <% courses.bls.forEach(course => { %>                            
                                 <li class="list-group-item text-center" >
                                     <a href="/admin/student_register/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                                 </li> 

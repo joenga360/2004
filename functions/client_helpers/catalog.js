@@ -19,7 +19,7 @@ module.exports = {
             "url": "/learn/cna",
             "clinical": "Due to COVID19, find a paid (not volunteer) job with your NAR license and 40 hours of that paid work under RN/LPN supervision will substitute for clinical training.",
             "labs": "24 hours",
-            "upsell": "Save $ 200.00 if you get CNA, Mental Health, Dementia, Safety and Orientation, Traumatic Brain Injury, Navigating Through Challenging Behavior, Nurse Delegation and Diabetes certifications with us.  These certifications will improve your job prospects, allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice) and therefore get a higher pay."
+            "upsell": "Save $ 200.00 if you get CNA, Mental Health, Dementia, Safety and Orientation, Navigating Through Challenging Behavior, Nurse Delegation and Diabetes certifications with us.  These certifications will improve your job prospects, allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice) and therefore get a higher pay."
         },  
 
         {
@@ -35,7 +35,7 @@ module.exports = {
             "url": "/learn/hca",
             "clinical": "None.",
             "labs": "16 - 20 hours",
-            "upsell": "Improve your job prospects by getting Traumatic Brain Injury, Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
+            "upsell": "Improve your job prospects by getting Nurse Delegation and Diabetes certifications.  These certifications will allow to care for clients with different (chronic) conditions and get delegated by a nurse (expand your scope of practice)."
 
         },
 

@@ -60,21 +60,35 @@ module.exports = {
                                     .orderBy('start_date')   
                                     .get()  
 
+            const reservations = await db.collection('reservations')                        
+                                         .get()         
+
+            const signups = reservations.docs.map( x => {
+                                //
+                                return  {
+                                    'end_date':  null, 
+                                    'name': x.data().name,                            
+                                    'start_date': moment(start).format("MMM DD"),
+                                    'type': x.data().type,
+                                    'id': x.id
+                                }
+                            })
+
             const docs = results.docs
 
             const classes = docs.filter(doc => moment( doc.data().start_date.toDate() ).isAfter(moment(today)) )
-                        .map(x=> {
-                            start = x.data().start_date.toDate()
-                            end = x.data().end_date ? x.data().end_date.toDate() : null
-                        
-                            return{                            
-                                'end_date': end ? moment(end).format("MMM DD") : null, 
-                                'name': x.data().name,                            
-                                'start_date': moment(start).format("MMM DD"),
-                                'type': x.data().type,
-                                'id': x.id
-                            }                        
-                        })  
+                                .map(x=> {
+                                    start = x.data().start_date.toDate()
+                                    end = x.data().end_date ? x.data().end_date.toDate() : null
+                                
+                                    return {                            
+                                        'end_date': end ? moment(end).format("MMM DD") : null, 
+                                        'name': x.data().name,                            
+                                        'start_date': moment(start).format("MMM DD"),
+                                        'type': x.data().type,
+                                        'id': x.id
+                                    }                        
+                                })  
 
             if( classes.length > 0 ){            
                 

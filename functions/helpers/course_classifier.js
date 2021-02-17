@@ -49,7 +49,7 @@ module.exports = {
 
             so : {
                 day_courses : courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Day"),
-                weekend_courses: courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Weekend")
+                // weekend_courses: courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Weekend")
             },
 
             dementia : {

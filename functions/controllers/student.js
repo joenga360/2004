@@ -100,7 +100,6 @@ module.exports = {
             //get the long name of course stored in database
             const course = await courseDbName(code, id)
 
-            console.log('course --> ', course)
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
             //check if there is an amount

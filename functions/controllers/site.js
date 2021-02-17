@@ -63,7 +63,7 @@ module.exports = {
                 course_name == "BLS Course Skill Testing" || 
                 course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
                 course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
-                course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+                course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" 
             ){
               
                 const title = `${ course_name } Sign Up Form`
@@ -263,18 +263,18 @@ module.exports = {
             const docs = results.docs
 
             const classes = docs.filter(doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(moment(today)) )
-                        .map(x=> {
-                            start = x.data().start_date.toDate()
-                            end = x.data().end_date ? x.data().end_date.toDate() : null
-                        
-                            return{                            
-                                'end_date': end ? moment(end).format("MMM DD") : null, 
-                                'name': x.data().name,                            
-                                'start_date': moment(start).format("MMM DD"),
-                                'type': x.data().type,
-                                'id': x.id
-                            }                        
-                        })  
+                                .map(x=> {
+                                    start = x.data().start_date.toDate()
+                                    end = x.data().end_date ? x.data().end_date.toDate() : null
+                                
+                                    return{                            
+                                        'end_date': end ? moment(end).format("MMM DD") : null, 
+                                        'name': x.data().name,                            
+                                        'start_date': moment(start).format("MMM DD"),
+                                        'type': x.data().type,
+                                        'id': x.id
+                                    }                        
+                                })  
 
            
             if(classes.length > 0 ) {
