@@ -19,10 +19,7 @@ module.exports = {
             })
             .catch((error) => {
                 console.log('error in authenticate ', error)
-                return res.redirect("/admin/signin")
-            });
-
-   
-    }    
-  
+                res.redirect("/admin/signin")
+            })   
+    } 
 }

@@ -163,8 +163,7 @@ module.exports = {
                 //if the course does NOT exist, let the user know so - redirect to the courses page
                 if(!course){                 
                     return res.status(201).json({ message: 'No such course exists' })   
-                }    
-
+                }
 
                 return {
                     title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',                  
@@ -177,5 +176,32 @@ module.exports = {
         } catch (error) {
             console.log('error ', error)
         }
-    }
+    },
+
+    /**
+     * 
+     * @param {String} course_name 
+     * @returns {String} 
+     */
+
+    codeName: ( course_name ) => {
+        console.log('course name---', course_name.substring(7))
+
+        const courses = { 
+            "CNA" : "cna",
+            "DSHS Home Care Aide/75 Hours" : "hca",
+            "Adult CPR/First Aid/AED Course Skill Testing" : "cpr",
+            "BLS Course Skill Testing" : "bls",
+            "HCA to CNA Bridging" : "bridging",
+            "DSHS Nurse Delegation (CORE) for NAs and HCAs" : "delegation", 
+            "DSHS Nurse Delegation Special Focus on Diabetes" : "diabetes" , 
+            "DSHS Core Basic" : "core",        
+            "DSHS 12 Hours Continuous Education Units" : "ceu", 
+            "DSHS Dementia Specialty" : "dementia", 
+            "DSHS Mental Health Specialty" : "mh", 
+            "DSHS Safety and Orientation" : "so"
+        }
+
+        return courses[course_name]
+    }    
 }

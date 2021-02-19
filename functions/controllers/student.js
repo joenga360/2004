@@ -3,7 +3,7 @@ const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { studentData, segment, segmentURL, subscribe  } = require("../helpers/subscribe")
-const { courseDbName } = require('../helpers/course_classifier')
+const { courseDbName, codeName } = require('../helpers/course_classifier')
 
 //create reference for firestore database
 const db = firebase.firestore()
@@ -24,8 +24,8 @@ module.exports = {
 
             //query student collection
             const results = await db.collection('students')
-                                .orderBy('enrolledOn')
-                                .get()
+                                    .orderBy('enrolledOn')
+                                    .get()
             //get student documents
             const docs = results.docs
            
@@ -49,8 +49,15 @@ module.exports = {
                         'payment': registrant.data().payments.reduce(( sum, payment ) => {                           
                             //
                             let total = Object.entries(sum).length > 0 ? parseInt(sum.amount) + parseInt(payment.amount) : parseInt(payment.amount)                          
-                            
-                            return sum = { 'amount': total, "name": payment.course_name, "course_id": payment.course_id }
+                            console.log(payment.course_name)
+                            sum = { 
+                                            "amount": total, 
+                                            "name": payment.course_name,
+                                            "code": codeName(payment.course_name), 
+                                            "course_id": payment.course_id 
+                                        }
+                            console.log('sum in payment attribute', sum)
+                            return sum
 
                         }, {})
                     }

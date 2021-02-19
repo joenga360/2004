@@ -65,30 +65,32 @@ app.all( "*", async( req, res, next ) => {
     //set conditionals for navbar header   
     res.locals.admin = false
     res.locals.lead = false
+
+    next()
    
     //get session cookie
-    const sessionCookie = req.cookies.session || ""     
+    // const sessionCookie = req.cookies.session || ""     
   
-    if( sessionCookie !== "" ) {
-        admin
-            .auth()
-            .verifySessionCookie( sessionCookie, true /** checkRevoked */)
-            .then(() => {           
-                res.locals.admin = true
-                next()                            
-            })
-            .catch((error) => {
-                console.log('ERROR IN THE INDEX ....JS.....', error)
-                res.clearCookie("session")                    
-                //res.redirect("/");
-                next()
-            });
-    } else {
-        res.locals.admin = false
-        res.clearCookie("session")         
-       // res.redirect("/")
-       next()
-    }
+    // if( sessionCookie !== "" ) {
+    //     admin
+    //         .auth()
+    //         .verifySessionCookie( sessionCookie, true /** checkRevoked */)
+    //         .then(() => {           
+    //             res.locals.admin = true
+    //             next()                            
+    //         })
+    //         .catch((error) => {
+    //             console.log('ERROR IN THE INDEX ....JS.....', error)
+    //             res.clearCookie("session")                    
+    //             //res.redirect("/");
+    //             next()
+    //         });
+    // } else {
+    //     res.locals.admin = false
+    //     res.clearCookie("session")         
+    //    // res.redirect("/")
+    //    next()
+    // }
 })  
 
 
