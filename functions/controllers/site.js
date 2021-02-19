@@ -61,7 +61,7 @@ module.exports = {
 
             if(
                 course_name == "BLS Course Skill Testing" || 
-                course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                course_name == "Adult CPR/First Aid/AED Skill Testing" || 
                 course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
                 course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" 
             ){
@@ -177,7 +177,7 @@ module.exports = {
 
             if(
                 course_name == "BLS Course Skill Testing" || 
-                course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                course_name == "Adult CPR/First Aid/AED Skill Testing" || 
                 course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
                 course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
             ){

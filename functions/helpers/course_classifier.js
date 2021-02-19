@@ -22,7 +22,7 @@ module.exports = {
             }
         })
      
-        console.log('THE COURSES ARRAY', courses )
+        // console.log('THE COURSES ARRAY', courses )
        
         return {            
        
@@ -50,6 +50,22 @@ module.exports = {
             so : {
                 day_courses : courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Day"),
                 // weekend_courses: courses.filter(course => course.name === "DSHS Safety and Orientation" && course.type === "Weekend")
+            },           
+
+            delegation: {
+                day_courses : courses.filter( course => course.name === "DSHS Nurse Delegation (CORE) for NAs and HCAs")
+            },
+
+            diabetes: {
+                day_courses : courses.filter( course => course.name === "DSHS Nurse Delegation Special Focus on Diabetes")
+            },
+
+            cpr: {
+                day_courses : courses.filter( course => course.name === "Adult CPR/First Aid/AED Skill Testing" && course.type === "Day")
+            },
+
+            bls: {
+                day_courses : courses.filter( course => course.name === "BLS Course Skill Testing" && course.type === "Day")
             },
 
             dementia : {
@@ -60,8 +76,7 @@ module.exports = {
             ceu : {
                 day_courses : courses.filter(course => course.name === "DSHS 12 Hours Continuous Education Units" && course.type === "Day"),
                 weekend_courses: courses.filter(course => course.name ===  "DSHS 12 Hours Continuous Education Units" && course.type === "Weekend")
-            },
-
+            }
         }
     },
 /**
@@ -137,7 +152,7 @@ module.exports = {
                     title: course.name +' course',
                     data : results.data(),
                     id: results.id,
-                   // start_date: moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")                   
+                    course: false                  
                 } 
                                         
             } else {
@@ -150,13 +165,12 @@ module.exports = {
                     return res.status(201).json({ message: 'No such course exists' })   
                 }    
 
-                //create course description to send to stripe
 
                 return {
                     title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',                  
                     data: results.data(),
-                    id: results.id
-                 
+                    id: results.id,
+                    course: true                 
                 } 
                
             }

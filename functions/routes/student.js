@@ -5,9 +5,9 @@ const authenticate = require("../helpers/authenticate")
 //student registers self for a course on public site
 router.route('/register/:code/:id').post( studentController.studentSelfCourseSignUp )
 //admin registers a new student
-router.route('/start/:code/:course_id').post( /*authenticate.isAdmin, */ studentController.studentCourseSignUpByAdmin ) 
+router.route('/start/:course_id/:code').post( authenticate.isAdmin,  studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 
-router.route('/update/:course_id').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
+router.route('/update/:course_id/:code').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
 //admin transfers a student
 router.route('/transfer').patch( authenticate.isAdmin,  studentController.transferStudent ) 
 //admin unenroll a student

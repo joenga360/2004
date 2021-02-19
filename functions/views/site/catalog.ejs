@@ -153,35 +153,39 @@
 </script>
 
 <section class="p-5 mt-3">
-  <h1 class="text-sm-center text-dark font-weight-bold">CNA, DSHS caregiver and CPR/First Aid courses</h1>
-  <% courses.forEach(course => { %> 
-    <div class="container-fluid p-3">  
-      <div class="row justify-content-center">
-        <div class="col-sm-8 col-md-6">
-          <div class="card">
+    <div class="container-fluid p-3">     
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-md-6">
+                <h1 class="text-sm-center text-dark font-weight-bold">CNA, DSHS caregiver and CPR/First Aid courses</h1>
+                <p class="text-white text-left bg-success font-weight-bold">
+                    Course offered include: CNA, HCA/75 hours, HCA to CNA Bridging, CEUs, CPR/First Aid/AED, Mental Health and Demential Specialty, Nurse Delegation and Diabetes, Safety and Orientation.
+                </p>    
+        <% courses.forEach(course => { %>    
+            <div class="card">
             <h4 class="card-header bg-dark text-white"><%= course.name %> course</h4>
             <div class="card-body">
-              <h5 class="card-title">Learning Mode: <%=course.mode %></h5>
-              <p class="card-text"><strong>Cost: </strong> $ <%=course.cost %>.00</p>
+                <h5 class="card-title">Learning Mode: <%=course.mode %></h5>
+                <p class="card-text"><strong>Cost: </strong> $ <%=course.cost %>.00</p>
                             
-              <p class="card-text"><strong>Requirements: </strong><%= course.requirements%></p>
+                <p class="card-text"><strong>Requirements: </strong><%= course.requirements%></p>
                 
               
-              <p class="card-text"><strong>Length: </strong> <%= course.length %> </p>
-              <p class="card-text"><strong>School skill labs: </strong> <%= course.labs %> | <strong>Clinical: </strong> <%=course.clinical%></p>
-              <p class="card-text"><strong>Description: </strong><%= course.description %></p>          
+                <p class="card-text"><strong>Length: </strong> <%= course.length %> </p>
+                <p class="card-text"><strong>School skill labs: </strong> <%= course.labs %> | <strong>Clinical: </strong> <%=course.clinical%></p>
+                <p class="card-text"><strong>Description: </strong><%= course.description %></p>          
             
-              <% if( course.name ==  "Certified Nurse Assistant/CNA" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours" ) { %>
-                <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>   
-                <p class="card-text font-weight-bold text-dark bg-warning p-2"><%= course.upsell %></p>                   
-              <% } %>      
+                <% if( course.name ==  "Certified Nurse Assistant/CNA" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours" ) { %>
+                    <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>   
+                    <p class="card-text font-weight-bold text-dark bg-warning p-2"><%= course.upsell %></p>                   
+                <% } %>      
               
-              <a href="<%=course.url%>" class="btn btn-primary"> View upcoming classes </a>
+                <a href="<%=course.url%>" class="btn btn-primary"> View upcoming classes </a>
             </div>
-          </div>
+            </div> <br>
+        <% }) %> 
         </div> 
-      </div>
-    </div>
-  <% }) %>     
+      </div>    
+ 
+</div>
 </section>
 

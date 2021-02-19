@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div>          
-                <h4 class="text-dark text-center p-3" ><%=course.start_date%> <%=course.name%> <%=course.type%> class sign up form</h4>
+                <h4 class="text-dark text-center p-3" ><%= title %> sign up form</h4>
                 <!--BEGINNING OF THE FORM-->
                 <% if(update){ %>
                     <form class="text-muted" ref="form" id="updateForm">
@@ -15,7 +15,7 @@
                                         <input type="checkbox" class="form-check-input" name ="course_start" value="<%=student.status.course_start%>" checked>
                                         <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
                                     <% } else{ %>
-                                        <input type="checkbox" class="form-check-input" name ="course_start" value=true>
+                                        <input type="checkbox" class="form-check-input" name ="course_start" value=true required>
                                         <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
                                     <% } %>
 
@@ -23,7 +23,7 @@
                                         <input type="checkbox" class="form-check-input" name="walk_in" value="<%=student.status.walk_in%>" checked>
                                         <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
                                     <% } else { %>
-                                        <input type="checkbox" class="form-check-input" name="walk_in" value=true>
+                                        <input type="checkbox" class="form-check-input" name="walk_in" value=true required>
                                         <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
                                     <% } %>
                                 </div>
@@ -108,11 +108,30 @@
                                                                                               
                                 </div>
                             </div>
+                        </div>   
+                        
+                        <!-- MODE OF PAYMENT -->
+                        <div class="row m-2"> 
+                            <label for="payment">Mode of Payment</label>
+                            <div class="col-sm-12 bg-danger">                               
+                                <div class="form-check form-check-inline">   
+                                    
+                                        <input type="radio" class="form-check-input" name ="payment_mode" value="Cash">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="cash">Cash</label>                          
+
+                                        <input type="radio" class="form-check-input" name="payment_mode" value="Check/Money Order">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="check">Check/Money Order </label>
+
+                                        <input type="radio" class="form-check-input" name="payment_mode" value="Credit/Debit card">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="card">Credit/Debit card </label>
+                                  
+                                </div>
+                            </div>                            
                         </div>
-    
+
                         <!--COMMENTS AND QUESTIONS-->
                         <div class="row">
-                            <div class="col-md-12 col-sm-10">
+                            <div class="col-sm-10 col-md-12">
                                 <div class="form-group">
                                     <label for="comments">Comments</label>
                                     <textarea class="form-control" name="comments" cols="15" rows="5" placeholder="Enter your comments or questions"><%= student.comments %></textarea>                          
@@ -212,7 +231,25 @@
                                     <input type="text" class="form-control" name="payment">                                                              
                                 </div>
                             </div>
-                        </div>    
+                        </div>   
+                        <!-- MODE OF PAYMENT -->
+                        <div class="row m-2"> 
+                            <label for="payment">Mode of Payment</label>
+                            <div class="col-sm-12 bg-danger">                               
+                                <div class="form-check form-check-inline">   
+                                    
+                                        <input type="radio" class="form-check-input" name ="payment_mode" value="Cash">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="cash">Cash</label>                          
+
+                                        <input type="radio" class="form-check-input" name="payment_mode" value="Check/Money Order">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="card">Check/Money Order </label>
+
+                                        <input type="radio" class="form-check-input" name="payment_mode" value="Credit/Debit card">
+                                        <label class="text-white font-weight-bold form-check-label mx-3" for="card">Credit/Debit card </label>
+                                  
+                                </div>
+                            </div>                            
+                        </div> 
                         <!--COMMENTS AND QUESTIONS-->
                         <div class="row">
                             <div class="col-md-12 col-sm-10">
@@ -233,11 +270,13 @@
 <script>
     $(document).ready(() => {
 
-        //get the course 
-        const course = (<%-JSON.stringify(course)%>)
+        //get the course id
+        const courseId = (<%-JSON.stringify( courseId )%>)
+       //get the abbreviation of course
+       const code = (<%-JSON.stringify( code )%>)
+       //get the course title
+       const title = (<%-JSON.stringify( title )%>)
        
-        //get course id
-        const course_id = course.courseId
         //handle form submit click for registering student
         $('#signUpForm').on('submit', e => {
             //prevent default behavior
@@ -260,7 +299,7 @@
             //if the student start course, send data to GA
             if(studentData.course_start){
                 //set event name
-                const course_start_event_name = 'Start '+ course.name +" "+ course.type + ' training' 
+                const course_start_event_name = 'Start '+ title + ' training' 
                 //send data to GA
                 gtag('event', course_start_event_name, {
                     'event_category': 'Course start',
@@ -272,7 +311,7 @@
             //if the student start course, send data to GA
             if(studentData.walk_in){
                 //set event name : walk in a
-                const walk_in_event_name = 'Walk in before start of '+ course.name +" "+ course.type + ' training'
+                const walk_in_event_name = 'Walk in before start of '+ title + ' training'
                 //send data to GA
                 gtag('event', walk_in_event_name, {
                     'event_category': 'Walk In Before Course Start',
@@ -286,15 +325,14 @@
                  debugger
                  //send data to GA         
                 gtag('event', 'purchase', {
-                    "transaction_id": course_id,
+                    "transaction_id": courseId,
                     "affiliation": "EHCT - Admin Course Registration",  
                     "currency": "USD",  
                     "items": [
                         {
-                            "id": course_id,
-                            "name": course.name,     
-                            "category": "Courses", //course_name,
-                            "variant": course.type,     
+                            "id": courseId,
+                            "name": title,     
+                            "category": "Courses", //course_name,                               
                             "quantity": 1,
                             "price": parseInt(studentData.payment)
                         }
@@ -304,11 +342,11 @@
             debugger
             $.ajax({
                 type: 'POST', 
-                url: '/students/start/'+course_id,
+                url: '/students/start/'+courseId+'/'+code,
                 credentials: 'same-origin', // <-- includes cookies in the request
-                headers: {
-                    'CSRF-Token': Cookies.get("XSRF-TOKEN")
-                },
+                // headers: {
+                //     'CSRF-Token': Cookies.get("XSRF-TOKEN")
+                // },
                 dataType: "json",
                 data: studentData,
             }).done(function (response) {
@@ -356,7 +394,7 @@
                 //if the student start course, send data to GA
                 if( studentData.course_start ){
                     //set event name
-                    const course_start_event_name = course_start_phrase + ' '+ course.name +" "+ course.type + ' training' 
+                    const course_start_event_name = title + ' training' 
                     //send data to GA
                     gtag('event', course_start_event_name, {
                         'event_category': course_start_phrase,
@@ -372,7 +410,7 @@
                 //if the student start course, send data to GA
                 if(studentData.walk_in){
                     //set event name : walk in a
-                    const walk_in_event_name = walk_in_phrase +' Before ' + course.name +" "+ course.type + ' training'
+                    const walk_in_event_name = walk_in_phrase +' Before ' + title + ' training'
                     //send data to GA
                     gtag('event', walk_in_event_name, {
                         'event_category': walk_in_phrase +' Before Course Start',
@@ -387,15 +425,14 @@
             if(parseInt(studentData.payment) > 0){
                 //send data to GA         
                 gtag('event', 'purchase', {
-                    "transaction_id": course_id,
+                    "transaction_id": courseId,
                     "affiliation": "EHCT - Admin Course Update",  
                     "currency": "USD",  
                     "items": [
                         {
-                            "id": course_id,
-                            "name": course.name,     
-                            "category": "Courses", //course_name,
-                            "variant": course.type,     
+                            "id": courseId,
+                            "name": title,     
+                            "category": "Courses", //course_name,                             
                             "quantity": 1,
                             "price": parseInt(studentData.payment)
                         }
@@ -406,11 +443,11 @@
            
             $.ajax({
                 type: 'PATCH', 
-                url: '/students/update/'+course_id,
+                url: '/students/update/'+courseId+'/'+code,
                 credentials: 'same-origin', // <-- includes cookies in the request
-                headers: {
-                    'CSRF-Token':  Cookies.get("XSRF-TOKEN")
-                },
+                // headers: {
+                //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
+                // },
                 dataType: "json",
                 data: studentData,
             }).done(function (response) {

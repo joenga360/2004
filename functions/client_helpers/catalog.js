@@ -94,7 +94,7 @@ module.exports = {
         },
 
         {
-            "name" : "Adult CPR/First Aid/AED Course Skill Testing",
+            "name" : "Adult CPR/First Aid/AED Skill Testing",
             "cost": 50.00,
             "length" : "1 hour",
             "description" : "Heartcode Adult CPR/First Aid/AED course is for long term care workers in community settings such as skilled nursing facility, assisted living homes, senior living, home care agencies and adult family homes.  Our instructors are qualified to teach and certify in both American Red Cross and American Heart Association curricula.  The adult CPR/First Aid/AED covers single rescuer CPR, use of AED and face shield, and first aid and related injuries and conditions.",

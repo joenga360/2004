@@ -58,7 +58,7 @@
                                     <td><%=student.email %></td>                            
                                     <td><%=student.amount %></td>
                                     <td>
-                                        <a href="/admin/update/<%=course.course_id %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                        <a href="/admin/update/<%=course.course_id %>/<%=code%>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
                                         <a data_student_id="<%=student.student_id%>", data_course_id = '<%= course.course_id %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
                                         <a href="/students/unenroll/<%= student.student_id %>/<%= course.course_id %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
                                     </td>                         

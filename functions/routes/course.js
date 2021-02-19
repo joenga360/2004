@@ -2,10 +2,20 @@ const router = require('express-promise-router')()
 const courseController = require('../controllers/course')
 const authenticate = require("../helpers/authenticate")
 
+//route to add a course
+router.route('/add')
+      .post(authenticate.isAdmin, courseController.addCourses)
 
-router.route('/add').post(authenticate.isAdmin, courseController.addCourses)
-router.route('/admin/:type').get(authenticate.isAdmin, courseController.getCourses)
-router.route('/update').patch(authenticate.isAdmin, courseController.updateCourse)
-router.route('/:course_id').get(authenticate.isAdmin, courseController.getCourseById)
+//gets the courses by type - past, present or future
+router.route('/admin/:type')
+      .get(authenticate.isAdmin, courseController.getCourses)
+
+//updates course dates
+router.route('/update')
+      .patch(authenticate.isAdmin, courseController.updateCourse)
+
+//gets course by id and type
+router.route('/:course_id/:code')
+      .get(authenticate.isAdmin, courseController.getCourseById)
 
 module.exports = router

@@ -1,6 +1,6 @@
 const firebase = require("firebase")
 const moment = require('moment')
-const { course_classifier, addCourses } = require('../helpers/course_classifier.js')
+const { course_classifier, addCourses, courseDbName  } = require('../helpers/course_classifier.js')
 const seo_page = require('../client_helpers/seo_page_info')
 //create reference for firestore database
 const db = firebase.firestore()
@@ -62,8 +62,13 @@ module.exports = {
 
     getCourseById: async ( req, res, next ) => {
         try {
-            //query collection for course with given id
-            const results = await db.collection('courses').doc(req.params.course_id).get()                
+            //get the parameters
+            const { code, course_id } = req.params
+
+            //get the course data details
+            const course = await courseDbName ( code, course_id )
+
+            console.log('here is the course --> ', course)  
             //get all course students
             const courseStudents = await db.collection('students').orderBy('enrolledOn').get()
             //convert results to array
@@ -73,13 +78,13 @@ module.exports = {
             //store all students in the array
             query.forEach( result => studentsArray.unshift({ id: result.id, data: result.data() }))    
             //create the course to send to front end          
-            const course = {
-                name: results.data().name, 
-                type: results.data().type,
-                start_date: moment(results.data().start_date.toDate()).format("MMM DD"),
-                end_date: results.data().end_date ? moment(results.data().end_date.toDate()).format("MMM DD"): null,
-                course_id: results.id
-            }
+            // const course = {
+            //     name: results.data().name, 
+            //     type: results.data().type,
+            //     start_date: moment(results.data().start_date.toDate()).format("MMM DD"),
+            //     end_date: results.data().end_date ? moment(results.data().end_date.toDate()).format("MMM DD"): null,
+            //     course_id: results.id
+            // }
 
             const students = studentsArray.map (x => {
                 return {
@@ -114,7 +119,7 @@ module.exports = {
 
                 return course_students
             }, [] )      
-            //sum up the payments made by registrants today
+            //sum up the payments made by students enrolled in this course
             const total = students.reduce( (sum, doc) => {
                    
                 return sum += doc.amount
@@ -126,8 +131,10 @@ module.exports = {
                 res.render('admin/course/students', 
                                 {
                                     // csrfToken: req.csrfToken(),
+                                    code: code,
+                                    courseId: course.id,
                                     seo_info: seo_page.admin_portal_seo_info, 
-                                    course: course, 
+                                    title: course.title, 
                                     students: students, 
                                     total: total
                                 }

@@ -50,8 +50,6 @@ module.exports = {
                             //
                             let total = Object.entries(sum).length > 0 ? parseInt(sum.amount) + parseInt(payment.amount) : parseInt(payment.amount)                          
                             
-                            console.log('total --> ', total)
-                            console.log('sum --->', sum)
                             return sum = { 'amount': total, "name": payment.course_name, "course_id": payment.course_id }
 
                         }, {})
@@ -126,6 +124,7 @@ module.exports = {
             
                 //add payment information
                 payments.unshift({
+                    payment_mode: "Credit/Debit card",
                     course_name: course.title,
                     course_id: course.id, 
                     amount,
@@ -183,14 +182,16 @@ module.exports = {
     * data: student information - no stripe token 
     */
     studentCourseSignUpByAdmin: async( req, res, next ) => {
-        try{            
+        try{      
             //get the course id 
             const { course_id, code }  = req.params
            
-            const course = courseDbName( code, course_id )
+            const course = await courseDbName( code, course_id )        
                         
             //get the req.body data
-            const { address, birthdate, city, comments, email, first, last, payment, state, tel, zip } = req.body 
+            const { address, birthdate, city, comments, email, first, last, payment, payment_mode, state, tel, zip } = req.body 
+
+            console.log('req body --> ', req.body, "and ", payment_mode )
             //add status data - did the student walk in before course starts and did they start class
             const status = {
                 course_start: req.body.course_start ? true: false,
@@ -205,12 +206,17 @@ module.exports = {
                   
             const payments = []
 
-            const amount = payment > 0 ? parseInt(payment) : 0
-            
-            payments.unshift({  created : firebase.firestore.Timestamp.fromDate(new Date()), 
-                                course_name: course.data.title, 
-                                course_id, amount 
-                            })  
+            const amount = payment > 0 ? parseInt( payment ) : 0
+            //create an object to add to the beginning of the payments array
+            payments.unshift(
+                                {   
+                                    created : firebase.firestore.Timestamp.fromDate(new Date()), 
+                                    course_name: course.title, 
+                                    course_id, 
+                                    amount,
+                                    payment_mode: (payment_mode !== undefined) ? req.body.payment_mode : 'None'
+                                }
+                            )  
                        
             //save new student and the course after adding the new student
             const student = await db.collection('students')
@@ -249,20 +255,11 @@ module.exports = {
     studentUpdateByAdmin: async ( req, res, next ) => {
       try {
        
-        //get the student id
-        const course_id  = req.params.course_id
-        //get the course 
-        const query = await db.collection('courses').doc(course_id).get()
-        //get the course details
-        const course = query.data()
-        //if the course doesn't exist, stop the update process
-        if(!course){
-            return res.status(401).json({
-                'message': 'An error occured, cannot update'
-            })
-        }
-         //create course description to send to stripe
-         const course_name = moment.utc(course.start_date.toDate()).format("MMM DD") +' ' + course.name + ' ' + course.type + ' course' 
+        //get the course id 
+        const { course_id, code }  = req.params
+            
+        const course = await courseDbName( code, course_id )      
+      
         //get student data from the front side
         const { address, birthdate, city,  comments, email, first, last, payment, state, student_id, tel, zip } = req.body
  
@@ -279,8 +276,8 @@ module.exports = {
       
         //convert the payment to an integer
         const amount  = payment > 0 ? parseInt(payment) : 0
-        //if amount is not equal to 0, change payment array
-        if( amount && amount != 0 ) {
+        //if amount is greater than 0, change/increase payment array
+        if(  amount > 0 ) {
             
             const results = await db.collection('students').doc( student_id ).get()
 
@@ -288,7 +285,14 @@ module.exports = {
             // const student_payments = student.payments
             const payments = student.payments
 
-            payments.unshift({ updated: firebase.firestore.Timestamp.fromDate(new Date()),  course_name, course_id, amount })
+            payments.unshift(
+                    {   created: firebase.firestore.Timestamp.fromDate(new Date()), 
+                        course_name: course.title, 
+                        course_id, 
+                        payment_mode: (payment_mode !== undefined) ? req.body.payment_mode : 'None',
+                        amount 
+                    }
+                )
          
             await db.collection('students').doc( student_id ).update({
                 address, city, comments, dob, email, first, last, payments, state, status, tel, zip

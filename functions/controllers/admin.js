@@ -1,6 +1,7 @@
 const seo_page = require('../client_helpers/seo_page_info')
 const moment = require("moment")
-const { course_classifier } = require('../helpers/course_classifier.js')
+const { course_classifier, courseDbName } = require('../helpers/course_classifier.js')
+//const { courseName } = require('../client_helpers/campaign') 
 const firebase = require('firebase')
 //create reference for firestore database
 const db = firebase.firestore()
@@ -68,15 +69,14 @@ module.exports = {
                                 return  {
                                     'end_date':  null, 
                                     'name': x.data().name,                            
-                                    'start_date': moment(start).format("MMM DD"),
+                                    'start_date': moment(today).format("MMM DD"),
                                     'type': x.data().type,
                                     'id': x.id
                                 }
-                            })
+                            })            
+       
 
-            const docs = results.docs
-
-            const classes = docs.filter(doc => moment( doc.data().start_date.toDate() ).isAfter(moment(today)) )
+            const docs = results.docs.filter(doc => moment( doc.data().start_date.toDate() ).isAfter(moment(today)) )
                                 .map(x=> {
                                     start = x.data().start_date.toDate()
                                     end = x.data().end_date ? x.data().end_date.toDate() : null
@@ -90,6 +90,10 @@ module.exports = {
                                     }                        
                                 })  
 
+            const classes = docs.concat(signups)
+
+            console.log('classes --> ', course_classifier(classes) )                   
+
             if( classes.length > 0 ){            
                 
                 //return the course view page               
@@ -102,7 +106,7 @@ module.exports = {
                         "DSHS Nurse Delegation (CORE) for NAs and HCAs",
                         "DSHS Nurse Delegation Special Focus on Diabetes",
                         "DSHS Core Basic",
-                        "Adult CPR/First Aid/AED Course Skill Testing",
+                        "Adult CPR/First Aid/AED Skill Testing",
                         "BLS Course Skill Testing",
                         "DSHS 12 Hours Continuous Education Units",
                         "DSHS Dementia Specialty",
@@ -138,28 +142,24 @@ module.exports = {
 
   
     getStudentRegisterForm: async ( req, res, next ) => {
-        try{
+        try{   
+
              //get the course id
-            const course_id = req.params.course_id           
-            //find the course
-            const results = await db.collection('courses').doc(course_id).get()
-            //get the course data
-            const course = results.data()
-            //construct data about class - remove student array
-            const data = {
-                courseId: results.id,
-                start_date: moment.utc(course.start_date.toDate()).tz('America/Los_Angeles').format("MMM D"),                                        
-                end_date: course.end_date !== null ? moment.utc(course.end_date.toDate()).tz('America/Los_Angeles').format("MMM D")  : "",
-                name: course.name,
-                type: course.type
-            }  
+            const { course_id, name } = req.params//.course_id 
+            
+            const course = await courseDbName( name, course_id )
+
+            console.log('course name in admin student register form ', course )
+            
             //return the page with the relevant information
             res.render('admin/student/register', 
                                         { 
-                                            // csrfToken: req.csrfToken(),
-                                            update: false, 
-                                            seo_info: seo_page.admin_portal_seo_info, 
-                                            course: data, student: {} 
+                                            title : course.title,
+                                            courseId : course.id,
+                                            code : name,
+                                            update : false, 
+                                            seo_info: seo_page.admin_portal_seo_info,                                              
+                                            student: {} 
                                         })            
 
         } catch (error){
@@ -176,7 +176,7 @@ module.exports = {
     getStudentUpdateForm: async ( req, res, next ) => {
         try{          
             //get the student id
-            const { course_id, student_id } = req.params  
+            const { course_id, code, student_id } = req.params  
             //find the course
             const courseQuery = await db.collection('courses').doc(course_id).get()
             //get the course data
