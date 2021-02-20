@@ -14,28 +14,20 @@
                         <% }) %>                            
                     </select>
                 </div>
-                <!-- CNA & Adult CPR/FA CLASSES -->
+                <!-- CNA CLASSES -->
                 <div class="row justify-content-center" id="main_course_div">
-                    <!--CNA & Adult CPR/FA DAY CLASSES  -->
+                    <!--CNA DAY CLASSES  -->
                     <div class="col-md-4 col-sm-12"> 
-                    <!--CNA DAY CLASSES  -->                                                
-                    <ul class="list-group list-group-flush justify-content-between cna_ul">
-                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
-                     
-                        <% courses.cna.day_courses.forEach(course =>{ %>
-                            <li class="list-group-item text-center"><a href= "/courses/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
-                        <% }) %>  
-                  
-                    </ul>  
-                    <!-- CPR DAY CLASSES -->                          
-                    <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display:none;">
-                        <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS </strong><br> 9:00 a.m. - 3:00 p.m.</li>                             
-                        <% courses.cpr.day_courses.forEach(course =>{ %>
-                            <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" class="course_link" > <%= course.start_date %></a></li>
-                        <% }) %>                      
-                    </ul>                        
+                        <!--CNA DAY CLASSES  -->                                                
+                        <ul class="list-group list-group-flush justify-content-between cna_ul">
+                            <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
+                        
+                            <% courses.cna.day_courses.forEach(course =>{ %>
+                                <li class="list-group-item text-center"><a href= "/courses/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
+                            <% }) %>                 
+                        </ul>                                         
                     </div>
-                    <!-- CNA & Adult CPR/FA EVENING CLASSES -->
+                   
                     <div class="col-md-4 col-sm-12">   
                     <!-- CNA EVENING CLASSES -->                                                         
                     <ul class="list-group list-group-flush justify-content-between cna_ul">
@@ -45,14 +37,6 @@
                         <% }) %>                                                                  
                     </ul>
                 
-                    <!-- CPR/FA EVENING CLASSES -->
-                    <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display:none;">
-                        <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong> <br> 3:00 p.m. - 9:00 p.m.</li>                       
-                        <% courses.cpr.evening_courses.forEach(course => { %>
-                            <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" class="course_link" > <%= course.start_date %> </a></li>
-                        <% }) %>                                         
-                    </ul>
-
                     </div> 
                     <!-- CNA & Adult CPR/FA WEEKEND CLASSES -->
                     <div class="col-md-4 col-sm-12">
@@ -62,14 +46,7 @@
                             <% courses.cna.weekend_courses.forEach(course =>{ %>
                                 <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" > <%= course.start_date %> - <%= course.end_date %></a></li>
                             <% }) %>                                                            
-                        </ul>
-                        <!-- CPR/FA WEEKEND CLASS -->
-                        <ul class="list-group list-group-flush justify-content-center cpr_ul" style="display: none;">
-                            <li class="list-group-item list-group-item-primary text-dark"> <strong> WEEKEND CLASS </strong><br> 10:00 a.m. - 4:00 p.m.</li>                           
-                            <% courses.cpr.weekend_courses.forEach(course => { %>
-                                <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" > <%= course.start_date %> </a></li>
-                            <% }) %>                                                                        
-                        </ul>
+                        </ul>                        
                     </div> 
                 </div>
                 <!-- BRIDGING CLASSES -->
@@ -77,7 +54,7 @@
                     <!-- BRIDGING WEEKDAY (DAY) CLASSES -->
                     <div class="col-md-5 col-sm-12">                                 
                         <ul class="list-group list-group-flush justify-content-between">
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br> [Mon, Tue, Wed][Wed, Thu, Fri] <br> 9:00 a.m. - 5:30 p.m.</li>                            
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 4 days <br> [Mon, Tue, Wed, Thu ] <br> 10:00 a.m. - 5:30 p.m.</li>                            
                             <% courses.bridging.day_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
                                 <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
@@ -88,7 +65,7 @@
                     <!-- BRIDGING WEEKEND CLASSES -->
                     <div class="col-md-5 col-sm-12">                                 
                         <ul class="list-group list-group-flush justify-content-between">                                
-                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 3 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKEND CLASS </strong><br> 4 days <br>  [Fri, Sat, Sun, Mon] <br> 12:00 p.m. - 7:30 p.m.</li>                          
                             <% courses.bridging.weekend_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
                                 <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
@@ -97,20 +74,59 @@
                         </ul>                
                     </div>  
                 </div>
-                <!-- BLS CLASSES -->  
-                <div class="row justify-content-center" id="bls_div" style="display:none;">
-                    <!-- BLS WEEKEND CLASSES -->                 
-                    <div class="col-md-6 col-sm-12">                                 
-                        <ul class="list-group list-group-flush justify-content-between bls_ul">
-                            <li class="list-group-item list-group-item-primary text-dark"><strong>WEEKDAY/WEEKEND CLASS </strong><br> Tue / Sat <br> 11:00 a.m. - 3:00 p.m.</li>                               
-                            <% courses.bls.forEach(course => { %>                            
-                            <li class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
+
+                <!-- HCA CLASSES -->
+                <div class="row justify-content-center" id="hca_div" style="display:none;">
+                    <!-- HCA WEEKDAY (DAY) CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thu ] <br> 9:00 a.m. - 5:30 p.m.</li>                            
+                            <% courses.hca.day_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
-                            <% }) %>                                                       
+                            <% }) %>                                                
                         </ul>                
                     </div>
+                    <!-- HCA WEEKEND CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">                                
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 7 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
+                            <% courses.hca.weekend_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                            </li> 
+                            <% }) %>                                                                       
+                        </ul>                
+                    </div>  
                 </div>
+
+                <!-- MENTAL HEALTH CLASSES -->
+                <div class="row justify-content-center" id="hca_div" style="display:none;">
+                    <!-- MENTAL HEALTH WEEKDAY (DAY) CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thu ] <br> 9:00 a.m. - 5:30 p.m.</li>                            
+                            <% courses.hca.day_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                            </li> 
+                            <% }) %>                                                
+                        </ul>                
+                    </div>
+                    <!-- HCA WEEKEND CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">                                
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 7 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
+                            <% courses.hca.weekend_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                            </li> 
+                            <% }) %>                                                                       
+                        </ul>                
+                    </div>  
+                </div>
+                
             </div>                         
         </div>          
     </div>            

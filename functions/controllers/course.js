@@ -77,15 +77,7 @@ module.exports = {
             const studentsArray = []
             //store all students in the array
             query.forEach( result => studentsArray.unshift({ id: result.id, data: result.data() }))    
-            //create the course to send to front end          
-            // const course = {
-            //     name: results.data().name, 
-            //     type: results.data().type,
-            //     start_date: moment(results.data().start_date.toDate()).format("MMM DD"),
-            //     end_date: results.data().end_date ? moment(results.data().end_date.toDate()).format("MMM DD"): null,
-            //     course_id: results.id
-            // }
-
+           
             const students = studentsArray.map (x => {
                 return {
                     'id': x.id,
@@ -136,7 +128,8 @@ module.exports = {
                                     seo_info: seo_page.admin_portal_seo_info, 
                                     title: course.title, 
                                     students: students, 
-                                    total: total
+                                    total: total, 
+                                    course: course
                                 }
                           )
             }
@@ -218,13 +211,15 @@ module.exports = {
                         if(doc.data().end_date) {   
                                                        
                             if( start.isBefore(today)  && end.isBefore(today) ){
-                                docArray.unshift( {
-                                                    name: doc.data().name, 
-                                                    type: doc.data().type,
-                                                    start_date:  moment(start).format("MMM DD"),
-                                                    end_date: moment(end).format("MMM DD"),
-                                                    id: doc.id
-                                                 } )
+                                docArray.unshift( 
+                                                    {
+                                                        name: doc.data().name, 
+                                                        type: doc.data().type,
+                                                        start_date:  moment(start).format("MMM DD"),
+                                                        end_date: moment(end).format("MMM DD"),
+                                                        id: doc.id
+                                                    } 
+                                                )
                             }
                         } else {
                            // console.log(''start.isSame(today) )
@@ -245,7 +240,7 @@ module.exports = {
 
                 default:                                     
 
-                    classes = docs.filter(doc => moment( doc.data().start_date.toDate() ).isAfter(moment(today)) )
+                    classes = docs.filter(doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(moment(today)) )
                                 .map(x=> {
                                     start = x.data().start_date.toDate()
                                     end = x.data().end_date ? x.data().end_date.toDate() : null
@@ -265,16 +260,12 @@ module.exports = {
             if( classes.length > 0 ){
                
                 res.render('admin/course/time-schedules', {
-                    courses: course_classifier (classes),//groups courses by name, type e.g., CPR has even, day and weekend and BLS only day
+                    courses: course_classifier ( classes ),//groups courses by name, type e.g., CPR has even, day and weekend and BLS only day
                     choices: [
                         "Certified Nurse Assistant/CNA", 
                         "DSHS Home Care Aide/75 Hours",
-                        "HCA to CNA Bridging", 
-                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
-                        "DSHS Nurse Delegation Special Focus on Diabetes",
-                        "DSHS Core Basic",
-                        "Adult CPR/First Aid/AED Course Skill Testing",
-                        "BLS Course Skill Testing",
+                        "HCA to CNA Bridging",                         
+                        "DSHS Core Basic",                        
                         "DSHS 12 Hours Continuous Education Units",
                         "DSHS Dementia Specialty",
                         "DSHS Mental Health Specialty",
@@ -289,12 +280,8 @@ module.exports = {
                     choices: [
                         "Certified Nurse Assistant/CNA", 
                         "DSHS Home Care Aide/75 Hours",
-                        "HCA to CNA Bridging", 
-                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
-                        "DSHS Nurse Delegation Special Focus on Diabetes",
-                        "DSHS Core Basic",
-                        "Adult CPR/First Aid/AED Course Skill Testing",
-                        "BLS Course Skill Testing",
+                        "HCA to CNA Bridging",                        
+                        "DSHS Core Basic",                        
                         "DSHS 12 Hours Continuous Education Units",
                         "DSHS Dementia Specialty",
                         "DSHS Mental Health Specialty",

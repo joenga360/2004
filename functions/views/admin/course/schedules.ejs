@@ -31,7 +31,7 @@
                                 <% }) %>
                             <% } else { %>
                                 <% courses.cna.day_courses.forEach(course =>{ %>
-                                    <li class="list-group-item text-center"><a href= "/admin/student_register/<%=course.courseId%>/cna" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
+                                    <li class="list-group-item text-center"><a href= "/admin/student_register/cna/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
                                 <% }) %>
                             <% } %>
                         </ul>  
@@ -50,7 +50,7 @@
                                 <% }) %>
                             <% } else { %>
                                 <% courses.cna.evening_courses.forEach(course => { %>
-                                    <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>/cna" class="course_link" > <%= course.start_date %> - <%= course.end_date %></a></li>
+                                    <li class="list-group-item text-center"><a href = "/admin/student_register/cna/<%=course.courseId%>" class="course_link" > <%= course.start_date %> - <%= course.end_date %></a></li>
                                 <% }) %>
                             <% } %>                                             
                         </ul>
@@ -68,7 +68,7 @@
                                 <% }) %>
                             <% } else { %>
                                 <% courses.cna.weekend_courses.forEach(course =>{ %>
-                                    <li class="list-group-item text-center"><a href = "/admin/student_register/<%=course.courseId%>/cna" > <%= course.start_date %> - <%= course.end_date %></a></li>
+                                    <li class="list-group-item text-center"><a href = "/admin/student_register/cna/<%=course.courseId%>" > <%= course.start_date %> - <%= course.end_date %></a></li>
                                 <% }) %>
                             <% } %>                                   
                         </ul>                        
@@ -89,7 +89,7 @@
                             <% } else { %> 
                                 <% courses.bridging.day_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/bridging"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/bridging/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>               
@@ -109,7 +109,7 @@
                             <%} else { %> 
                                 <% courses.bridging.weekend_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/bridging" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/bridging/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                                               
@@ -132,7 +132,7 @@
                             <% } else { %> 
                                 <% courses.hca.day_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/hca"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/hca/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>               
@@ -152,7 +152,7 @@
                             <%} else { %> 
                                 <% courses.hca.weekend_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/hca" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/hca/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                                               
@@ -175,7 +175,7 @@
                             <% } else { %> 
                                 <% courses.dementia.day_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/dementia"><%= course.start_date %> </a>
+                                    <a href="/admin/student_register/dementia/<%=course.courseId%>"><%= course.start_date %> </a>
                                 </li> 
                                 <% }) %> 
                             <% } %>               
@@ -195,7 +195,7 @@
                             <%} else { %> 
                                 <% courses.dementia.weekend_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/dementia" class="course_link"><%= course.start_date %> </a>
+                                    <a href="/admin/student_register/dementia/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                                               
@@ -218,7 +218,7 @@
                             <% } else { %> 
                                 <% courses.mh.day_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/mh"><%= course.start_date %> </a>
+                                    <a href="/admin/student_register/mh/<%=course.courseId%>"><%= course.start_date %> </a>
                                 </li> 
                                 <% }) %> 
                             <% } %>               
@@ -238,7 +238,7 @@
                             <%} else { %> 
                                 <% courses.mh.weekend_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/mh" class="course_link"><%= course.start_date %> </a>
+                                    <a href="/admin/student_register/mh/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                                               
@@ -261,7 +261,7 @@
                             <% } else { %> 
                                 <% courses.ceu.day_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/ceu"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/ceu/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>               
@@ -281,7 +281,7 @@
                             <%} else { %> 
                                 <% courses.ceu.weekend_courses.forEach(course => { %>                            
                                 <li  class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/ceu" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                    <a href="/admin/student_register/ceu/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                                               
@@ -298,7 +298,7 @@
                             
                             <% courses.bls.day_courses.forEach(course => { %>                            
                             <li class="list-group-item text-center" >
-                                <a href="/admin/student_register/<%=course.courseId%>/bls" class="course_link"><%= course.start_date %> </a>
+                                <a href="/admin/student_register/bls/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                             </li> 
                             <% }) %> 
                                                       
@@ -309,7 +309,7 @@
                             
                             <% courses.cpr.day_courses.forEach( course => { %>                            
                             <li class="list-group-item text-center" >
-                                <a href="/admin/student_register/<%=course.courseId%>/cpr" class="course_link"><%= course.start_date %> </a>
+                                <a href="/admin/student_register/cpr/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                             </li> 
                             <% }) %>                                                       
                         </ul>        
@@ -325,7 +325,7 @@
                             
                             <% courses.delegation.day_courses.forEach( course => { %>                            
                             <li class="list-group-item text-center" >
-                                <a href="/admin/student_register/<%=course.courseId%>/delegation" class="course_link"><%= course.start_date %> </a>
+                                <a href="/admin/student_register/delegation/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                             </li> 
                             <% }) %>                                                       
                         </ul>     
@@ -335,7 +335,7 @@
                             
                             <% courses.diabetes.day_courses.forEach( course => { %>                            
                             <li class="list-group-item text-center" >
-                                <a href="/admin/student_register/<%=course.courseId%>/diabetes" class="course_link"><%= course.start_date %> </a>
+                                <a href="/admin/student_register/diabetes/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                             </li> 
                             <% }) %> 
                                                       
@@ -358,7 +358,7 @@
                             <%} else { %> 
                                 <% courses.so.day_courses.forEach( course => { %>                            
                                 <li class="list-group-item text-center" >
-                                    <a href="/admin/student_register/<%=course.courseId%>/so" class="course_link"><%= course.start_date %> </a>
+                                    <a href="/admin/student_register/so/<%=course.courseId%>" class="course_link"><%= course.start_date %> </a>
                                 </li> 
                                 <% }) %> 
                             <% } %>                              

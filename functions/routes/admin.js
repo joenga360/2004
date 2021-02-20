@@ -16,7 +16,7 @@ router.route("/dashboard")
       .get( authenticate.isAdmin, StudentController.getDailyRegistrants )
 
 //get the form for admin to sign up student
-router.route("/student_register/:course_id/:name")
+router.route("/student_register/:name/:course_id")
       .get( authenticate.isAdmin,  AdminController.getStudentRegisterForm )
       
 //get the form for admin to update student

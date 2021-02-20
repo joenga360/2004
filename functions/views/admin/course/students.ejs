@@ -11,16 +11,16 @@
                             
                         </div>                      
                     </div>
-                    
+                   
                     <div id="divEditForm" style="display: none;"> 
                         <div class="row">
                             <form id="editClassDates">
-                                <% if(course.end_date) { %>
-                                    <input type="text" name="dates" id="course_dates" value="<%=course.start_date%> - <%=course.end_date%>">
+                                <% if(course.data.end_date) { %>
+                                    <input type="text" name="dates" id="course_dates" value="<%=course.start%> - <%=course.end%>">
                                 <% } else { %>
-                                    <input type="text" name="dates" id="course_dates" value="<%=course.start_date%>">
+                                    <input type="text" name="dates" id="course_dates" value="<%=course.data.start%>">
                                 <% } %>
-                                <input type="hidden" name="course_id" id="course_id" value="<%=course.course_id%>">
+                                <input type="hidden" name="course_id" id="course_id" value="<%=courseId%>">
 
                                 <button class="btn btn-primary btn-sm mx-4" id="editClassDatesBtn" type="submit">Edit</button>    
                             </form>  
@@ -29,7 +29,7 @@
                 </div> 
               
                 <div class="row justify-content-center my-4">
-                    <p><a href="/admin/student_register/<%=course.course_id%>" >Add student</a></p>
+                    <p><a href="/admin/student_register/<%=courseId%>" >Add student</a></p>
                 </div>
 
                 <div class="row">
@@ -56,9 +56,9 @@
                                     <td><%=student.email %></td>                            
                                     <td><%=student.amount %></td>
                                     <td>
-                                        <a href="/admin/update/<%=course.course_id %>/<%=code%>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
-                                        <a data_student_id="<%=student.student_id%>", data_course_id = '<%= course.course_id %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
-                                        <a href="/students/unenroll/<%= student.student_id %>/<%= course.course_id %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
+                                        <a href="/admin/update/<%=courseId %>/<%=code%>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                        <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
+                                        <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
                                     </td>                         
                                 </tr>
                                 <% }) %>                         

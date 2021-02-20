@@ -15,7 +15,7 @@ router.route('/update')
       .patch(authenticate.isAdmin, courseController.updateCourse)
 
 //gets course by id and type
-router.route('/:course_id/:code')
+router.route('/:code/:course_id')
       .get(authenticate.isAdmin, courseController.getCourseById)
 
 module.exports = router

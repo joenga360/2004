@@ -166,7 +166,9 @@ module.exports = {
                 }
 
                 return {
-                    title: moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',                  
+                    title: course.end_date == null ?  moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course' :  moment.utc(course.start_date.toDate()).format("MMM DD") + ' - ' + moment.utc(course.end_date.toDate()).format("MMM DD") +' '+ course.name + ' ' + course.type + ' course',
+                    start: moment.utc(course.start_date.toDate()).format("MMM DD"),
+                    end: course.end_date != null ? moment.utc(course.end_date.toDate()).format("MMM DD") : null,                
                     data: results.data(),
                     id: results.id,
                     course: true                 
