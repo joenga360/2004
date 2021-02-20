@@ -25,7 +25,7 @@
                                 <td><%=student.name%> </td>                    
                                 <td><%=student.tel%></td>                    
                                 <td><%=student.payment.amount%></td>                             
-                                <td><a href="/courses/<%=student.payment.course_id %>"><%=student.payment.name %>  </a></td>                              
+                                <td><a href="/courses/<%=student.payment.course_id%>/<%=student.payment.code%>"><%=student.payment.name %>  </a></td>                              
                             </tr> 
                         <% }) %>   
                     </tbody>           

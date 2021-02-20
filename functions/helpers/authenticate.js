@@ -2,13 +2,11 @@ const admin = require('firebase-admin')
 
 module.exports = {
     
-    isAdmin: async ( req, res, next ) => {   
-        console.log('req cookies ', req.cookies)
+    isAdmin: async ( req, res, next ) => {          
        
         //get the session cookie
         //const sessionCookie = req.cookies.__session || ""
-        const sessionCookie = req.cookies.session || ""
-        console.log('session cookie in authenticate --> ', sessionCookie)
+        const sessionCookie = req.cookies.session || ""       
                     
         admin
             .auth()

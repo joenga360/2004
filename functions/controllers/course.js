@@ -64,7 +64,7 @@ module.exports = {
         try {
             //get the parameters
             const { code, course_id } = req.params
-
+            console.log('req params ', req.params )
             //get the course data details
             const course = await courseDbName ( code, course_id )
 

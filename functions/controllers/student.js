@@ -16,9 +16,7 @@ module.exports = {
      * returns: students who registered today and daily sum
      */
     getDailyRegistrants: async ( req, res, next ) => {
-        try {
-
-            console.log('we are getting in daily registrants --')
+        try {          
             //get today's date
             const today = moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")
 
@@ -41,6 +39,7 @@ module.exports = {
                         } 
                     }
                 } ).map( registrant => {
+
                     return {
                         'name': registrant.data().first+" "+registrant.data().last,
                         'email': registrant.data().email,
@@ -49,16 +48,14 @@ module.exports = {
                         'payment': registrant.data().payments.reduce(( sum, payment ) => {                           
                             //
                             let total = Object.entries(sum).length > 0 ? parseInt(sum.amount) + parseInt(payment.amount) : parseInt(payment.amount)                          
-                            console.log(payment.course_name)
-                            sum = { 
+                            //console.log(payment.course_name)
+                            return sum = { 
                                             "amount": total, 
                                             "name": payment.course_name,
                                             "code": codeName(payment.course_name), 
                                             "course_id": payment.course_id 
                                         }
-                            console.log('sum in payment attribute', sum)
-                            return sum
-
+                           
                         }, {})
                     }
                 })                
@@ -76,7 +73,7 @@ module.exports = {
                                 seo_info: seo_page.admin_portal_seo_info 
                             })
                 
-            }else {
+            } else {
                 res.render('admin/student/dailyregistrations', 
                 { 
                     registrants: [], 

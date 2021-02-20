@@ -184,24 +184,46 @@ module.exports = {
      * @returns {String} 
      */
 
-    codeName: ( course_name ) => {
-        console.log('course name---', course_name.substring(7))
+    codeName: ( course_name ) => {             
 
-        const courses = { 
-            "CNA" : "cna",
-            "DSHS Home Care Aide/75 Hours" : "hca",
-            "Adult CPR/First Aid/AED Course Skill Testing" : "cpr",
-            "BLS Course Skill Testing" : "bls",
-            "HCA to CNA Bridging" : "bridging",
-            "DSHS Nurse Delegation (CORE) for NAs and HCAs" : "delegation", 
-            "DSHS Nurse Delegation Special Focus on Diabetes" : "diabetes" , 
-            "DSHS Core Basic" : "core",        
-            "DSHS 12 Hours Continuous Education Units" : "ceu", 
-            "DSHS Dementia Specialty" : "dementia", 
-            "DSHS Mental Health Specialty" : "mh", 
-            "DSHS Safety and Orientation" : "so"
-        }
+        switch (course_name.substring(7, 11).trim()){
+            case "CNA":
+                return 'cna'                                
 
-        return courses[course_name]
+            case "HCA":
+                return 'bridging'            
+            
+            case "DSHS":
+                if ( course_name.substring(12, 14).trim() == "Ho" ) {
+                    return 'hca'
+                } else if ( course_name.substring(12, 14).trim() == "Co" ) {
+                    return 'core'
+                } else if ( course_name.substring(12, 14).trim() == "De" ) {
+                    return 'dementia'
+                } else if ( course_name.substring(12, 14).trim() == "Me" ) {
+                    return 'mh'
+                } else if ( course_name.substring(12, 14).trim() == "So" ) {
+                    return 'so'
+                } else  {
+                    return 'ceu'
+                } 
+
+            default:         
+                    
+                if(course_name.substring(0, 4).trim() == 'Adul'){
+                    return 'cpr'
+                } else if( course_name.substring(0, 4).trim() == 'BLS'){
+                    return 'bls'
+                } else {
+                    
+                    if(course_name.substring(21, 28).trim() == "(CORE)"){
+                        return 'delegation'
+                    } else {
+                        return 'diabetes'
+                    }
+                }
+                            
+        }      
+ 
     }    
 }
