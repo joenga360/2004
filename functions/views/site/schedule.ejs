@@ -17,10 +17,10 @@
             </div>                
         </div>
         <!-- CNA COURSES -->
-        <div class="row justify-content-center" id="main_course_div">                           
+        <div class="row justify-content-center" id = "cna_course_div">                           
             <div class="col-sm-10 col-md-2">       
                 <!-- CNA day                          -->
-                <ul class="list-group list-group-flush justify-content-between" id="day_cna_ul" > 
+                <ul class="list-group list-group-flush justify-content-between" > 
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>DAY CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 9:00 a.m. - 3:00 p.m.</li>                       
                      <%classes.cna.day_courses.forEach(course => {%>
                      <li class="list-group-item"> <a href="/signup/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
@@ -30,7 +30,7 @@
 
             <div class="col-sm-10 col-md-2">      
                 <!-- CNA evening                                 -->
-                <ul class="cna_ul list-group list-group-flush justify-content-between" id="evening_cna_ul">
+                <ul class="cna_ul list-group list-group-flush justify-content-between" >
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 3:00 p.m. - 9:00 p.m.</li>             
                     <%classes.cna.evening_courses.forEach(course => {%>
                         <li  class="list-group-item" > <a href="/signup/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
@@ -41,7 +41,7 @@
             
             <div class="col-sm-10 col-md-2">
                 <!-- CNA weekend                     -->
-                <ul class="cna_ul list-group list-group-flush justify-content-between"  id="weekend_cna_ul">
+                <ul class="cna_ul list-group list-group-flush justify-content-between" >
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong> <br> Sat & Sun <br> 7 weekends <br> 2:00 p.m. - 10:00 p.m.</li>     
                      <!-- LIST ITEM WILL BE APPENDED USING JQUERY IN THE BELOW PAGE -->
                     <%classes.cna.weekend_courses.forEach(course => {%>
@@ -79,14 +79,14 @@
                 <ul class="list-group list-group-flush justify-content-between"  id="day_mh_ul">
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Tue , Wed, Thur] <br> 1 day <br> 10:00 a.m. - 6:30 p.m.</li>   
                     <%classes.mh.day_courses.forEach(course => {%>
-                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%><span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
                 <!-- DEMENTIA weekday -->
                 <ul class="list-group list-group-flush justify-content-between"  id="day_dementia_ul">
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Tue , Wed, Thur] <br> 1 day <br> 10:00 a.m. - 6:30 p.m.</li>   
                     <%classes.dementia.day_courses.forEach(course => {%>
-                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%><span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
             </div>
@@ -117,14 +117,14 @@
                 <ul class="list-group list-group-flush justify-content-between"  id="weekend_mh_ul">
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> [Sat, Sun] <br> 1 day <br> 12:00 a.m. - 8:30 p.m.</li>   
                     <%classes.mh.weekend_courses.forEach(course => {%>
-                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
                 <!-- DEMENTIA weekday -->
                 <ul class="list-group list-group-flush justify-content-between"  id="weekend_dementia_ul">
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> [Sat, Sun] <br> 1 day <br> 12:00 p.m. - 8:30 p.m.</li>   
                     <%classes.dementia.day_courses.forEach(course => {%>
-                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
             </div>
@@ -138,7 +138,7 @@
                 <ul class="list-group list-group-flush justify-content-between" id="day_delegation_ul">
                     <li class="list-group-item list-group-item-primary text-dark" > <strong> Self-study </strong><br> Sign up to reserve material <br> Priority given to reservations made </li>   
                     <%classes.delegation.day_courses.forEach(course => {%>
-                        <li  class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li  class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%>  <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
                 <!-- DIABETES weekday -->
@@ -152,7 +152,7 @@
                 <ul class="list-group list-group-flush justify-content-between"  id="day_cpr_ul">
                     <li class="list-group-item list-group-item-primary text-dark"> <strong>Heartcode Adult CPR/FA/AED</strong><br> Sign up to reserve testing <br> Priority given to reservations made </li>   
                     <%classes.cpr.day_courses.forEach(course => {%>
-                        <li  class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> - <%=course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
+                        <li  class="list-group-item" > <a href="/register/reg/<%=course.courseId%>" class="course_link"> <%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a> </li>
                     <%})%>
                 </ul>
                 <!-- BLS weekday -->
@@ -170,14 +170,14 @@
                 <hr>
                 <p class="text-center text-dark"><strong>Click on course dates to sign up.</strong></p>                    
                 <div class="alert alert-info" role="alert">
-                    <div id='cpr-bls-notes'>
+                    <div id='old-cpr-bls-notes' style="display: none;">
                         <p class="text-dark">Please note:</p>
                         <ul class="text-dark">                                
                             <li>Adult CPR/FA AED and BLS courses are not necessarily 6 hours long</li>                                
                             <li>Skill testing is 30 minutes long.  Make arrangement by calling 206 271 1946</li>
                         </ul>
                     </div>
-                    <div id='cna-notes'>
+                    <div id='cna-notes' style="display: none;">
                         <p class="text-dark">CNA course requirements include:</p>
                         <ul class="text-dark">
                             <li style="display:none;">2 Steps TB Test Results less than 1 year old</li>
@@ -205,10 +205,29 @@
                                 <li>HIVAIDS Course</li>
                                 <li>AHA Adult CPRFA/AED</li>                         
                             </ul> 
-                        </div>
-                                                   
+                        </div>                                                   
                     </div>
-                    <div id="bridging-notes">
+
+                    <div id="hca-notes" style="display: none;">                        
+                        <p class="text-dark">To join our Home Care Aide/75 hours training, you need:</p>
+                        <ul class="text-dark">                           
+                            <li>Valid ID</li>                                
+                            <li>$ 575.00 tuition cost </li>
+                            <li>Pass math/English entrance exam</li>
+                            <li>Functioning email address</li>
+                        </ul> 
+                        <hr> 
+                        <div class="bg-warning">
+                            <p class="text-dark"> Our Home Care Aide/75 hours training contains the following: </p>    
+                            <ol class="text-dark">                                    
+                                <li> 4 - 5 days of theory online sessions offered/taught via ZOOM.</li>
+                                <li> 3 days of skill lab/inperson skill training.</li>
+                                <li> Mental Health and Dementia specialty training, Safety and Orientation training. </li>                                                          
+                            </ol>
+                         
+                        </div>   
+                    </div>
+                    <div id="bridging-notes" style="display: none;">
                         <p class="lead" style="display: none;">NOTE: The last day is a clinical day with different hours (6:00 a.m. - 2:30 p.m.)</p>
                         <p class="text-dark">HCA to CNA bridging course requirements include:</p>
                         <ul class="text-dark">
@@ -230,24 +249,26 @@
                             <p class="text-dark">The above steps need not be taken sequentially; we actually advise you to complete the above steps concurrently. </p>
                         </div>   
                     </div>
-                    <div id="delegation_notes">
+
+                    <div id="cpr-bls-notes" style="display: none;">
+                        <p class="text-dark bg-warning">
+                            Priority is given to students who sign up to make reservations.  Signing up allows us to anticipate and allocate materials needed.
+                            <ol class="text-dark">                                    
+                                <li>Need to complete heartcode BLS or heartcode Adult CPR/First Aid/AED before doing skill testing. </li>
+                                <li>E-cards delivered sent via email on Tuesday/Thursday.</li>                                                              
+                            </ol>
+                        </p>
+                    </div>
+                    
+                    <div id="delegation-notes" style="display: none;">
                         <p class="text-dark bg-warning">
                             Reservations of testing and materials is given to students who sign up.  Signing up allows us to anticipate and allocate materials needed.
                             <ol class="text-dark">                                    
                                 <li>Need to have NAC, HCA, NAR with Core Basic or Core Basic certificate. </li>
-                                <li>If you are doing nurse delegation with emphasis on diabetes, you must have nurse delegation core. </li>                                                              
+                                <li>If you are doing nurse delegation with emphasis on diabetes, you must have certification for nurse delegation core. </li>                                                              
                             </ol>
                         </p>
-                    </div>
-                    <div id="cpr_notes">
-                        <p class="text-dark bg-warning">
-                            Priority is given to students who sign up to make reservations.  Signing up allows us to anticipate and allocate materials needed.
-                            <ol class="text-dark">                                    
-                                <li>Need to have NAC, HCA, NAR with Core Basic or Core Basic certificate. </li>
-                                <li>If you are doing nurse delegation with emphasis on diabetes, you must have nurse delegation core. </li>                                                              
-                            </ol>
-                        </p>
-                    </div>
+                    </div>                   
 
                     <p class="lead">Keep your receipts carefully.  Some or all of the trainings costs are reimbursable.  Inquire around because some employers help with training costs upfront.</p>                        
                 </div>
@@ -259,11 +280,17 @@
 <script type="application/javascript">
     //when the document loads
     $(document).ready(() => {        
-        //display the main course div for "CNA" and "CPR" courses
-        $("#main_course_div").show()
+        //display the main course div for "CNA" courses
+        $("#cna_course_div").show()
+        $("#major_course_div").hide()
+        $("#reserve_course_div").hide()
+
         $('#cna-notes').show()
         $('#bridging-notes').hide()
         $('#cpr-bls-notes').hide()
+        $('#hca-notes').hide() 
+        $('#delegation-notes').hide()
+
         $('#day_dementia_ul').hide()
         $('#weekend_dementia_ul').hide()
         $('#day_mh_ul').hide()
@@ -289,7 +316,7 @@
      
         $("select#course_type").change(function(){ 
 
-            $("#main_course_div").hide()                        
+            // $("#main_course_div").hide()                        
             
             //get the value of selectied option
             selectedCourse = $(this).children("option:selected").val() 
@@ -301,74 +328,316 @@
                 'event_label': 'Prospective Student',
                 'value': 1
             })
+
+          
             
             //determine course type and UI to use
             switch(selectedCourse){
-                case "CNA":
-                    //show the main div for CNA and Adult CPR/FA
-                    $("#main_course_div").show()
-                    //show ul div of cna - containing days and times of CNA training
-                    $('#day_cna_ul').show()
-                    $('#evening_cna_ul').show()
-                    $('#weekend_cna_ul').show()
+
+                case "Certified Nurse Assistant/CNA":
+                    //display the main course div for "CNA" courses                     
+                    $("#cna_course_div").show()
+                    $("#major_course_div").hide()
+                    $("#reserve_course_div").hide()
+
                     $('#cna-notes').show()
-                    //hide 
-                    $('#day_cpr_ul').hide()
-                    $('#evening_cpr_ul').hide()
-                    $('#weekend_cpr_ul').hide()
-                    $("#bridging_div").hide()
-                    $("#bls_div").hide()
-                    
                     $('#bridging-notes').hide()
                     $('#cpr-bls-notes').hide()
-                    
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
+
                     break
 
-                case "Adult CPR/FA":
-                    //show the main div for CNA and Adult CPR/FA
-                    $("#main_course_div").show()
-                    //show ul div of cpr - containing days and times of CPR training
-                    $('#day_cpr_ul').show()
-                    $('#evening_cpr_ul').show()
-                    $('#weekend_cpr_ul').show()
-                    //hide 
-                    $('#day_cna_ul').hide()
-                    $('#evening_cna_ul').hide()
-                    $('#weekend_cna_ul').hide()
-                    $("#bridging_div").hide()
-                    $("#bls_div").hide()   
-                    
+                case "Adult CPR/First Aid/AED Course Skill Testing":
+
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").hide()
+                    $("#reserve_course_div").show()
+
                     $('#cna-notes').hide()
                     $('#bridging-notes').hide()
                     $('#cpr-bls-notes').show()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').show()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
                     
                     break
               
-                case "HCA-CNA Bridging":
-                   
-                    $("#bridging_div").show()
-                    $("#main_course_div").hide()
-                    $("#bls_div").hide()
-                    $("#day_bridging_ul").show()                      
-                    $("#weekend_bridging_ul").show()
+                case "HCA to CNA Bridging":                   
+                    
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").show()
+                    $("#reserve_course_div").hide()
 
                     $('#cna-notes').hide()
                     $('#bridging-notes').show()
                     $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').show()
+                    $('#weekend_bridging_ul').show()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
 
                     break
                 
-                case "Basic Life Support (BLS)":
-                    //show    
-                    $("#bls_div").show()
-                    $('#cpr-bls-notes').show()
-                    //hide
-                    $("#bridging_div").hide()
-                    $("#main_course_div").hide()
-                    $("#weekend_bls_ul").show()                    
+                case "BLS Course Skill Testing":
+                    //
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").hide()
+                    $("#reserve_course_div").show()
+
                     $('#cna-notes').hide()
-                    $('#bridging-notes').hide()                    
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').show()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').show()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()                 
                 
+                    break
+
+                case "DSHS Home Care Aide/75 Hours":
+
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").show()
+                    $("#reserve_course_div").hide()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').show() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').show()
+                    $('#weekend_hca_ul').show()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
+                    break
+                
+                case "DSHS 12 Hours Continuous Education Units":
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").show()
+                    $("#reserve_course_div").hide()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').show()
+                    $('#weekend_ceu_ul').show()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
+                    break
+                
+                case "DSHS Dementia Specialty":
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").show()
+                    $("#reserve_course_div").hide()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').show()
+                    $('#weekend_dementia_ul').show()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
+                    break
+
+                case "DSHS Mental Health Specialty":
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").show()
+                    $("#reserve_course_div").hide()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').hide()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').show()
+                    $('#weekend_mh_ul').show()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').hide()
+                    break
+                
+                // case "DSHS Safety and Orientation":
+                //     $("#cna_course_div").hide()
+                //     $("#major_course_div").show()
+                //     $("#reserve_course_div").hide()
+
+                //     $('#cna-notes').hide()
+                //     $('#bridging-notes').hide()
+                //     $('#cpr-bls-notes').hide()
+                //     $('#hca-notes').hide() 
+
+                //     $('#day_dementia_ul').hide()
+                //     $('#weekend_dementia_ul').hide()
+                //     $('#day_mh_ul').show()
+                //     $('#weekend_mh_ul').show()
+                //     $('#day_hca_ul').hide()
+                //     $('#weekend_hca_ul').hide()
+                //     $('#day_bridging_ul').hide()
+                //     $('#weekend_bridging_ul').hide()
+                //     $('#day_ceu_ul').hide()
+                //     $('#weekend_ceu_ul').hide()
+                //     $('#day_cpr_ul').hide()
+                //     $('#day_bls_ul').hide()
+                //     $('#day_delegation_ul').hide()
+                //     $('#day_diabetes_ul').hide()
+                //     break
+                
+                case "DSHS Nurse Delegation (CORE) for NAs and HCAs":
+                    //
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").hide()
+                    $("#reserve_course_div").show()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').show()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').show()
+                    $('#day_diabetes_ul').hide()     
+                    break
+                case "DSHS Nurse Delegation Special Focus on Diabetes": 
+                    //
+                    $("#cna_course_div").hide()
+                    $("#major_course_div").hide()
+                    $("#reserve_course_div").show()
+
+                    $('#cna-notes').hide()
+                    $('#bridging-notes').hide()
+                    $('#cpr-bls-notes').hide()
+                    $('#hca-notes').hide() 
+                    $('#delegation-notes').show()
+
+                    $('#day_dementia_ul').hide()
+                    $('#weekend_dementia_ul').hide()
+                    $('#day_mh_ul').hide()
+                    $('#weekend_mh_ul').hide()
+                    $('#day_hca_ul').hide()
+                    $('#weekend_hca_ul').hide()
+                    $('#day_bridging_ul').hide()
+                    $('#weekend_bridging_ul').hide()
+                    $('#day_ceu_ul').hide()
+                    $('#weekend_ceu_ul').hide()
+                    $('#day_cpr_ul').hide()
+                    $('#day_bls_ul').hide()
+                    $('#day_delegation_ul').hide()
+                    $('#day_diabetes_ul').show()     
                     break
             }    
         })

@@ -25,7 +25,7 @@ module.exports = {
                                     .orderBy('enrolledOn')
                                     .get()
             //get student documents
-            const docs = results.docs
+            const docs = results.docs            
            
             if( docs.length > 0 ) {
 
@@ -67,19 +67,21 @@ module.exports = {
                 }, 0)
 
                 res.render('admin/student/dailyregistrations', 
-                            { 
-                                registrants: registrants, 
-                                daily_sum: daily_sum, 
-                                seo_info: seo_page.admin_portal_seo_info 
-                            })
+                                { 
+                                    registrants: registrants, 
+                                    daily_sum: daily_sum, 
+                                    seo_info: seo_page.admin_portal_seo_info 
+                                }
+                            )
                 
             } else {
                 res.render('admin/student/dailyregistrations', 
-                { 
-                    registrants: [], 
-                    daily_sum: 0, 
-                    seo_info: seo_page.admin_portal_seo_info 
-                })
+                    { 
+                        registrants: [], 
+                        daily_sum: 0, 
+                        seo_info: seo_page.admin_portal_seo_info 
+                    }
+                )
             } 
 
         } catch (error) {

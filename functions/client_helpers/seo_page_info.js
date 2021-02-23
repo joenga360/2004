@@ -363,7 +363,34 @@ module.exports = {
         links: [
             { rel: 'canonical', href: 'https://www.excelcna.com/page/so' }
         ]
-    }
+    },
 
+    courses_landing_seo_info: {
+        title: "Courses",
+        titleTemplate: 'Excel Health Careers Training, Inc.',
+        meta: [
+           {name: "description", content: "Resource for managing Excel Health Careers Training students."},
+            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+            {name: "author", content: "Don Gatuna"}
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/jobslanding' },
+        ]
+    },
+
+    jobs_landing_seo_info: {
+        title: "Jobs",
+        titleTemplate: 'Excel Health Careers Training, Inc.',
+        meta: [
+           {name: "description", content: "Resource for managing Excel Health Careers Training students."},
+            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+            {name: "author", content: "Don Gatuna"}
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/jobslanding' },
+        ]
+    }
 
 }

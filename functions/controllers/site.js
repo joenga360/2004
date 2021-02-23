@@ -18,10 +18,12 @@ module.exports = {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         res.render('site/home', { seo_info: seo_page.home_page_seo_info })
     },
+
     //2. Get why post page
     getWhyPostPage: (req, res) => {
         res.render('site/whypost',  { seo_info: seo_page.whypost_page_seo_info })
     },
+
     //3. Get the questions page
     getQuestionsPage: (req, res) => {
         //construct quiz using 10 questions
@@ -36,10 +38,12 @@ module.exports = {
         res.render('site/questions', { seo_info: seo_page.questions_page_seo_info, questions, answerChoices })                             
                                     
     },
+
     //4. Get the employer sign in page
     getSignInPage: (req, res) => {
         res.render('site/signin', { seo_info: seo_page.signin_page_seo_info })
     },
+
     //5. Get the employer sign up page
     getSignUpPage: (req, res) => {
         const campaignText = campaign.campaignText.recruit
@@ -47,6 +51,7 @@ module.exports = {
         res.render('site/leadsignup', { campaignText: campaignText, seo_info: seo_page.signup_page_seo_info })    
         //res.status(200).json({campaignText})
     },    
+
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
         try {             
@@ -119,6 +124,7 @@ module.exports = {
             // throw error(error)
         }      
     },
+
     //8. Get the receipt page
     getReceiptPage: (req, res) => {
       
@@ -288,7 +294,11 @@ module.exports = {
                         "DSHS 12 Hours Continuous Education Units", 
                         "DSHS Dementia Specialty", 
                         "DSHS Mental Health Specialty", 
-                        "DSHS Safety and Orientation"
+                       // "DSHS Safety and Orientation",
+                        "BLS Course Skill Testing", 
+                        "Adult CPR/First Aid/AED Course Skill Testing",
+                        "DSHS Nurse Delegation (CORE) for NAs and HCAs",
+                        "DSHS Nurse Delegation Special Focus on Diabetes" 
                     ],                                       
                     seo_info: seo_page.schedule_page_seo_info                                         
                 })
@@ -416,5 +426,13 @@ module.exports = {
                 err
             })
         }
-    }  
+    },    
+    // Get courses landing page
+    getCoursesLandingPage: (req, res) => {
+        res.render('site/courseslanding',  { seo_info: seo_page.courses_landing_seo_info })
+    },
+    // Get jobs landing page
+    getJobsLandingPage: (req, res) => {
+        res.render('site/jobslanding',  { seo_info: seo_page.jobs_landing_seo_info })
+    },
 }

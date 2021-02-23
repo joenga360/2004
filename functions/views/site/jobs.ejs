@@ -1,22 +1,27 @@
 <div class="container-fluid p-5">           
         <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-6">     
-            <%= jobs.length %>
+        <div class="col-sm-10 col-md-5">     
+           
             <% if(jobs.length > 0) { %>
                 <table class="table" >
                     <thead>
                         <tr> 
-                            <th scope="col"><h5 class="lead">Job Openings and Profiles </h5></th>                     
+                            <th scope="col"><h5 class="lead text-center"><strong>JOB OPENINGS</strong></h5></th>                     
                         </tr>
                     </thead>
                                                       
                     <tbody >      
                         <!-- <%=jobs%>              -->
-                        <%jobs.forEach((value, key)=>{ %>                          
+                        <% jobs.forEach( job => { %>                          
                             <tr>
-                                <td><a href="/jobs/read/<%=value._id%>"><span class="text-secondary"></span><strong><%=value.title%> </strong></a></td>   
+                                <td class="text-start">
+                                    <%= job.created %> <a href="/jobs/view/<%= job.id %>" class="text-end"><strong><%=job.title%> </strong></a>
+                                    <!-- <span>
+                                       <p class="text-muted text-end"></p> 
+                                    </span> -->
+                                </td>   
                             </tr>              
-                        <%})%>                         
+                        <% }) %>                         
                     </tbody>
                 </table>
             <% } else {%>                      

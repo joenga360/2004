@@ -4,8 +4,7 @@
                          
                 <div class="col-sm-5">                   
                     <p class="text-danger text-center font-weight-bold"> <span class="border border-primary rounded px-3">Step 3 of 3 </span> </p>
-                    <h5 class="lead text-center text-primary p-3">Add contact information to your job post.</h5>   
-                    <meta name="csrf-token" content="<%= csrfToken %>">
+                    <h5 class="lead text-center text-primary p-3">Add contact information to your job post.</h5>                      
                     <!--BEGINNING OF THE FORM-->                   
                     <form id="profile-form" ref="form">
                         <!-- NAME OF FACILITY -->
@@ -98,7 +97,7 @@
             if ($('input:checkbox').is(':checked')) {
 
                 // Read the CSRF token from the <meta> tag
-                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')                      
+              //  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')                      
                 //restore it as an object
                 const jobPost = JSON.parse(jobPosting)
                 // get all input in the form
@@ -139,22 +138,9 @@
 
                 //join profile data with job post data
                 const jobData = Object.assign(profile, jobPost)
-                debugger
                
-                //console.log("jobData ", jobData)
-                debugger
 
-                // Make a request using the Fetch API
-                // fetch('/job', {
-                //     credentials: 'same-origin', // <-- includes cookies in the request
-                //     headers: {
-                //          Accept: "application/json",
-                //         //"Content-Type": "application/json", 
-                //         'CSRF-Token': token // <-- is the csrf token as a header
-                //     },
-                //     method: 'POST',
-                //     body: jobData
-                // })
+               
                $.ajax({
                         type: 'POST', 
                         url: '/job',
@@ -162,7 +148,7 @@
                         headers: {     
                              Accept: "application/json",
                             // "Content-Type": "application/json",         
-                            'CSRF-Token': token // Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
+                            //'CSRF-Token': token // Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
                         },
                         dataType: "json",
                         data: jobData,

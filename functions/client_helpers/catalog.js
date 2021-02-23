@@ -10,7 +10,7 @@ module.exports = {
         {
             "name" : "Certified Nurse Assistant/CNA",
             "cost": 725.00,
-            "length" : "2 weeks or 3 weekends.  For the weekday CNA classes, 5 days of theory are delivered virtually on ZOOM followed by 4 days in person skill sessions at our facility.  For the weekend CNA classes, 3 days of theory are delivered on ZOOM followed by 3 days of in person skill sessions.  ",
+            "length" : "2 weeks or 3 weekends.  For the weekday CNA classes, 5 days of theory are taught virtually on ZOOM followed by 4 days in person skill sessions at our facility.  For the weekend CNA classes, 3 days of theory are taught on ZOOM followed by 3 days of in person skill sessions.  ",
             "outlook" : "There is a severe shortage for CNAs and caregivers.  The average hourly rate for CNAs in the Puget Sound area is between $ 17 - $ 22 per hour.  As a licensed CNA, you will be able to work with residents in all different settings such as hospital, clinic, and skilled nursing facility.  To improve your employment prospects, take DSHS specialty courses and safety and orientation training.  Academic healthcare programs for advanced licenses such as RN, LPN, respiratory therapy, XRAY technician recognize CNA direct patient care experience and it is normally the case, CNA is a requirement for applying to such programs.  HCA direct patient care experience is not recognized by such programs.",       
             "description" : "The CNA training introduces the learner to the role of the nurse assistant in the longterm care, foundations of resident care, understanding residents, body systems and related conditions, confusion, Dementia, and Alzheimer's Disease, personal care skill, basic nursing skills, nutrition and hydration and rehabilitation and restoration care.  In addition to clinical rotations, there are theory and skill lab sessions.",
             "mode":"Blended/hybrid learning.",
@@ -24,13 +24,13 @@ module.exports = {
 
         {
             "name" : "DSHS Home Care Aide/75 Hours",
-            "cost": 565.00,
-            "length" : "75 hours",
+            "cost": 575.00,
+            "length" : "75 hours.  For weekday HCA classes, 5 days are taught virtually via ZOOM followed by 3 days of in person.  For weekend HCA classes, 4 days are taught virtually via ZOOM followed by 3 days.  Mental Health, Dementia, and Safety and Orientation are taught virtually.",
             "outlook":"There is a great shortage for CNAs and HCAs especially now we are in the midst of COVID19 pandemic.  The average hourly rate for HCAs in the Puget Sound area is between $ 15 - $ 17 per hour.  As a licensed HCAs, you will work with residents in different settings such as senior living, assisted living home, adult family home and/or in the resident's home.  To improve your job prospect and earn a higher wage, consider bridging your license from HCA to CNA.",
             "description" : "The DSHS Home Care Aide (HCA) Training is also known as the 75 hours training.  Our HCA training is comprimised of 54 hours of DSHS Core Basic Training, 8 hours of DSHS Mental Health specialty training, 8 hours of DSHS Dementia Specialty Training, and 5 hours of Safety and Orientation courses.",
             "mode":"Blended/hybrid learning.",
             "requirements": "Pass math and English entrance exam.",
-            "schedule": "Mon - Thur (9 a.m. - 4:30 p.m.) or Fri - Mon (12 p.m. - 8:30 p.m.) for 2 weeks. These sessions are followed by Safety & Orientation, Mental Health, and Dementia.",
+            "schedule": "Mon - Thur (9 a.m. - 4:30 p.m.) or Fri - Mon (12 p.m. - 8:30 p.m.) for 2 weeks. These sessions are followed by Safety & Orientation, Mental Health, and Dementia.  There is ",
             "frequency": "Offered twice per month.",
             "url": "/learn/hca",
             "clinical": "None.",
@@ -42,7 +42,7 @@ module.exports = {
         {
             "name" : "HCA to CNA Bridging",
             "cost" : 535.00,
-            "length" : "24 hours",
+            "length" : "24 hours.  1 day of theory is presented/taught via ZOOM followed by 2 - 3 days of in person skill lab sessions.",
             "description" : "The home care aide to certified nurse assistant (HCA - CNA) bridging course is for students with a valid Washington HCA license.  Although the listed course length is 24 hours, voluntary skill lab sessions are strongly encouraged.  The objective of the course is to prepare the student to pass the Washington Nurse Assistant Certification (NAC) exam.  The focus on the skill component is on measure/count and record skills, which include manual blood pressure, respiration, pulse, weight and urinary output.  As a licensed HCA, the student is expected to be competent with personal care skills, infection control and activities of daily living (ADLs).   Student complete 8 hours of online component, 8 hours of lab sessions and 8 hours of paid direct patient work.",
             "mode": "Blended/hybrid learning.",
             "outlook" : "As a licensed CNA with all DSHS certifications, you will be able to work with residents in all different settings such as hospital, clinic, skilled nursing facility not to mention adult family and assisted living homes, home care and staffing agencies.  Becoming a CNA will also increase your hourly rate by about $ 1.00 - $ 3.00.  ",

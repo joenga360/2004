@@ -13,30 +13,27 @@ module.exports = {
     allJobs: async(req, res, next)=>{        
         try{             
             //get all the jobs from all users in descending order - recent posts get listed highest
-            const allJobs = await db.collection('jobs').orderBy('created').get() //Job.find({}).sort({createdAt: 'desc'})            
-            
-            const dBjobs = allJobs.docs
+            const allJobs = await db.collection("jobs")
+                                    .orderBy("created", "desc")
+                                    .get()
 
+            const dBjobs = allJobs.docs
+   
             //jobs to be viewed by public
-            const jobs = dBjobs.map(x => {
+            const jobs = dBjobs.map( x => {
                             return {
                                 id : x.id,                              
-                                created : x.created,                               
-                                title: x.title,
-                                //description: x.description                                
+                                created : moment( x.data().created.toDate() ).format("MMM DD"),                             
+                                title: x.data().title                                
                             }                
-                        })            
-           
+                        })
+                                   
+            console.log('jobs ', jobs)
             //res.status(200).json({jobs})
             res.render('site/jobs', { jobs: jobs, seo_info: seo_page.jobs_page_seo_info })              
 
         }catch(error){
-            console.log(error)
-            // res.status(500).json({
-            //     console.log
-            //     message:"There has been an error fetching the data",
-            //     error
-            // })
+            console.log(error)         
         }
     },
     //apply to a job
@@ -158,48 +155,8 @@ module.exports = {
     },
     //create a job
     postJob: async( req, res ) => {
-        console.log( 'req object -> ', req.body )
-        try{       
-            
-            //check to see if there's captcha
-            // if (!req.body.captcha || req.body.captcha == '') {
-            //     return res.json({ 
-            //         success: false, 
-            //         redirect: false, 
-            //         url: '/job/contact', 
-            //         message: 'Please select captcha' 
-            //     })
-            // }
-                
-
-            // Secret key
-            // const secretKey = '6LdF1toZAAAAALtt_-2-UyT-3l8VPTFXgujlxYbv'
-
-            // Verify URL
-            // const query = stringify({
-            //     secret: secretKey,
-            //     response: req.body.captcha,
-            //     remoteip: req.connection.remoteAddress
-            // })
-
-            // const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
-
-            // Make a request to verifyURL
-            // const body = await fetch(verifyURL).then(res => res.json())
-
-            // If not successful
-            // if (body.success !== undefined && !body.success){
-            //     return res.json({   
-            //         success: false, 
-            //         redirect: false,
-            //         url: '/job',
-            //         message: 'Failed captcha verification' 
-            //     })
-            // }
-               
-
-            // If successful
-           // return res.json({ success: true, message: 'Captcha passed' })
+       
+        try{        
             
             //get the job post and poster details
             const { 
@@ -247,11 +204,17 @@ module.exports = {
             //create a job post without all the job details saved in the database
 
             const job = jobPost.data()
-            
+            console.log('job ', job)
       
             if(job){
                 //res.status(200).json({ jobPost })
-                res.render('employer/jobs/viewjob', { jobPost: job, seo_info: seo_page.jobs_page_seo_info })
+                res.render('employer/jobs/viewjob', 
+                                { 
+                                    jobPost: job, 
+                                    id: req.params.id, 
+                                    seo_info: seo_page.jobs_page_seo_info 
+                                }
+                            )
             }
             
         }catch(error){

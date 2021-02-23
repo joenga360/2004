@@ -5,17 +5,14 @@
             <div class="col-md-6">               
                 <div class="row justify-content-center">
                     <div id="classDates">
-                        <div class="row">
-                                  
-                            <h5><%= title %> </h5><button class="btn btn-white btn-sm mx-4" id="editBtn">Edit Dates</button>
-                            
+                        <div class="row">                                  
+                            <h5><%= title %> </h5><button class="btn btn-white btn-sm mx-4" id="editBtn">Edit Dates</button>                            
                         </div>                      
-                    </div>
-                   
+                    </div>                   
                     <div id="divEditForm" style="display: none;"> 
                         <div class="row">
                             <form id="editClassDates">
-                                <% if(course.data.end_date) { %>
+                                <% if ( course.data.end_date ) { %>
                                     <input type="text" name="dates" id="course_dates" value="<%=course.start%> - <%=course.end%>">
                                 <% } else { %>
                                     <input type="text" name="dates" id="course_dates" value="<%=course.data.start%>">
@@ -26,12 +23,10 @@
                             </form>  
                         </div>                                        
                     </div>
-                </div> 
-              
-                <div class="row justify-content-center my-4">
-                    <p><a href="/admin/student_register/<%=courseId%>" >Add student</a></p>
+                </div>               
+                <div class = "row justify-content-center my-4" >
+                    <p><a href="/admin/student_register/<%= courseId %>" >Add student</a></p>
                 </div>
-
                 <div class="row">
                     <% if(students.length > 0){ %> 
                     <div>
