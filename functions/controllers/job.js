@@ -39,51 +39,57 @@ module.exports = {
     //apply to a job
     applyJob: async( req, res, next ) => {
         try{
-           
+           console.log('are we getting here......')
             //get data from front end
-            const { name, tel, email, qualifications } = req.body
+            const { name, tel, email, certifications, id } = req.body
             //make sure 
             if(!email || !tel || !name){
-                req.flash('error', 'You must enter name, tel, and name.')
-                return
+                return res.status(404).json({
+                    message: 'You must enter name, tel, and name.'
+                })
+                
             }
-            //get the id
-            const jobId = req.params.id
+            
+            console.log('job req.body ', req.body)
            
             //find job using id
-            const job = await Job.findById(jobId)
-            console.log("Here is the job", job)  
+            const job = await db.collection('jobs').doc( id ).get()
+            console.log(job.data())
+            const existing =  job.data().applicants.filter( x => x.name === name && x.email === email)
+            console.log('existing....', existing )
+           
+            if(existing.length == 0 ){
+                
+                const applicants = job.data().applicants
+                
+                applicants.unshift(
+                    {
+                        submitted : firebase.firestore.Timestamp.fromDate(new Date()), 
+                        name,
+                        tel,
+                        email,
+                        certifications
+                })
 
-            //check if the user exists
-            if(!job.applicant_emails.includes(email)){
-                job.applicant_emails.unshift(email)
-                job.applicants.unshift({
-                    name,
-                    tel,
-                    email,
-                    qualifications
+                await db.collection('jobs').doc(id).update({
+                    applicants
+                })
+
+                return res.status(200).json({
+                    'message': 'You have submitted your application.',
+                    'success': true,
+                    'redirect': true,
+                    'url': '/job/all'
                 })
             } else {
-                const email_index = job.applicant_emails.indexOf(email)
+                return res.status(404).json({
 
-                job.applicant_emails.splice( email_index, 1 )
-
-                job.applicants.splice( email_index, 1 )
-
-                job.applicant_emails.unshift(email)
-
-                job.applicants.unshift({
-                    name,
-                    tel,
-                    email,
-                    qualifications
+                    'message': 'We see you have submitted an application for this job.  Search for another job to apply for.',
+                    'success': false,
+                    'redirect': false,
+                    'url': '/job/all'
                 })
-            }       
-
-            await job.save()
-
-            res.redirect('/jobs/read/'+jobId)
-
+            }
         }catch(error){
             console.log("Stupid error ", error)
         }       
@@ -172,7 +178,8 @@ module.exports = {
             const result = await db.collection('jobs').add({
                 created : firebase.firestore.Timestamp.fromDate(new Date()),
                 address, compensation, description, requirements, schedule, title,
-                facility_name, email, tel, settings, reimbursement, inhouse_training
+                facility_name, email, tel, settings, reimbursement, inhouse_training,
+                applicants: []
             })
 
             //send back           

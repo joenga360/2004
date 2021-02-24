@@ -292,7 +292,8 @@ module.exports = {
             const payments = student.payments
 
             payments.unshift(
-                    {   created: firebase.firestore.Timestamp.fromDate(new Date()), 
+                    {   
+                        created: firebase.firestore.Timestamp.fromDate(new Date()), 
                         course_name: course.title, 
                         course_id, 
                         payment_mode: (payment_mode !== undefined) ? req.body.payment_mode : 'None',

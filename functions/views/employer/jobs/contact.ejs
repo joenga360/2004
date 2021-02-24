@@ -137,10 +137,9 @@
                 })                
 
                 //join profile data with job post data
-                const jobData = Object.assign(profile, jobPost)
-               
+                const jobData = Object.assign(profile, jobPost)               
 
-               
+               //send to the server
                $.ajax({
                         type: 'POST', 
                         url: '/job',

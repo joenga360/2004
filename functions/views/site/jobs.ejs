@@ -15,7 +15,7 @@
                         <% jobs.forEach( job => { %>                          
                             <tr>
                                 <td class="text-start">
-                                    <%= job.created %> <a href="/jobs/view/<%= job.id %>" class="text-end"><strong><%=job.title%> </strong></a>
+                                    <%= job.created %> <a href="/job/view/<%= job.id %>" class="text-end"><strong><%=job.title%> </strong></a>
                                     <!-- <span>
                                        <p class="text-muted text-end"></p> 
                                     </span> -->
@@ -37,7 +37,7 @@
 
  
 <script type="application/javascript">
-    $(document).ready(()=>{
+    $(document).ready( () => {
         gtag('event', `View Jobs Page`, {
             'event_category': 'Engagement',
             'event_label': `Job Seeker`,

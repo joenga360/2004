@@ -333,7 +333,7 @@ module.exports = {
         //get the req param and use it to return the course
         const course = courseCode.indexOf(req.params.course)
 
-        res.render('site/details/hca', { 
+        res.render('site/course_details', { 
                                         code: req.params.course, 
                                         course: catalog[course], 
                                         seo_info: seo_page[req.params.course + "_page_seo_info"]

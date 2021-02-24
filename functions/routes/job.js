@@ -15,5 +15,7 @@ router.route('/all').get(JobController.allJobs)
 router.route('/receipt').get(JobController.getPostReceipt)
 //create a job post
 router.route('/').post(JobController.postJob)
+//create a job post
+router.route('/apply').post( JobController.applyJob )
 
 module.exports = router

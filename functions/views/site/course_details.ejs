@@ -8,14 +8,19 @@
                 <div class="card-body">
                     <h5 class="card-title">Learning Mode: <%= course.mode %></h5>
                     <p class="card-text"><strong>Cost: </strong> $ <%= course.cost%>.00</p>
+                    <p class="card-text"><strong>Length: </strong><%= course.length %></p>
                     <p class="card-text"><strong>Schedule: </strong><%= course.schedule %></p>
                     <p class="card-text"><strong>Requirements: </strong><%= course.requirements %></p>  
-                    <p class="card-text"><strong>To see next classes, click: <a href = "/learn/<%=code %>" > www.excelcna.com/learn/<%=code%></a> </strong> </p>                               
-                    <p class="card-text"><strong>Description: </strong><%= course.description %></p>  
-                    <% if( course.name == "Certified Nurse Assistant/CNA Training" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours Training" ) { %>               
+                    <p class="card-text"><strong>Clinical: </strong><%= course.clinical %></p>                                                 
+                    <!-- <p class="card-text"><strong>Description: </strong><%= course.description %></p>  
+                    <% if( course.name == "Certified Nurse Assistant/CNA" || course.name == "HCA to CNA Bridging" || course.name == "DSHS Home Care Aide/75 Hours Training" ) { %>               
                         <p class="card-text"><strong>Job Outlook: </strong><%= course.outlook %></p>  
                         <p class="card-text font-weight-bold text-dark bg-warning p-2"><%= course.upsell %></p>             
-                    <% } %>    
+                    <% } %>                     -->
+                    <div class="modal-footer">                           
+                        <!-- <button type="button" id="apply-job-btn">Submit Application</button> -->
+                        <a href="<%=course.url%>" class="btn btn-primary"> View upcoming classes </a>
+                    </div>
                 </div>
             </div>
             </div> 

@@ -48,13 +48,13 @@
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Fill out this form</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Fill out this form to apply for the job</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
                             <div class="modal-body">
-                                <form class="form-signup" id="employer-sign-up">                                       
+                                <form class="form-signup" id="apply-job-form">                                       
                                     <div class="form-label-group">
                                         <label for="inputName"><strong> Preferred name:</strong></label>
                                         <input type="text" class="form-control" name='name' placeholder="Enter your preferred name" autofocus required>
@@ -69,17 +69,18 @@
             
                                     <div class="form-label-group">
                                         <label for="inputTel"><strong>Phone:</strong></label>
-                                        <input type="tel" class="form-control" placeholder="Enter telephone" name="password" id="password"  required>                                        
+                                        <input type="tel" class="form-control" placeholder="Enter phone #" name="tel" id="tel" required>                                        
                                     </div>   
             
                                     <div class="form-group">
                                         <label for="comments"><strong>Certifications/Licenses:</strong></label>                                        
-                                        <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter any certifications/licenses you possess." ></textarea>
-                                    </div>        
+                                        <textarea class="form-control" name="certifications" id="certifications" cols="10" rows="2" placeholder="Enter any certifications/licenses you possess." ></textarea>
+                                    </div>  
+                                    <input type="hidden" name="id" value="<%=id%>">      
                                 </form>
                             </div>
                             <div class="modal-footer">                           
-                                <button type="button" class="btn btn-primary" id="applyJob">Submit Application</button>
+                                <button type="button" class="btn btn-primary" id="apply-job-btn">Submit Application</button>
                             </div>
                         </div>
                         </div>
@@ -91,7 +92,62 @@
 
 <script>
 
+    $(document).ready(() =>{
+      //  console.log('it is loaded.....')
+        //when the form is submitted
+        $("#apply-job-btn").on('click', e => {
+            //prevent default behavior
+            e.preventDefault()
+            console.log('...and also here....')
+            //get the form details // get all input in the form
+            const $otherInputs = $('#apply-job-form :input')
 
+            const job = {}
+
+            $otherInputs.each( function() {
+                
+                job[this.name] = this.value
+                               
+            }) 
+            console.log(job)
+            debugger
+            //send to the server
+            $.ajax({
+                    type: 'POST', 
+                    url: '/job/apply',
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    headers: {     
+                            Accept: "application/json",
+                        // "Content-Type": "application/json",         
+                        //'CSRF-Token': token // Cookies.get("XSRF-TOKEN") // <-- is the csrf token as a header
+                    },
+                    dataType: "json",
+                    data: job
+                }).done(function (response) {
+                    console.log('RESPONSE - > ', response)
+                    debugger
+                    if (response.redirect !== undefined && response.redirect && response.success) {                       
+                        
+                        
+                        alert(response.message)
+                        //go to receipt page
+                        window.location.replace(response.url)
+                        
+                    }      
+                    //if something is wrong - alert user and redirect user to course schedule page
+                    if (response.redirect === undefined && !response.redirect && !response.success) {
+                        debugger
+                        alert(response.message)
+
+                        //localStorage.clear()
+
+                        window.location.replace(response.url)
+                    }                       
+                })         
+            
+
+        })
+    })
 
 </script>
 
