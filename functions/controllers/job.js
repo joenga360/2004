@@ -2,10 +2,10 @@ const firebase = require("firebase")
 const moment = require('moment')
 //create reference for firestore database
 const db = firebase.firestore()
-//const crypto = require("crypto")
 const seo_page = require('../client_helpers/seo_page_info')
-//const fetch = require('node-fetch');
-const { stringify } = require('querystring')
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(SENDGRID_API)
+
 
 module.exports = {
 
@@ -43,25 +43,21 @@ module.exports = {
             //get data from front end
             const { name, tel, email, certifications, id } = req.body
             //make sure 
-            if(!email || !tel || !name){
+            if( !email || !tel || !name ){
                 return res.status(404).json({
                     message: 'You must enter name, tel, and name.'
-                })
-                
-            }
-            
-            console.log('job req.body ', req.body)
-           
+                })                
+            }        
             //find job using id
             const job = await db.collection('jobs').doc( id ).get()
-            console.log(job.data())
+            //check if the applicant has applied to this job
             const existing =  job.data().applicants.filter( x => x.name === name && x.email === email)
-            console.log('existing....', existing )
-           
+          
+            //if the applicant has not applied, submit application
             if(existing.length == 0 ){
-                
+                //get the applicants array
                 const applicants = job.data().applicants
-                
+                //add the new applicant to the applicants array
                 applicants.unshift(
                     {
                         submitted : firebase.firestore.Timestamp.fromDate(new Date()), 
@@ -69,7 +65,20 @@ module.exports = {
                         tel,
                         email,
                         certifications
-                })
+                    }
+                )
+
+                const num = existing + 1
+
+                const msg = {
+                    to: `${ job.email }`,
+                    from: 'recruiting@excelcna.com', 
+                    subject: `Caregiver #${num} : ${ job.title }`,//'Sending with Twilio SendGrid is Fun',
+                    text: 'Here is a caregivers/CNAs interested in your position:',
+                    html: `<ul><li>${ name }</li><li>Tel: ${ tel } Email: ${ email } </li> <li> ${ certifications }</li></ul>`,
+                }
+
+                await sgMail.send(msg)
 
                 await db.collection('jobs').doc(id).update({
                     applicants

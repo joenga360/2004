@@ -226,23 +226,23 @@ module.exports = {
                        
             //save new student and the course after adding the new student
             const student = await db.collection('students')
-                                    .add({    
-                                        address, city, 
-                                        enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
-                                        state, zip, tel, email, first, last, dob, payments, comments, status 
-                                    })           
+                                    .add(
+                                            {    
+                                                address, city, 
+                                                enrolledOn: firebase.firestore.Timestamp.fromDate(new Date()),
+                                                state, zip, tel, email, first, last, dob, payments, comments, status 
+                                            }
+                                        )           
             //create postdata to send to mailchimp
             const postData = studentData( email, first, last, tel, course.data.title, course.data.start_date, course.data.end_date, student.id, course_id, status )
             //add student to the mailchimp
             await subscribe( postData, STUDENT_LIST )
             //add this student to the registered segment of the list audience
-            //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )
-            
+            //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )            
             res.status(201).json({
                  message: `Admin has successfully added the student to ${course.data.title}.`,  
                  redirect: true,
-                 redirect_url: "/courses/"+course_id             
-        
+                 redirect_url: `/courses/${code}/${course_id}`       
             })
         }catch(error){
             console.log('What is the error -> ', error)
@@ -315,7 +315,7 @@ module.exports = {
         res.status(201).json({
             message: "Student has been updated",
             redirect: true,
-            redirect_url: "/courses/"+course_id        
+            redirect_url:  `/courses/${code}/${course_id}`         
         })
         //const student = results.data()
         
@@ -437,14 +437,12 @@ module.exports = {
     * data: email
     */
     searchStudent: async ( req, res, next ) => {
-        try {
-            console.log('student SEARCH EMAIL ', req.body)
-
+        try {  
             //get the course id and student id
             const email = req.body.email
 
             //get the student
-            const result = await db.collection('students').where("email", "==", email).get()
+            const result = await db.collection('students').where( "email", "==", email).get()
 
             //get the student data
             const students =  result.docs

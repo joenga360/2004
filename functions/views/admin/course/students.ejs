@@ -25,10 +25,10 @@
                     </div>
                 </div>               
                 <div class = "row justify-content-center my-4" >
-                    <p><a href="/admin/student_register/<%= courseId %>" >Add student</a></p>
+                    <p><a href="/admin/student_register/<%=code%>/<%= courseId %>" >Add student</a></p>
                 </div>
                 <div class="row">
-                    <% if(students.length > 0){ %> 
+                    <% if(students.length > 0 ) { %> 
                     <div>
                         <table class="table" >
                             <thead>
