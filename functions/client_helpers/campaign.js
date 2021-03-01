@@ -15,6 +15,8 @@ const campaignText = {
             4: "Our program's CNA courses:"
         },
 
+        
+
         "lists":{
             1: [
                 "Our CNA program course graduates have been admitted to UW, WAZU, Seattle U and other great schools' healthcare programs.",
