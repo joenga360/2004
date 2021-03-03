@@ -10,9 +10,9 @@ router.get("/admin/signin",  SiteController.getAdminSignInPage)
 //get the admin sign up page
 router.get("/admin/signup", SiteController.getAdminSignUpPage)
 //get the catalog page
-router.get('/courses', SiteController.getCatalog)
+router.get('/courses', SiteController.getMainCourseLandingPage)
 //get courses for the general site page
-//router.get('/courses', SiteController.getCourses)
+router.get('/catalog', SiteController.getCatalog)
 //get the questions page
 router.get("/questions", SiteController.getQuestionsPage)
 //receipt page after waitlisting for a course 

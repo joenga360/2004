@@ -428,11 +428,24 @@ module.exports = {
             })
         }
     },    
-    // Get courses landing page
+    //get general course landing page
+    getMainCourseLandingPage: ( req, res ) => { 
+        try {
+            //set res locals to true
+            res.locals.lead = true
+            //send back the view
+            res.render('site/courseslanding', {
+                seo_info : seo_page.courses_landing_seo_info 
+            } )
+        } catch ( err ) {
+            console.log("Error getting main course page", err)
+        }
+    },
+    // Get courses landing page for CNA, HCA/Core Basic, HCA to NAC bridging
     getCoursesLandingPage: (req, res) => {
         try {
             //get course name from the req.params
-            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() :  "HCA - CNA Bridging"
+            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() :  "HCA to CNA Bridging"
             res.locals.lead = true
             //return course landing view, seo information and text
             res.render('site/leadcourseslanding',  { 
