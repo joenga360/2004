@@ -176,11 +176,11 @@ module.exports = {
     getStudentUpdateForm: async ( req, res, next ) => {
         try{          
             //get the student id
-            const { course_id, code, student_id } = req.params  
+            const { course_id, name, student_id } = req.params  
             //find the course
-            const courseQuery = await db.collection('courses').doc(course_id).get()
-            //get the course data
-            const course_results = courseQuery.data() 
+            const course = await courseDbName( name, course_id ) 
+
+            console.log('COURSE....', course)
             //find the student
             const studentQuery = await db.collection('students').doc(student_id).get()
             //get the course data
@@ -191,7 +191,7 @@ module.exports = {
                 address: student_results.address, 
                 city: student_results.city, 
                 comments: student_results.comments, 
-                dob: student_results.dob ? moment.utc(student_results.dob.toDate()).format("YYYY-MM-DD"):"",
+                dob: student_results.dob ? moment.utc(student_results.dob.toDate()).format("YYYY-MM-DD") : "",
                 email: student_results.email, 
                 first: student_results.first, 
                 last: student_results.last, 
@@ -200,24 +200,18 @@ module.exports = {
                 tel: student_results.tel, 
                 zip: student_results.zip               
             }  
-           
-            //construct data about class - remove student array
-            const course = {
-                courseId: courseQuery.id,
-                start_date: moment.utc(course_results.start_date.toDate()).tz('America/Los_Angeles').format("MMM D"),                                        
-                end_date: course_results.end_date !== null ? moment.utc(course_results.end_date.toDate()).tz('America/Los_Angeles').format("MMM D")  : "",
-                name: course_results.name,
-                type: course_results.type
-            }  
+         
             //return the page with the relevant information
             res.render('admin/student/register', 
                                 { 
-                                    // csrfToken: req.csrfToken(),
                                     update : true, 
                                     seo_info : seo_page.admin_portal_seo_info, 
                                     student : student, 
-                                    course : course 
-                                })            
+                                    title : course.title,
+                                    courseId : course.id,
+                                    code : name
+                                }
+                            )            
 
         } catch (error){
             console.log(error)

@@ -5,8 +5,8 @@ module.exports = {
     isAdmin: async ( req, res, next ) => {          
        
         //get the session cookie
-        //const sessionCookie = req.cookies.__session || ""
-        const sessionCookie = req.cookies.session || ""       
+        const sessionCookie = req.cookies.__session || ""
+        //const sessionCookie = req.cookies.session || ""       
                     
         admin
             .auth()

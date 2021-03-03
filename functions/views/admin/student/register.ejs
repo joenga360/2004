@@ -322,8 +322,13 @@
             debugger
             //if there is payment received, send it to GA as ecommerce data 
             if(parseInt(studentData.payment) > 0 ){
-                 debugger
-                 //send data to GA         
+                debugger
+                //check if the payment mode, has been selected
+                //if not, terminate script
+                if(studentData.payment_mode == undefined ){
+                    return alert ('You must select payment mode!')
+                }
+                //send data to GA         
                 gtag('event', 'purchase', {
                     "transaction_id": courseId,
                     "affiliation": "EHCT - Admin Course Registration",  
@@ -420,9 +425,12 @@
                 }
             }
             
-
-            // console.log('STUDENT DATA -> ', studentData)
             if(parseInt(studentData.payment) > 0){
+                //check if the payment mode, has been selected
+                //if not, terminate script
+                if(studentData.payment_mode == undefined ){
+                    return alert ('You must select payment mode!')
+                }
                 //send data to GA         
                 gtag('event', 'purchase', {
                     "transaction_id": courseId,
@@ -439,11 +447,11 @@
                     ]
                 })
             }           
-                            
+            debugger                
            
             $.ajax({
                 type: 'PATCH', 
-                url: '/students/update/'+courseId+'/'+code,
+                url: '/students/update/'+ code +'/'+courseId,
                 credentials: 'same-origin', // <-- includes cookies in the request
                 // headers: {
                 //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
@@ -471,35 +479,3 @@
 
 </script>
 
-<style scoped>
-   
-    .StripeElement {
-    box-sizing: border-box;
-
-    height: 40px;
-
-    padding: 10px 12px;
-
-    /* border: 1px solid transparent; */
-    border: 2px solid green;
-    border-radius: 4px;
-    background-color: white;
-
-    box-shadow: 0 1px 3px 0 #e6ebf1;
-    -webkit-transition: box-shadow 150ms ease;
-    transition: box-shadow 150ms ease;
-    }
-
-    .StripeElement--focus {
-    box-shadow: 0 1px 3px 0 #cfd7df;
-    }
-
-    .StripeElement--invalid {
-    border-color: #fa755a;
-    }
-
-    .StripeElement--webkit-autofill {
-    background-color: #fefde5 !important;
-    }
-
-</style>

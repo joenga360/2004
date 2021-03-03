@@ -7,7 +7,7 @@ router.route('/register/:code/:id').post( studentController.studentSelfCourseSig
 //admin registers a new student
 router.route('/start/:course_id/:code').post( authenticate.isAdmin,  studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 
-router.route('/update/:course_id/:code').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
+router.route('/update/:code/:course_id').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
 //admin transfers a student
 router.route('/transfer').patch( authenticate.isAdmin,  studentController.transferStudent ) 
 //admin unenroll a student

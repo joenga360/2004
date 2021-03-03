@@ -5,6 +5,49 @@ const campaigns = {
     4: "EHCT Flexible Schedule"
 }
 
+const courseCampaigns = {
+    
+    "CNA": {      
+        //lists of benefits
+        "lists": [
+            "Lead to great paying jobs especially now CNAs are in great demand",
+            "Are offered during weekdays and weekends",
+            "The theory component is taught all online",
+            "The skill component is only 4 days of in person labs sessions"
+        ],
+        //body
+        "body": "We have trained over 10,000 CNAs, some of whom now work at Harborview, Swedish, Virginia Mason etc. Our CNA certification meets nursing program requirements for UW, WAZU, Seattle U, Tacoma Community College, etc.",   
+    },
+
+    "HCA": {      
+        //lists of benefits
+        "lists": [
+            "Lead to great paying jobs especially now HCA/aides are in great demand",
+            "Are offered during weekdays and weekends",
+            "The theory component is taught all online",
+            "The skill component is only 3 days of in person labs sessions"
+        ],
+        //body
+        "body": "We have trained over 10,000 caregivers that work in hospitals, clinics, nursing homes, assisted living homes, adult family homes and home care agencies etc.",   
+    },
+
+    "HCA - CNA Bridging" : {
+        //lists of benefits
+        "lists": [
+            "Lead to great paying jobs especially now CNAs are in great demand",
+            "Are offered during weekdays and weekends",
+            "The theory component is taught all online",
+            "The skill component is only 3 days of in person labs sessions"
+        ],
+        //body
+        "body": "We have trained over 10,000 CNAs, some of whom now work at Harborview, Swedish, Virginia Mason etc. Our CNA certification meets nursing program requirements for UW, WAZU, Seattle U, Tacoma Community College, etc.", 
+    }
+
+
+    
+    
+}
+
 const campaignText = {
 
     "CNA": {
@@ -95,7 +138,7 @@ const campaignText = {
     }    
 }
 
-function courseName(x){
+function courseName( x ){
 
     const courseKeys = { 
         "cna":"CNA",
@@ -115,6 +158,7 @@ function courseName(x){
     return courseKeys[x]
 }
 
+
 function sortCampaigns(course, url){
 
     const length = url.length
@@ -132,4 +176,4 @@ function sortCampaigns(course, url){
     }
 }
 
-module.exports = { sortCampaigns, campaignText,  courseName  }
+module.exports = { sortCampaigns, campaignText,  courseName, courseCampaigns  }

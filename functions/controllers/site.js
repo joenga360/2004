@@ -4,7 +4,7 @@ const seo_page = require('../client_helpers/seo_page_info')
 const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
 const { course_classifier } = require('../helpers/course_classifier')
-const { campaign, courseName } = require('../client_helpers/campaign') 
+const { campaign, courseName, courseCampaigns } = require('../client_helpers/campaign') 
 const { catalog, courseCode, upsell }  = require('../client_helpers/catalog') 
 const firebase = require("firebase")
 const { getJobPostForm, getJobPreview } = require('./job')
@@ -202,7 +202,7 @@ module.exports = {
                     course: course[0].data,
                     name: course[0].data.name,
                     course_id: course[0].id,
-                    code: req.params.course,
+                    code: req.params.name,
                     seo_info: seo_page[req.params.name + "_page_seo_info"]   
                 })
             
@@ -230,13 +230,14 @@ module.exports = {
 
                 //classify the courses as either day, evening, weekend
                 const courses = course_classifier( classes )                
-            
+                
+                console.log('CNA COURSES --- ', courses)
                 if( classes.length > 0 ){
                     res.locals.lead = true
                     res.render('site/leadcourseschedules', {                
                         course: courses[req.params.name],
                         name: course_name,
-                        code: req.params.course,                   
+                        code: req.params.name,                   
                         seo_info: seo_page[req.params.name + "_page_seo_info"]                                              
                     })
                 }else{
@@ -429,7 +430,21 @@ module.exports = {
     },    
     // Get courses landing page
     getCoursesLandingPage: (req, res) => {
-        res.render('site/courseslanding',  { seo_info: seo_page.courses_landing_seo_info })
+        try {
+            //get course name from the req.params
+            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() :  "HCA - CNA Bridging"
+            res.locals.lead = true
+            //return course landing view, seo information and text
+            res.render('site/leadcourseslanding',  { 
+                        code: req.params.name,
+                        course : course,
+                        seo_info : seo_page.courses_landing_seo_info,  
+                        text : courseCampaigns[course]
+                    })   
+        } catch (error) {
+            console.log('error', error)
+        }
+        
     },
     // Get jobs landing page
     getJobsLandingPage: (req, res) => {

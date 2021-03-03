@@ -115,6 +115,26 @@ function courseName(x){
     return courseKeys[x]
 }
 
+const courseKeys = { 
+    "cna":"CNA",
+    "hca": "DSHS Home Care Aide/75 Hours",
+    "cpr":"Adult CPR/First Aid/AED Course Skill Testing",
+    "bls":"BLS Course Skill Testing",
+    "bridging":"HCA to CNA Bridging",
+    "delegation": "DSHS Nurse Delegation (CORE) for NAs and HCAs", 
+    "diabetes": "DSHS Nurse Delegation Special Focus on Diabetes", 
+    "core": "DSHS Core Basic",        
+    "ceu": "DSHS 12 Hours Continuous Education Units", 
+    "dementia": "DSHS Dementia Specialty", 
+    "mh": "DSHS Mental Health Specialty", 
+    "so": "DSHS Safety and Orientation"
+}
+
+function getCourseKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+  
+  
 function sortCampaigns(course, url){
 
     const length = url.length
@@ -132,4 +152,4 @@ function sortCampaigns(course, url){
     }
 }
 
-module.exports = { sortCampaigns, campaignText,  courseName  }
+module.exports = { sortCampaigns,  getCourseKeyByValue, campaignText,  courseName, courseKeys  }

@@ -13,14 +13,16 @@
                     </select>
                 </div>
                 <!-- CNA CLASSES -->
-                <div class="row justify-content-center" id="main_course_div">
+                <div class="row justify-content-center" id="cna_course_div">
                     <!--CNA DAY CLASSES  -->
                     <div class="col-md-4 col-sm-12"> 
                         <!--CNA DAY CLASSES  -->                                                
                         <ul class="list-group list-group-flush justify-content-between cna_ul">
                             <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li>                         
                             <% courses.cna.day_courses.forEach(course =>{ %>
-                                <li class="list-group-item text-center"><a href= "/courses/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a></li>
+                                <li class="list-group-item text-center">
+                                    <a href= "/courses/cna/<%=course.courseId%>" class="course_link"> <%= course.start_date %> - <%= course.end_date %></a>
+                                </li>
                             <% }) %>                 
                         </ul>                                         
                     </div>
@@ -30,17 +32,21 @@
                         <ul class="list-group list-group-flush justify-content-between cna_ul">
                             <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks long <br> 3:00 p.m. - 9:00 p.m.</li>                         
                             <% courses.cna.evening_courses.forEach(course =>{ %>
-                                <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" class="course_link" > <%= course.start_date %> - <%= course.end_date %></a></li>
+                                <li class="list-group-item text-center">
+                                    <a href = "/courses/cna/<%=course.courseId%>" class="course_link" > <%= course.start_date %> - <%= course.end_date %> </a>
+                                </li>
                             <% }) %>                                                                  
                         </ul>                
                     </div> 
-                    <!-- CNA & Adult CPR/FA WEEKEND CLASSES -->
+                    <!-- CNA WEEKEND CLASSES -->
                     <div class="col-md-4 col-sm-12">
                         <!-- CNA WEEKEND CLASS -->
                         <ul class="list-group list-group-flush justify-content-between cna_ul">
                             <li class="list-group-item list-group-item-primary text-dark"> <strong> WEEKEND CLASS </strong><br> Sat & Sun <br> 7 weekends long <br> 2:00 p.m. - 10:00 p.m.</li>                              
                             <% courses.cna.weekend_courses.forEach(course =>{ %>
-                                <li class="list-group-item text-center"><a href = "/courses/<%=course.courseId%>" > <%= course.start_date %> - <%= course.end_date %></a></li>
+                                <li class="list-group-item text-center">
+                                    <a href = "/courses/cna/<%=course.courseId%>" > <%= course.start_date %> - <%= course.end_date %></a>
+                                </li>
                             <% }) %>                                                            
                         </ul>                        
                     </div> 
@@ -53,7 +59,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 4 days <br> [Mon, Tue, Wed, Thu ] <br> 10:00 a.m. - 5:30 p.m.</li>                            
                             <% courses.bridging.day_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/bridging/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
                             <% }) %>                                                
                         </ul>                
@@ -64,7 +70,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKEND CLASS </strong><br> 4 days <br>  [Fri, Sat, Sun, Mon] <br> 12:00 p.m. - 7:30 p.m.</li>                          
                             <% courses.bridging.weekend_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/bridging/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
                             <% }) %>                                                                       
                         </ul>                
@@ -79,7 +85,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thu ] <br> 9:00 a.m. - 5:30 p.m.</li>                            
                             <% courses.hca.day_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/hca/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
                             <% }) %>                                                
                         </ul>                
@@ -90,7 +96,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 7 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
                             <% courses.hca.weekend_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/hca/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
                             <% }) %>                                                                       
                         </ul>                
@@ -105,7 +111,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 2 days <br> Tue/Wed, Wed/Thur <br> 10:00 a.m. - 4:30 p.m.</li>                            
                             <% courses.mh.day_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/mh/<%=course.courseId%>"><%= course.start_date %></a>
                             </li> 
                             <% }) %>                                                
                         </ul>                
@@ -116,7 +122,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 2 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
                             <% courses.mh.weekend_courses.forEach(course => { %>                            
                             <li class = "list-group-item text-center" >
-                                <a href = "/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href = "/courses/mh/<%=course.courseId%>" class="course_link"><%= course.start_date %></a>
                             </li> 
                             <% }) %>                                                                       
                         </ul>                
@@ -131,7 +137,7 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thu ] <br> 9:00 a.m. - 5:30 p.m.</li>                            
                             <% courses.dementia.day_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/dementia/<%=course.courseId%>"><%= course.start_date %></a>
                             </li> 
                             <% }) %>                                                
                         </ul>                
@@ -142,7 +148,48 @@
                             <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 7 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
                             <% courses.dementia.weekend_courses.forEach(course => { %>                            
                             <li  class="list-group-item text-center" >
-                                <a href="/courses/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
+                                <a href="/courses/dementia/<%=course.courseId%>" class="course_link"><%= course.start_date %></a>
+                            </li> 
+                            <% }) %>                                                                       
+                        </ul>                
+                    </div>  
+                </div>
+
+                <!-- SAFETY + ORIENTATION CLASSES -->
+                <div class="row justify-content-center" id="so_div" style="display:none;">
+                    <!-- SAFETY + ORIENTATION WEEKDAY (DAY) CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> Tue, Wed, Thu <br> 9:00 a.m. - 2:30 p.m.</li>                            
+                            <% courses.so.day_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/so/<%=course.courseId%>"><%= course.start_date %></a>
+                            </li> 
+                            <% }) %>                                                
+                        </ul>                
+                    </div>                     
+                </div>
+
+                <!-- CEU CLASSES -->
+                <div class="row justify-content-center" id="ceu_div" style="display:none;">
+                    <!-- CEU WEEKDAY (DAY) CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thu ] <br> 9:00 a.m. - 5:30 p.m.</li>                            
+                            <% courses.ceu.day_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/ceu/<%=course.courseId%>"><%= course.start_date %> - <%= course.end_date %></a>
+                            </li> 
+                            <% }) %>                                                
+                        </ul>                
+                    </div>
+                    <!-- CEU WEEKEND CLASSES -->
+                    <div class="col-md-5 col-sm-12">                                 
+                        <ul class="list-group list-group-flush justify-content-between">                                
+                            <li class="list-group-item list-group-item-primary text-dark"><strong> WEEKDAY CLASS </strong><br> 7 days <br>  [Fri, Sat, Sun][Sat, Sun, Mon] <br> 11:00 a.m. - 7:30 p.m.</li>                          
+                            <% courses.ceu.weekend_courses.forEach(course => { %>                            
+                            <li  class="list-group-item text-center" >
+                                <a href="/courses/ceu/<%=course.courseId%>" class="course_link"><%= course.start_date %> - <%= course.end_date %></a>
                             </li> 
                             <% }) %>                                                                       
                         </ul>                
@@ -155,8 +202,7 @@
 </section>    
 
 
-<script>
-  
+<script>  
     /*
         @params:  course  type: string  default: 'CNA'
         displays course UI
@@ -164,40 +210,92 @@
     function displayCourseUI(selectedCourse){
         //determine course type and UI to use
         switch(selectedCourse){
-            case "CNA":
-                //show the main div for CNA and Adult CPR/FA
-                $("#main_course_div").show()
-                //show ul div of cna - containing days and times of CNA training
-                $('.cna_ul').show()
-                $('.cpr_ul').hide()     
+            case "Certified Nurse Assistant/CNA":
+                //show the main div for CNA 
+                $("#cna_course_div").show()              
+                //hide the other courses divs   
                 $("#bridging_div").hide()
-                $("#bls_div").hide()              
+                $("#mh_div").hide()
+                $("#dementia_div").hide()
+                $("#hca_div").hide()   
+                $("#ceu_div").hide() 
+                $("#so_div").hide()          
                 break
 
-            case "Adult CPR/FA":
-                //show the main div for CNA and Adult CPR/FA
-                $("#main_course_div").show()
-                //show ul div of cpr - containing days and times of CPR training
-                $('.cpr_ul').show()                  
-                //hide 
-                $('.cna_ul').hide()   
-                $("#bridging_div").hide()
-                $("#bls_div").hide()              
+            case "HCA to CNA Bridging":
+                //show the bridging div
+                $("#bridging_div").show()           
+                //hide the other courses div
+                $("#cna_course_div").hide()                
+                $("#mh_div").hide()
+                $("#dementia_div").hide()
+                $("#hca_div").hide()   
+                $("#ceu_div").hide() 
+                $("#so_div").hide()          
                 break
         
-            case "HCA-CNA Bridging":
-                
-                $("#bridging_div").show()
-                $("#main_course_div").hide()                
-                $("#bls_div").hide()  
+            case "DSHS Home Care Aide/75 Hours":  
+            case "DSHS Core Basic":           
+                //show the hca divs
+                $("#hca_div").show()
+                 // hide the rest of the courses divs
+                $("#cna_course_div").hide()                
+                $("#bridging_div").hide()
+                $("#mh_div").hide()
+                $("#dementia_div").hide()                  
+                $("#ceu_div").hide() 
+                $("#so_div").hide()          
                 break
+
+            case "DSHS Safety and Orientation":
+                //show the so divs
+                $("#so_div").show()
+                //hide the other courses divs
+                $("#cna_course_div").hide()                 
+                $("#bridging_div").hide()
+                $("#mh_div").hide()
+                $("#dementia_div").hide()
+                $("#hca_div").hide()   
+                $("#ceu_div").hide() 
+                       
+                break    
             
-            case "Basic Life Support (BLS)":
-                //show    
-                $("#bls_div").show()
-                $("#main_course_div").hide()  
-                $("#bridging_div").hide()            
+            case "DSHS Dementia Specialty":
+                //show the dementia div
+                $("#dementia_div").show()
+                //show the main div for CNA and Adult CPR/FA
+                $("#cna_course_div").hide()                   
+                $("#bridging_div").hide()
+                $("#mh_div").hide()               
+                $("#hca_div").hide()   
+                $("#ceu_div").hide() 
+                $("#so_div").hide()          
                 break
+
+            case "DSHS Mental Health Specialty":
+                //show the mh div
+                $("#mh_div").show()
+                //hide the other courses divs
+                $("#cna_course_div").hide()                   
+                $("#bridging_div").hide()             
+                $("#dementia_div").hide()
+                $("#hca_div").hide()   
+                $("#ceu_div").hide() 
+                $("#so_div").hide()          
+                break
+
+            case "DSHS 12 Hours Continuous Education Units":
+                //show the ceu div
+                $("#ceu_div").show() 
+                //hide the other courses divs
+                $("#cna_course_div").hide()                  
+                $("#bridging_div").hide()
+                $("#mh_div").hide()
+                $("#dementia_div").hide()
+                $("#hca_div").hide()   
+            
+                $("#so_div").hide()          
+                break    
         } 
     }
     //when the document loads
@@ -205,29 +303,30 @@
         //check if there is a course value in local storage
         //course value is set in course student's view
         //if course value is set, i.e., not empty, student is being transferred to another course
-        const course = localStorage.getItem('course')
+        let course = localStorage.getItem('course')
 
         console.log('Here is course', course)
         debugger
-        // if(course !== '' || course !== null){
-        //     let selectedCourse = course
-        //     //$("#main_course_div").hide() 
-        //     console.log(selectedCourse)
-        //     $("#course_type").val(selectedCourse) 
-        //     displayCourseUI(selectedCourse)
-        // } else {
-        //     let selectedCourse = 'CNA'
-        //     displayCourseUI(selectedCourse)
-        // }
+        if(course !== '' || course !== null){
+            let selectedCourse = course
+            //$("#main_course_div").hide() 
+            console.log(selectedCourse)
+            $("#course_type").val(selectedCourse) 
+            displayCourseUI(selectedCourse)
+        } else {
+            let selectedCourse = "Certified Nurse Assistant/CNA"
+            displayCourseUI(selectedCourse)
+        }
           
-        const selectedCourse = (course !== null ) ? $("#course_type").val()  : "CNA"
+        console.log('COURSE SELECTED -> ', $("#course_type").val() )
+        // const selectedCourse = (course !== null ) ? $("#course_type").val()  : "CNA"
 
         
-        displayCourseUI(selectedCourse)
+        // displayCourseUI(selectedCourse)
      
         $("select#course_type").change(function(){ 
 
-            $("#main_course_div").hide()                        
+            $("#cna_course_div").hide()                        
             
             //get the value of selectied option
             selectedCourse = $(this).children("option:selected").val()      

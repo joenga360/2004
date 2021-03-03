@@ -52,7 +52,7 @@ module.exports = {
                             return sum = { 
                                             "amount": total, 
                                             "name": payment.course_name,
-                                            "code": codeName(payment.course_name), 
+                                            "code": codeName( payment.course_name ), 
                                             "course_id": payment.course_id 
                                         }
                            
@@ -66,6 +66,7 @@ module.exports = {
                    
                 }, 0)
 
+                console.log( 'DAILY REGISTRANTS -- ', registrants )
                 res.render('admin/student/dailyregistrations', 
                                 { 
                                     registrants: registrants, 
@@ -102,8 +103,8 @@ module.exports = {
             //get req params
             const { code, id } = req.params 
             //get the long name of course stored in database
-            const course = await courseDbName(code, id)
-
+            const course = await courseDbName( code, id )
+            
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
             //check if there is an amount
@@ -134,6 +135,7 @@ module.exports = {
                     course_name: course.title,
                     course_id: course.id, 
                     amount,
+                    // code,
                     chargeId,
                     last4: card.last4,
                     cardId: card.id,
@@ -146,6 +148,7 @@ module.exports = {
                     course_id : course.id, 
                     course_name : course.title, 
                     amount, 
+                    // code,
                     created : firebase.firestore.Timestamp.fromDate(new Date())
                 })                             
             } 
@@ -267,7 +270,7 @@ module.exports = {
         const course = await courseDbName( code, course_id )      
       
         //get student data from the front side
-        const { address, birthdate, city,  comments, email, first, last, payment, state, student_id, tel, zip } = req.body
+        const { address, birthdate, city,  comments, email, first, last, payment, payment_mode, state, student_id, tel, zip } = req.body
  
         //check for status update
         const status = {

@@ -118,7 +118,6 @@ module.exports = {
     },
 
     /**
-     * 
      * @param {String} code 
      * @param {String} id 
      * @returns {}
@@ -128,7 +127,7 @@ module.exports = {
 
         try {
              //get the full name of the course
-            const full_course_name = courseName(code)
+            const full_course_name = courseName( code )
 
             //get the code
             if(
@@ -166,7 +165,7 @@ module.exports = {
                 }
 
                 return {
-                    title: course.end_date == null ?  moment.utc(course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course' :  moment.utc(course.start_date.toDate()).format("MMM DD") + ' - ' + moment.utc(course.end_date.toDate()).format("MMM DD") +' '+ course.name + ' ' + course.type + ' course',
+                    title:  moment.utc( course.start_date.toDate()).format("MMM DD") + ' ' + course.name + ' ' + course.type + ' course',
                     start: moment.utc(course.start_date.toDate()).format("MMM DD"),
                     end: course.end_date != null ? moment.utc(course.end_date.toDate()).format("MMM DD") : null,                
                     data: results.data(),
@@ -187,7 +186,7 @@ module.exports = {
      */
 
     codeName: ( course_name ) => {             
-
+        console.log('course name ', course_name, 'and ', course_name.substring(7, 11).trim())
         switch (course_name.substring(7, 11).trim()){
             case "CNA":
                 return 'cna'                                
@@ -227,5 +226,7 @@ module.exports = {
                             
         }      
  
-    }    
+    }  
+    
+   
 }

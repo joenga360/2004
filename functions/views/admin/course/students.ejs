@@ -13,11 +13,11 @@
                         <div class="row">
                             <form id="editClassDates">
                                 <% if ( course.data.end_date ) { %>
-                                    <input type="text" name="dates" id="course_dates" value="<%=course.start%> - <%=course.end%>">
+                                    <input type="text" name="dates" id="course_dates" value="<%=course.start%> - <%=course.end %>">
                                 <% } else { %>
-                                    <input type="text" name="dates" id="course_dates" value="<%=course.data.start%>">
+                                    <input type="text" name="dates" id="course_dates" value="<%=course.data.start %>">
                                 <% } %>
-                                <input type="hidden" name="course_id" id="course_id" value="<%=courseId%>">
+                                <input type="hidden" name="course_id" id="course_id" value="<%=courseId %>">
 
                                 <button class="btn btn-primary btn-sm mx-4" id="editClassDatesBtn" type="submit">Edit</button>    
                             </form>  
@@ -51,7 +51,7 @@
                                     <td><%=student.email %></td>                            
                                     <td><%=student.amount %></td>
                                     <td>
-                                        <a href="/admin/update/<%=courseId %>/<%=code%>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                        <a href="/admin/update/<%= code %>/<%= courseId %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
                                         <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
                                         <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
                                     </td>                         
@@ -156,7 +156,7 @@ $(document).ready(()=>{
          //get the course object
         const courseObj = (<%-JSON.stringify(course)%>)
         //get the course name
-        const course_name = courseObj.name
+        const course_name = courseObj.data.name
         debugger
         //set the items in local storage
         localStorage.setItem('course_id', course_id )

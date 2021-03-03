@@ -20,7 +20,7 @@ router.route("/student_register/:name/:course_id")
       .get( authenticate.isAdmin,  AdminController.getStudentRegisterForm )
       
 //get the form for admin to update student
-router.route("/update/:course_id/:student_id")
+router.route("/update/:name/:course_id/:student_id")
       .get( authenticate.isAdmin,  AdminController.getStudentUpdateForm )
 
 module.exports = router

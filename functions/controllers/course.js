@@ -4,7 +4,7 @@ const { course_classifier, addCourses, courseDbName  } = require('../helpers/cou
 const seo_page = require('../client_helpers/seo_page_info')
 //create reference for firestore database
 const db = firebase.firestore()
-
+const { getCourseKeyByValue, courseKeys } = require("../helpers/campaign")
 module.exports = {    
    /**
     * create a course
@@ -144,8 +144,8 @@ module.exports = {
     },
     /**
      * get courses 
-     * params: String: past, present or future
-     * params: default: future
+     * @params: String: past, present or future
+     * @params: default: future
      * returns: array of courses depending on start date (past of today, today or future of today)
      */
     getCourses: async( req, res, next ) => {
@@ -175,18 +175,21 @@ module.exports = {
                         if(doc.data().end_date) {   
                             //c                           
                             if( start.isSameOrBefore(today)  && end.isSameOrAfter(today) ){
-                                docArray.unshift( {
+                                docArray.unshift( 
+                                                {
+                                                    code: getCourseKeyByValue(courseKeys, doc.data().name),
                                                     name: doc.data().name, 
                                                     type: doc.data().type,
                                                     start_date:  moment(start).format("MMM DD"),
                                                     end_date: moment(end).format("MMM DD"),
                                                     id: doc.id
-                                                 } )
+                                                } )
                             }
                         } else {
                            // console.log(''start.isSame(today) )
                             if (start.isSame(today) ) {
                                 docArray.unshift( {
+                                    code: getCourseKeyByValue(courseKeys, doc.data().name),
                                     name: doc.data().name, 
                                     type: doc.data().type,
                                     start_date:  moment(start).format("MMM DD"),                                    
@@ -213,6 +216,7 @@ module.exports = {
                             if( start.isBefore(today)  && end.isBefore(today) ){
                                 docArray.unshift( 
                                                     {
+                                                        code: getCourseKeyByValue(courseKeys, doc.data().name),
                                                         name: doc.data().name, 
                                                         type: doc.data().type,
                                                         start_date:  moment(start).format("MMM DD"),
@@ -225,6 +229,7 @@ module.exports = {
                            // console.log(''start.isSame(today) )
                             if (start.isBefore(today) ) {
                                 docArray.unshift( {
+                                    code: getCourseKeyByValue(courseKeys, doc.data().name),
                                     name: doc.data().name, 
                                     type: doc.data().type,
                                     start_date:  moment(start).format("MMM DD"),                                    
@@ -245,17 +250,20 @@ module.exports = {
                                     start = x.data().start_date.toDate()
                                     end = x.data().end_date ? x.data().end_date.toDate() : null
                                 
-                                    return{                            
-                                        'end_date': end ? moment(end).format("MMM DD") : null, 
-                                        'name': x.data().name,                            
-                                        'start_date': moment(start).format("MMM DD"),
-                                        'type': x.data().type,
-                                        'id': x.id
+                                    return{    
+                                        code: getCourseKeyByValue(courseKeys, x.data().name),                        
+                                        end_date: end ? moment(end).format("MMM DD") : null, 
+                                        name: x.data().name,                            
+                                        start_date: moment(start).format("MMM DD"),
+                                        type: x.data().type,
+                                        id: x.id
                                     }                        
                                 })                  
                    
                 break
             }
+
+            console.log('CLASSES---- ', classes)
    
             if( classes.length > 0 ){
                

@@ -15,26 +15,23 @@
 <article class="postcard container">
 	<div class="promo">
 		<div class="left">
-			<h1 class="headline">
-				<span class="text-background--purple">Now offering</span><br />
-				CNA, HCA - CNA Bridging, HCA/75 hours, Nurse Delegation - CORE & Diabetes, CPR/FA, CEUs courses
+			<h1 class="headline">				
+				<span class="text-background--purple">Sign up for our </span><%= course %> course...
 			</h1>
 			<p class="tagline">
-				at affordable prices and on flexible, convenient schedules.
+				it is affordable and offered on flexible, convenient schedules.
 			</p>
 			<p>
-				<strong>Visit our courses catalog and notice:</strong> 
+				<strong>Our <%= course %> courses: </strong> 
 				<ul>
-					<li>Our courses are offered during weekdays and weekends.</li>
-					<li>The theory component of all courses are taught wholly online.  </li>
-					<li>Courses with a skill component, e.g., CNA, HCA etc, that require in person appearance have <strong><i>at most</i></strong> 4 days of the skill labs sessions.</li>					
+					<% text.lists.forEach(item => { %>
+						<li><%=item%></li>
+					<% }) %>										
 				</ul>
+				<%= text.body %>
+				<br><br>So, sign up for our CNA course now!
 			</p>
-			<p class="bg-warning">
-				<strong>
-					Bundle and save $ 200.00 by taking our CNA plus course.  Take our CNA plus course that consists of CNA, Adult CPR/First Aid, Mental Health and Dementia specialties, Nurse Delegation Core, Nurse Delegation with focus on Diabetes, and Safety and Orientation courses for only $ 1050.00.
-				</strong>
-			</p>
+					
 		</div>
 		<img
 			class="scrubs"
@@ -46,15 +43,10 @@
 	<div class="clippings">
 		<div class="clipping">
 			<span>
-				<a href="/courses" class="btn btn-primary btn-lg">
-					View course catalog
+				<a href="/learn/<%=code%>" class="btn btn-primary btn-lg">
+					Sign up now
 				</a>
-			</span>
-			<span>
-				<a href="tel:206-271-1946">
-					<strong>206-271-1946</strong>
-				</a>
-			</span>
+			</span>			
 		</div>
 	</div>
 </article>

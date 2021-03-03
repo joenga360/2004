@@ -10,5 +10,8 @@ service cloud.firestore {
     match /jobs/{jobId} {
       allow read, write    
     }
+    match /reservations/{reservationId} {
+      allow read, write    
+    }
   }
 }

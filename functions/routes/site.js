@@ -20,7 +20,7 @@ router.get('/success', SiteController.getReceiptPage)
 //receipt page after receipt of payment for course sign up
 router.get('/confirm-payment', SiteController.getReceiptPage)
 //get lead page for other courses
-router.get('/course/:name',  SiteController.getLeadCourses)
+router.get("/schedules/:name",  SiteController.getLeadCourses)
 //get lead page for courses
 router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm)
 //get lead page for courses
@@ -32,12 +32,12 @@ router.get("/videos", SiteController.getVideosPage)
 //get the all courses - single day, multiple day, and reservations - in catalog
 router.get('/learn/:course', SiteController.getCatalogCourse)
 //get the the why post page
-router.get("/hire", SiteController.getWhyPostPage)
+router.get("/jobslanding", SiteController.getWhyPostPage)
 //get the hca page
 router.get("/page/:course", SiteController.getCourseDetailsPage )
 //get the courses landing page
-router.get("/courseslanding", SiteController.getCoursesLandingPage )
+router.get('/course/:name', SiteController.getCoursesLandingPage )
 //get the jobs landing page
-router.get("/jobslanding", SiteController.getJobsLandingPage )
+router.get("/hire", SiteController.getJobsLandingPage )
 
 module.exports = router
