@@ -68,9 +68,9 @@
         "@type": "ListItem",
         "position": 6,
         "item": {
-            "url": "www.excelcna.com/learn/core",
+            "url": "www.excelcna.com/learn/hca",
             "name": "DSHS Core Basic Training",
-            "@id": "www.excelcna.com/learn/core",
+            "@id": "www.excelcna.com/learn/hca",
             "type": "Course",
             "description": "Our enhanced DSHS Core Basic Training covers introduces the learner to the client, the client rights, the duty and role of the caregiver, infection control, blood bourne pathogen, mobility, basic communication, skin and body care, nutrition and food handling, the process of elimination, self-directed care and nurse delegaiton, medications, self care, how to handle grief and loss.  This course has 16 hours of in-person skill lab sessions.  This course is not offered as a stand alone but instead it is offered as part of 75 hours training.",
             "provider": "Excel Health Careers Training"
@@ -128,9 +128,9 @@
         "@type": "ListItem",
         "position": 11,
         "item": {
-            "url": "www.excelcna.com/learn/mental-health",
+            "url": "www.excelcna.com/learn/mh",
             "name": "DSHS Mental Health Specialty Training",
-            "@id": "www.excelcna.com/learn/mental-health",
+            "@id": "www.excelcna.com/learn/mh",
             "type": "Course",
             "description": "The DSHS Mental Health Specialty Training introduces the learner to different types of mental disorders, how to provide compassionate and trauma informed care, the supports for wellness, getting help and self-care, suicide prevention, communication dynamics, setting boundaries, and crisis management.",
             "provider": "Excel Health Careers Training"
@@ -162,7 +162,7 @@
                 </p>    
         <% courses.forEach(course => { %>    
             <div class="card">
-            <h4 class="card-header bg-dark text-white"><%= course.name %> course</h4>
+            <h1 class="card-header bg-dark text-white"><%= course.name %> course</h1>
             <div class="card-body">
                 <h5 class="card-title">Learning Mode: <%=course.mode %></h5>
                 <p class="card-text"><strong>Cost: </strong> $ <%=course.cost %>.00</p>

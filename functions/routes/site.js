@@ -9,8 +9,10 @@ router.get('/',  SiteController.getHomePage)
 router.get("/admin/signin",  SiteController.getAdminSignInPage)
 //get the admin sign up page
 router.get("/admin/signup", SiteController.getAdminSignUpPage)
-//get the catalog page
+//get the lead main course page
 router.get('/courses', SiteController.getMainCourseLandingPage)
+//get the catalog page
+router.get('/classes', SiteController.getMainClassLandingPage)
 //get courses for the general site page
 router.get('/catalog', SiteController.getCatalog)
 //get the questions page
@@ -32,7 +34,7 @@ router.get("/videos", SiteController.getVideosPage)
 //get the all courses - single day, multiple day, and reservations - in catalog
 router.get('/learn/:course', SiteController.getCatalogCourse)
 //get the the why post page
-router.get("/jobslanding", SiteController.getWhyPostPage)
+router.get("/recruit", SiteController.getJobsMainLandingPage )
 //get the hca page
 router.get("/page/:course", SiteController.getCourseDetailsPage )
 //get the courses landing page

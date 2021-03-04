@@ -119,10 +119,8 @@
                 <div class="col-12">
                     <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>    
                     <p class="text-center text-dark" >Mental Health and Dementia are offered on consecutive days.</p>
-                    <div class=" row justify-content-end"> 
-                      
-                        <div class="col-sm-12 col-md-5">
-                          
+                    <div class=" row justify-content-end">                       
+                        <div class="col-sm-12 col-md-5">                          
                             <ul class="list-group list-group-flush justify-content-between">                                
                                 <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Tue/Wed/Thur] <br> 10:00 a.m. - 6:30 p.m.</li>                              
                                 <% course.day_courses.forEach(course => { %>                      
@@ -161,8 +159,7 @@
                     <% }) %>
                 </ul>                
             </div>                          
-        </div> 
-                          
+        </div>                          
         
         <% } else if ( name == "DSHS Nurse Delegation Special Focus on Diabetes" || name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" ) { %> 
         <div class="container-fluid">
@@ -182,21 +179,19 @@
         </div>   
 
         <% } else { %>  
-            <div class="container-fluid">
-                <div class="row justify-content-center">              
-                    <div class="col-sm-12 col-md-4">
-                        
-                    <p class="diplay text-left">*Sign up to reserve date and time to complete your CPR/FA or BLS skill testing.  Priority is given to students who sign up to reserve study materials.</p>                  
-                        <ul class="list-group list-group-flush justify-content-between">
-                            <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
-                            <li  class="list-group-item" >
-                                <a href="/train/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                            </li>
-                         
-                        </ul>
-                    </div>                   
-                </div>                
-            </div> 
+        <div class="container-fluid">
+            <div class="row justify-content-center">              
+                <div class="col-sm-12 col-md-4">                    
+                <p class="diplay text-left bg-warning"> Sign up to reserve date and time to complete your CPR/FA or BLS skill testing.  Priority is given to students who sign up to reserve study materials.</p>                  
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
+                        <li  class="list-group-item" >
+                            <a href="/train/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                        </li>                        
+                    </ul>
+                </div>                   
+            </div>                
+        </div> 
         <% } %>              
     </div> 
 </div>

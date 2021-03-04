@@ -346,6 +346,8 @@ module.exports = {
               //get the long name of course stored in database
               const course_name = courseName(req.params.course)
 
+              console.log('course name ', course_name)
+
               if(
                     course_name == "BLS Course Skill Testing" || 
                     course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
@@ -389,7 +391,7 @@ module.exports = {
                     const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
                                         .map( doc => {                                    
                                             return {                            
-                                                'end_date': doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                                'end_date' : doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
                                                 'name': doc.data().name,                            
                                                 'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
                                                 'type': doc.data().type,
@@ -441,6 +443,17 @@ module.exports = {
             console.log("Error getting main course page", err)
         }
     },
+    //get general course landing page
+    getMainClassLandingPage: ( req, res ) => { 
+        try {
+            //send back the view
+            res.render('site/courseslanding', {
+                seo_info : seo_page.courses_landing_seo_info 
+            } )
+        } catch ( err ) {
+            console.log("Error getting main course page", err)
+        }
+    },
     // Get courses landing page for CNA, HCA/Core Basic, HCA to NAC bridging
     getCoursesLandingPage: (req, res) => {
         try {
@@ -461,6 +474,13 @@ module.exports = {
     },
     // Get jobs landing page
     getJobsLandingPage: (req, res) => {
+        res.locals.lead = true
+
         res.render('site/jobslanding',  { seo_info: seo_page.jobs_landing_seo_info })
     },
+    // Get jobs landing page
+    getJobsMainLandingPage: (req, res) => {
+               
+        res.render('site/jobslanding',  { seo_info: seo_page.jobs_landing_seo_info })
+    }
 }
