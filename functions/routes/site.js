@@ -21,6 +21,8 @@ router.get("/questions", SiteController.getQuestionsPage)
 router.get('/success', SiteController.getReceiptPage)
 //receipt page after receipt of payment for course sign up
 router.get('/confirm-payment', SiteController.getReceiptPage)
+//get the courses landing page
+router.get('/course/:name', SiteController.getCoursesLandingPage )
 //get lead page for other courses
 router.get("/schedules/:name",  SiteController.getLeadCourses)
 //get lead page for courses
@@ -37,8 +39,7 @@ router.get('/learn/:course', SiteController.getCatalogCourse)
 router.get("/recruit", SiteController.getJobsMainLandingPage )
 //get the hca page
 router.get("/page/:course", SiteController.getCourseDetailsPage )
-//get the courses landing page
-router.get('/course/:name', SiteController.getCoursesLandingPage )
+
 //get the jobs landing page
 router.get("/hire", SiteController.getJobsLandingPage )
 

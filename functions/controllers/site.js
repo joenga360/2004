@@ -458,7 +458,9 @@ module.exports = {
     getCoursesLandingPage: (req, res) => {
         try {
             //get course name from the req.params
-            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() :  "HCA to CNA Bridging"
+            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() : "HCA - CNA Bridging"
+
+            console.log('course ', course, 'campaign text ', courseCampaigns[course] )
             res.locals.lead = true
             //return course landing view, seo information and text
             res.render('site/leadcourseslanding',  { 
