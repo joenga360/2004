@@ -46,7 +46,7 @@ module.exports = {
         title: 'Excel Health Careers Training',
         titleTemplate: 'Excel Health Careers Training',
         meta: [               
-            { name: "description", content: "Excel Health Careers Training offers CNA, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support  Courses."},  
+            { name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant/75 hours, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses."},  
             { name: "keywords", content: "CNA School, NAC School, CNA Training, CNA Program, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program"},              
             { name: "author", content: "Don Gatuna"}                 
         ],
@@ -60,13 +60,13 @@ module.exports = {
         title: 'Caregiver Courses Catalog',
         titleTemplate: 'CNA, HCA, CPR, First Aid and DSHS course information, descriptions and details!',
         meta: [                   
-            { name: "description", content: "Descriptions, job outlook, length, details and costs for CNA, DSHS caregiver courses, CPR, First Aid courses offered by Excel Health Careers Training." },
-            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Home Care Assistant, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 Hours Training, caregiver training, Mental Health, Dementia, Safety and Orientation Training." },
+            { name: "description", content: "Descriptions, job outlook, length, details and costs for CNA, Home Care Assistant/75 hours, HCA, HCA to CNA or Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses offered by Excel Health Careers Training." },
+            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Home Care Assistant, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, 75 Hours Training, caregiver training, Mental Health, Dementia, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety Training, Orientation Training." },
             { name: "author", content: "Don Gatuna" }      
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/courses' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/catalog' }
         ]
     },
 
@@ -75,13 +75,13 @@ module.exports = {
             title: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs',
             titleTemplate: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs',
             meta: [                   
-                {name: "description", content: "Caregiver, Companion, Certified Nurse and Home Care Aide full time, part time and per diem jobs."},
+                {name: "description", content: "Listing of caregiver, companion, Certified Nurse Assistant (CNA) and Home Care Aide (HCA) full time, part time and per diem jobs."},
                 {name: "keywords", content: "CNA Jobs, NAC Jobs, Caregiver Jobs, Certified Nurse Aide Jobs, Certified Nurse Assistant Jobs, Nurse Aide Jobs, Nurse Assistant Jobs, Caregiver Jobs, Companion Jobs, Aide Jobs"},
                 {name: "author", content: "Don Gatuna"}          
             
             ],
             links: [
-                {rel: 'canonical', href: `https://www.excelcna.com/jobs`}
+                {rel: 'canonical', href: `https://www.excelcna.com/job/all`}
             ]
     },
 
@@ -89,8 +89,8 @@ module.exports = {
         title: 'Home page',
         titleTemplate: 'Excel Health Careers Training',
         meta: [               
-            {name: "description", content: "Excel Health Careers Training offers CNA, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support  Courses."},  
-            {name: "keywords", content:"CNA School, NAC School, CNA Training, CNA Program, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program"},              
+            {name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant/75 hours, HCA, HCA to CNA or Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses."},  
+            {name: "keywords", content: "CNA School, DSHS approved program, DSHS approved community instructor, NAC School, CNA Training, CNA Program, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program"},              
             {name: "author", content: "Don Gatuna"}                 
         ],
         links: [
@@ -128,7 +128,7 @@ module.exports = {
         title: 'Course Register Form',
         titleTemplate: 'CNA, CPR/First Aid/AED, Basic Life Support (BLS) Course Schedules!',
         meta: [                   
-            {name: "description", content: "Certified Nurse Assistant, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support Courses offered during day, evening and weekend schedules."},
+            {name: "description", content: "Registration form for Certified Nurse Assistant,  Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support Courses offered during day, evening and weekend schedules."},
             {name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS"},
             {name: "author", content: "Don Gatuna"}          
         
@@ -143,8 +143,8 @@ module.exports = {
         title: 'Course Schedules',
         titleTemplate: 'CNA, CPR/First Aid/AED, Basic Life Support (BLS) Course Schedules!',
         meta: [                   
-            { name: "description", content: "Certified Nurse Assistant, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support Courses offered during day, evening and weekend schedules." },
-            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS" },
+            { name: "description", content: "Course schedules for Certified Nurse Assistant, Home Care Aide to CNA training, CPR,  Cardio Pulmonary Resuscitation, First Aid, AED, and Basic Life Support Courses offered during day, evening and weekend schedules." },
+            { name: "keywords", content: "Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Home Care Aide, Caregiver, CPR, First Aid, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS, CNA, Home Care Assistant/75 hours, HCA, HCA to CNA or Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses" },
             { name: "author", content: "Don Gatuna" }          
         
         ],
@@ -210,83 +210,83 @@ module.exports = {
     },
 
     bls_page_seo_info: {
-        title: 'Basic Life Support (BLS) Weekday/Weekday Course Schedules',
-        titleTemplate: 'Basic Life Support (BLS) Course Schedules',
+        title: 'Basic Life Support (BLS) Course Page Details',
+        titleTemplate: 'Basic Life Support (BLS) Course Page Details',
         meta: [                   
-            { name: "description", content: "Basic Life Support Courses offered during weekday and weekend." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the basic life support (BLS) cardio pulmonary resuscitation (CPR) training course." },
             { name: "keywords", content: "CPR, AED, Cardio Pulmonary Resuscitation, Basic Life Support, BLS" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/course/bls' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/bls' }
         ]
     },
 
     
     ceu_page_seo_info: {
-        title: 'Caregiver Continuous Education Units (CEU) Schedules',
-        titleTemplate: '12 Hours Continuous Education Units (CEU) Schedules',
+        title: 'Caregiver Continuous Education Units (CEU) Course Page Details',
+        titleTemplate: '12 Hours Continuous Education Units (CEU) Course Page Details',
         meta: [                   
-            { name: "description", content: "Caregiver Continuous Education Units (CEU) offered during weekday and weekend schedules." },
-            { name: "keywords", content: "Caregiver CEU, Continuous Education, Continuous Education Units, DSHS 12 CEUs" },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the annual caregiver continuous education training course." },
+            { name: "keywords", content: "CEU, Caregiver CEU, Continuous Education, Continuous Education Units, DSHS 12 CEUs" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/course/cpr' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/cpr' }
         ]
     },
 
     cpr_page_seo_info: {
-        title: 'CPR/First Aid Weekday/Weekday Course Schedules',
-        titleTemplate: 'AHA Adult CPR/First Aid Course Schedules',
+        title: 'CPR/First Aid Weekday/Weekday Course Page Details',
+        titleTemplate: 'AHA Adult CPR/First Aid Page Details',
         meta: [                   
-            { name: "description", content: "CPR, First Aid, AED Courses offered during day, evening and weekend schedules." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the CPR, First Aid, AED training course." },
             { name: "keywords", content: "CPR, AED, Cardio Pulmonary Resuscitation, First Aid" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/course/cpr' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/cpr' }
         ]
     },
 
     bridging_page_seo_info: {
-        title: 'HCA to CNA Bridging Weekday/Weekend Course Schedules',
-        titleTemplate: 'Home Care Aide to CNA Bridging Weekday/Weekend Course Schedules',
+        title: 'HCA to CNA Bridging Weekday/Weekend Course Page Details',
+        titleTemplate: 'Home Care Aide to CNA Bridging Weekday/Weekend Course Page Details',
         meta: [                   
-            { name: "description", content: "Home Care Aide to CNA Courses offered during day, evening and weekend schedules." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the Home Care Aide to Certified Nurse Assistant bridging training course." },
             { name: "keywords", content: "Home Care Aide, Caregiver, Aide, Assistant, Companinon, HCA to CNA, Bridging, Home Care Aide to CNA" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/course/bridging' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/bridging' }
         ]
     },
 
     cna_page_seo_info: {
-        title: "CNA, Nurse Aide, Nurse Assistant Course Training Schedules",
-        titleTemplate: 'Upcoming CNA Classes Offered During Day, Weekend, and Evening Times',
+        title: "CNA, Nurse Aide, Nurse Assistant Training Course Page Details",
+        titleTemplate: 'CNA, Nurse Assistant Page Details',
         meta: [                   
-            { name: "description", content: "CNA Courses offered during day, evening and weekend schedules." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the Certified Nurse Aide training course." },
             { name: "keywords", 
-              content: "CNA classes, CNA courses, CNA schools, CNA program, Nurse Aide training, Nurse Assistant classes, Certified Nurse Aide program, Certified Nurse Assistant schools, NAC training, NAC courses, NAC classes" },
+              content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/class/cna/3' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/cna' }
         ]
     },
     
     hca_page_seo_info: {
-        title: "Home Care Aide/75 Hours Course Training Schedules",
-        titleTemplate: 'Upcoming HCA Classes Offered During Day, Weekend, and Evening Times',
+        title: "Home Care Aide/75 Hours Training Course Page Details",
+        titleTemplate: 'Home Care Aide, Home Care Assistant Training Course Page Details',
         meta: [                   
-            { name: "description", content: "HCA Courses offered during day and weekend schedules." },
-            { name: "keywords", content: "HCA classes, 75 Hours courses, Home Care Aide schools, Home Care Aide training, Home Care Assistant classes, HCA program, Home Care Assistant schools, HCA training, 75 hours training courses, Home Care Aide classes" },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the HCA, 75 hours, Home Care Aide training course." },
+            { name: "keywords", content: "HCA, Caregiver 75 Hours, Home Care Aide, Home Care Assistant, HCA program, Home Care Assistant schools, HCA training, 75 hours training courses, Home Care Aide classes" },
             { name: "author", content: "Don Gatuna" }          
         ],
 
@@ -296,10 +296,10 @@ module.exports = {
     },
     
     delegation_page_seo_info: {
-        title: "Nurse Delegation Self Study (CORE) for NARs, HCAs and CNAs",
-        titleTemplate: 'Upcoming Nurse Delegation Classes',
+        title: "Nurse Delegation Self Study (CORE) for NARs, HCAs and CNAs Training Course Page Details",
+        titleTemplate: 'Nurse Delegation Self Study Training Course Page Details',
         meta: [                   
-            { name: "description", content: "Details about DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs training course." },
             { name: "keywords", content: "Self-study nurse delegation, DSHS Nurse Delegation, Nurse Delegation course, Nurse Delegation class" },
             { name: "author", content: "Don Gatuna" }          
         ],
@@ -310,10 +310,10 @@ module.exports = {
     },
 
     diabetes_page_seo_info: {
-        title: "Nurse Delegation Special Focus on Diabetes course",
-        titleTemplate: 'Upcoming Nurse Delegation With Emphasis on Diabetes Classes for NARs, HCAs and CNAs',
+        title: "Nurse Delegation Special Focus on Diabetes Course Page Details",
+        titleTemplate: 'Nurse Delegation With Emphasis on Diabetes Classes for NARs, HCAs and CNAs Course Page Details',
         meta: [                   
-            { name: "description", content: "Details about DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the DSHS Nurse Delegation for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
             { name: "keywords", content: "DSHS Nurse Delegation, Nurse Delegation course, Nurse Delegation class" },
             { name: "author", content: "Don Gatuna" }          
         ],
@@ -324,10 +324,10 @@ module.exports = {
     },
 
     mh_page_seo_info: {
-        title: "Mental Health Specialty course",
-        titleTemplate: 'Upcoming Mental Health specialty course schedules for NARs, HCAs and CNAs',
+        title: "Mental Health Specialty Course Page Details",
+        titleTemplate: 'DSHS Mental Health Specialty Course Page Details',
         meta: [                   
-            { name: "description", content: "Details about DSHS Mental Health specialty for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs course." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the DSHS Mental Health specialty for Nurse Assistants, NACs, Home Care Aides HCAs, and NARs training course." },
             { name: "keywords", content: "DSHS Mental Health Specialty course, Mental Health course, Mental Health class" },
             { name: "author", content: "Don Gatuna" }          
         ],
@@ -339,9 +339,9 @@ module.exports = {
 
     dementia_page_seo_info: {
         title: "Dementia Specialty course",
-        titleTemplate:  'Upcoming Dementia specialty course schedules for NARs, HCAs and CNAs',
+        titleTemplate: 'DSHS Dementia specialty Course Page Details',
         meta: [                   
-            { name: "description", content: "Details about DSHS Dementia Specialty for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs course." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the DSHS Dementia Specialty for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs training course." },
             { name: "keywords", content: "DSHS Dementia Specialty course, Dementia course, Dementia class" },
             { name: "author", content: "Don Gatuna" }          
         ],
@@ -352,10 +352,10 @@ module.exports = {
     },
 
     so_page_seo_info: {
-        title: "Safety Orientation course",
-        titleTemplate:  'Upcoming Safety and Orientation specialty course schedules for NARs, HCAs and CNAs',
+        title: "Safety and Orientation Course Page Details",
+        titleTemplate:  'DSHS Safety and Orientation Course Page Details',
         meta: [                   
-            { name: "description", content: "Details about DSHS Safety and Orientation Training for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs course." },
+            { name: "description", content: "The costs, length, schedule, requirements, and clinical rotations requirements of the DSHS Safety and Orientation Training for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs training course." },
             { name: "keywords", content: "DSHS Safety course, Safety course, Safety class, DSHS Orientation course, Orientation course, Orientation class" },
             { name: "author", content: "Don Gatuna" }          
         ],
@@ -375,7 +375,7 @@ module.exports = {
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/jobslanding' },
+            { rel: 'canonical', href: 'https://www.excelcna.com/'},
         ]
     },
 
