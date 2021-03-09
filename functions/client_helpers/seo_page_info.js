@@ -231,7 +231,7 @@ module.exports = {
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/page/cpr' }
+            { rel: 'canonical', href: 'https://www.excelcna.com/page/ceu' }
         ]
     },
 
@@ -372,7 +372,7 @@ module.exports = {
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/course/'},
+            { rel: 'canonical', href: 'https://www.excelcna.com/classes'},
         ]
     },
 
