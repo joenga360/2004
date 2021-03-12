@@ -236,10 +236,14 @@ module.exports = {
                                                 state, zip, tel, email, first, last, dob, payments, comments, status 
                                             }
                                         )           
-            //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.data.title, course.data.start_date, course.data.end_date, student.id, course_id, status )
-            //add student to the mailchimp
+
+             //create postdata to send to mailchimp
+             const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id )              
+             //send student data to mailchimp list/audience for students
             await subscribe( postData, STUDENT_LIST )
+             //segment
+            await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )                            
+           
             //add this student to the registered segment of the list audience
             //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )            
             res.status(201).json({
