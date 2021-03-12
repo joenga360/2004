@@ -170,7 +170,7 @@ module.exports = {
     },
     //create a job
     postJob: async( req, res ) => {
-       
+       console.log('req body in post job -> ', req.body)
         try{        
             
             //get the job post and poster details

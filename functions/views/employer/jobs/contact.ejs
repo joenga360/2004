@@ -55,12 +55,12 @@
                             </div> 
                             <br><br>
                              <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
-                             <p class=" text-white ">Recruit our CNA and HCA to CNA students while they train.  Hire them as NARs and help them meet their clinical requirements.<strong>Do you have LPN/RN on your staff to help students meet clinical requirements?</strong> (optional)</p>
+                             <p class=" text-white">Recruit our CNA and HCA to CNA bridging students while they train.  Hire them as NARs and help them meet their clinical requirements.  <strong>Do you have LPN/RN on your staff to help students meet clinical requirements?</strong> (optional)</p>
                             
                              <div class="form-check form-check-inline">                                    
                                  <input class="form-check-input" type="radio" name="clinical" value="Yes" >                                
                                  <label class="card-text text-white form-check-label" for="Yes"> Yes </label>                                
-                                 <input class="form-check-input" type="radio" name="reimbursement" value = "No" >
+                                 <input class="form-check-input" type="radio" name="clinical" value="No" >
                                  <label class="card-text text-white form-check-label" for="No"> No </label>                     
                              </div>
                             <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
@@ -69,15 +69,15 @@
                             <div class="form-check form-check-inline">                                    
                                 <input class="form-check-input" type="radio" name="reimbursement" value="Yes" >                                
                                 <label class="card-text text-white form-check-label" for="Yes"> Yes </label>                                
-                                <input class="form-check-input" type="radio" name="reimbursement" value = "No" >
+                                <input class="form-check-input" type="radio" name="reimbursement" value="No" >
                                 <label class="card-text text-white form-check-label" for="No"> No </label>                     
                             </div>
                             <!--  COURSES OFFERED BY ORGANIZATION --> 
                             <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong> (optional)</p>
                             <div class="form-check form-check-inline">                            
-                                <input  class="form-check-input" type="radio" name="inhouse_training" value = "Yes">                                
+                                <input  class="form-check-input" type="radio" name="inhouse_training" value="Yes">                                
                                 <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
-                                <input class="form-check-input" type="radio" name="inhouse_training" value = "No" >                                
+                                <input class="form-check-input" type="radio" name="inhouse_training" value="No" >                                
                                 <label class="card-text text-white form-check-label" for="No"> No </label>
                             </div>  
                                                  
@@ -144,13 +144,14 @@
                             profile[this.name] = this.value 
                         }                        
                     }                  
-                })                
+                })
 
                 //join profile data with job post data
-                const jobData = Object.assign(profile, jobPost)               
-
+                const jobData = Object.assign(profile, jobPost)  
+                console.log('job data -> ', jobData)             
+                debugger
                //send to the server
-               $.ajax({
+                $.ajax({
                         type: 'POST', 
                         url: '/job',
                         credentials: 'same-origin', // <-- includes cookies in the request
