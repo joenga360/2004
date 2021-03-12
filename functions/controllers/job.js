@@ -175,7 +175,7 @@ module.exports = {
             
             //get the job post and poster details
             const { 
-                    address, compensation, description, requirements, schedule, title, 
+                    address, clinical, compensation, description, requirements, schedule, title, 
                     facility_name, email, tel, settings
                 } = req.body   
 
@@ -186,7 +186,7 @@ module.exports = {
             // save job post in the collection
             const result = await db.collection('jobs').add({
                 created : firebase.firestore.Timestamp.fromDate(new Date()),
-                address, compensation, description, requirements, schedule, title,
+                address, clinical, compensation, description, requirements, schedule, title,
                 facility_name, email, tel, settings, reimbursement, inhouse_training,
                 applicants: []
             })
