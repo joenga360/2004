@@ -55,7 +55,7 @@
                             </div> 
                             <br><br>
                              <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
-                            <p class=" text-white">Recruit our CNA and HCA to CNA bridging students while they train.  Hire them as NARs and help them meet their clinical requirements.  <strong>Do you have LPN/RN on your staff to help students meet clinical requirements?</strong></p>
+                            <p class=" text-white">Recruit our CNA and HCA to CNA bridging students while they train.  Hire them as NARs and help them meet their clinical requirements.  <strong>Do you have LPN/RN on your staff to help students meet clinical requirements?</strong>(optional)</p>
                             
                             <div class="form-check form-check-inline">                                    
                                  <input class="form-check-input" type="radio" name="clinical" value="Yes" >                                
@@ -64,7 +64,7 @@
                                  <label class="card-text text-white form-check-label" for="No"> No </label>                     
                             </div>
                             <!-- SPONSORSHIP/TRAINING ASSISTANCE --> 
-                            <p class=" text-white "><strong>Do you offer or assist with tuition assistance/reimbursement/resources?</strong></p>
+                            <p class=" text-white "><strong>Do you offer or assist with tuition assistance/reimbursement/resources?</strong>(optional)</p>
                             
                             <div class="form-check form-check-inline">                                    
                                 <input class="form-check-input" type="radio" name="reimbursement" value="Yes" >                                
@@ -73,7 +73,7 @@
                                 <label class="card-text text-white form-check-label" for="No"> No </label>                     
                             </div>
                             <!--  COURSES OFFERED BY ORGANIZATION --> 
-                            <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong></p>
+                            <p class=" text-white "><strong>Do you sponsor caregiver/CNA's training or offer inhouse training?</strong>(optional)</p>
                             <div class="form-check form-check-inline">                            
                                 <input  class="form-check-input" type="radio" name="inhouse_training" value="Yes">                                
                                 <label class="card-text text-white form-check-label" for="Yes"> Yes </label>
@@ -123,15 +123,20 @@
                 debugger
                 //get the checkboxes of the form
                 const $checkboxes = $("#profile-form :input[type=checkbox]:checked")
-                //const $checkboxes = $(".setting :input[type=checkbox]:checked")
-                //
-                $radio.each(function() {     
-                   // console.log( 'radio button value ', this.value )
-
-                    this.value == "" ? profile[this.name] = "No":  profile[this.name] = this.value
-                   
-                           
-                })
+              
+                //check if radio boxes have been selected
+                //if not, 'No' is the default assignment
+                if($radio.length == 0 ){
+                    profile.clinical = 'No'
+                    profile.reimbursement = 'No'
+                    profile.inhouse_training = 'No'
+                } else {
+                    $radio.each(function() {     
+                        // console.log( 'radio button value ', this.value )
+                        this.value == "" ? ( profile[this.name] = "No" ) : ( profile[this.name] = this.value )                           
+                    })
+                }
+                
 
                 //const captcha = 
                 //get the captcha value
@@ -195,7 +200,7 @@
                     })         
             
             } else {
-                alert('Please select the type of your organizaiton!')
+                alert('Please select the type of your organization!')
                 return false
             }    
         })
