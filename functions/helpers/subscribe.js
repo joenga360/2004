@@ -12,7 +12,7 @@ client.setConfig({
 
 module.exports = {   
     //email, first, last, tel, course.name, course.start_date, course.end_date
-    studentData: (email, first_name, last_name, tel, course, start_date, end_date, student_id, course_id) => {
+    studentData: (email, first_name, last_name, tel, course, start_date, end_date, student_id, course_id, tags) => {
         //format start date
         const start = (start_date != 'Reserve') ? moment.utc(start_date.toDate()).format('MM/DD/YYYY') :   
                                                   moment.tz(moment(), "America/Los_Angeles").format("MM/DD/YYYY")     
@@ -25,7 +25,7 @@ module.exports = {
                
             email_address: email,     
             status: 'subscribed',
-            // tags,                  
+            tags,                  
             merge_fields: {
                 FNAME: first_name,
                 LNAME: last_name,
@@ -162,15 +162,19 @@ module.exports = {
         }       
     },
 
-    //a function that returns id to subscribe tor
-    segmentURL: ( amount, name ) => {
+    //a function that returns id to subscribe to
+    segmentURL: ( amount, name, course_start ) => {
+
+        if(course_start){
+            return 1709440 
+        }
         if(amount === 0 ){
             //return type of student as one who chooses to be waitlisted for any courses
-            return 1709432              
-        } else if (amount > 0 || amount <= 75) {
+            return 4438132   //waitlist         
+        } else if (amount > 0 && amount <= 75) {
             //return type of student as one who pays $ 75.00 registration fees for HCA-CNA Bridging and CNA
-            if(name === "Basic Life Support (BLS)"){
-                return 1709440   
+            if(name === "BLS Course Skill Testing" || name === "Adult CPR/First Aid/AED Course Skill Testing"){
+                return 1709440   //
             }
             return 1709500                     
         } else {

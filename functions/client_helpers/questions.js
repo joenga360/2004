@@ -3025,7 +3025,7 @@ const questions = [
         "rationale": "The best way to help someone that is using a walker is to stand slightly behind and to the side of the person with a transfer belt.  The other items would be incorrect in helping someone use a walker.  "
     },
     {
-        "answer": 0,
+        "answer": 3,
         "choices": [
             "Asking her name",
             "Calling her name and waiting for her response",
@@ -3033,7 +3033,7 @@ const questions = [
             "Checking the name tag."
         ],
         "question": "The best way to safely identify your client is by:",
-        "rationale": "To safely identify the client, we want to ask them their name.  Beds and name tags sometimes get moved around so the best thing to do is ask for their name.  For confused clients, they could still respond to a name that is not their name.  "
+        "rationale": "To safely identify the client is to check the nametag on the resident.  A patient could be confused and respond to a name that is not hers or give you a name that is wrong. Bed plates could be moved or a client could be in the wrong bed."
     },
     {
         "answer": 3,
@@ -3352,7 +3352,7 @@ const questions = [
             "Avoid talking to the person"
         ],
         "question": "If a person is hearing impaired, you would:",
-        "rationale": "When helping those with hearing impairment, we want to alert the person that we are present so we can communicate with them.  Depending on the person, you can talk to them with lip reading or writing things down for them.  The other options are inappropriate when working with those with hearing impairment."
+        "rationale": "When helping those with a hearing impairment, we want to alert the person that we are present so we can communicate with them.  Depending on the person, you can talk to them with lip reading or writing things down for them.  The other options are inappropriate when working with those with hearing impairment."
     },
     {
         "answer": 3,

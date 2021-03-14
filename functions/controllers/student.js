@@ -103,8 +103,8 @@ module.exports = {
             //get req params
             const { code, id } = req.params 
             //get the long name of course stored in database
-            const course = await courseDbName( code, id )
-            
+            const course = await courseDbName( code, id )     
+            console.log('COURSE ', course)       
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
             //check if there is an amount
@@ -121,7 +121,7 @@ module.exports = {
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
                 //use registrant's email, first and last name and telephone to create a customer using stripe api
-                const customer = await createCustomer( email, first, last, tel )     
+                const customer = await createCustomer( email, first, last, tel )    
             
                 //create a card using customer created from above process
                 const card = await createCard( customer, stripeToken )
@@ -159,14 +159,16 @@ module.exports = {
                                         enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
                                         comments, email, first, last, tel, payments, status 
                                     }) 
-
+            
+            //tag registrant depending on whether they paid or not
+            const tags = payment > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
              //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id )              
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags )              
              //send student data to mailchimp list/audience for students
             await subscribe( postData, STUDENT_LIST )
              //segment
-            await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )
-       
+            // await segment( email, STUDENT_LIST, segmentURL(amount, course ), status.course_start )
+            // segmentURL(amount, code)
             //add this student to the registered segment of the list audience
             //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )  
                                                         
