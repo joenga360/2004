@@ -2,7 +2,7 @@ const firebase = require("firebase")
 const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
-const { studentData, segment, segmentURL, subscribe  } = require("../helpers/subscribe")
+const { studentData, updateStudentTags, subscribe  } = require("../helpers/subscribe")
 const { courseDbName, codeName } = require('../helpers/course_classifier')
 
 //create reference for firestore database
@@ -161,17 +161,12 @@ module.exports = {
                                     }) 
             
             //tag registrant depending on whether they paid or not
-            const tags = payment > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
+            const tags = parseInt( payment ) > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
              //create postdata to send to mailchimp
             const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags )              
              //send student data to mailchimp list/audience for students
             await subscribe( postData, STUDENT_LIST )
-             //segment
-            // await segment( email, STUDENT_LIST, segmentURL(amount, course ), status.course_start )
-            // segmentURL(amount, code)
-            //add this student to the registered segment of the list audience
-            //await segment( email, segmentURL(amount, course.name), STUDENT_LIST )  
-                                                        
+           
             res.status(201).json({
                 redirect: true,
                 redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
@@ -238,13 +233,16 @@ module.exports = {
                                                 state, zip, tel, email, first, last, dob, payments, comments, status 
                                             }
                                         )           
-
+            //registration tag depending on whether they paid or not
+            const tags = parseInt( payment ) > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
+            //walking tag depending on whether the student visited office in person or not
+            status.walk_in ? tags.push("Walk In") : tags
+            //the audience in the mailchimp without mailchimp are                                  
+            status.course_start ? tags.push("Course Start") : tags
              //create postdata to send to mailchimp
-             const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id )              
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, course_id, tags )              
              //send student data to mailchimp list/audience for students
-            await subscribe( postData, STUDENT_LIST )
-             //segment
-            await segment( email, STUDENT_LIST, REGISTER_SEGMENT_ID )                            
+            await subscribe( postData, STUDENT_LIST )       
            
             //add this student to the registered segment of the list audience
             //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )            
@@ -288,39 +286,56 @@ module.exports = {
         //construct student date of birth date
         const DoB = moment.tz(dobArray[0] +" "+ dobArray[1]+" "+ dobArray[2], "YYYY MM DD", "America/Los_Angeles")
         const dob = DoB.toDate()
+        //get the student with 'student_id'
+        const results = await db.collection('students').doc( student_id ).get()
+        //turn it to data
+        const student = results.data()
+        // const student_payments = student.payments
+        const payments = student.payments
+
+        console.log('PAYMENTS --> ', payments)
+        //sum the student payments
+        const sum = payments.reduce(( payment, paid )=>{
+            console.log(`payment: ${ payment } and amount: ${paid.amount}` )
+            return payment += paid.amount
+        }, 0 )
       
-        //convert the payment to an integer
-        const amount  = payment > 0 ? parseInt(payment) : 0
-        //if amount is greater than 0, change/increase payment array
-        if(  amount > 0 ) {
-            
-            const results = await db.collection('students').doc( student_id ).get()
-
-            const student = results.data()
-            // const student_payments = student.payments
-            const payments = student.payments
-
-            payments.unshift(
-                    {   
-                        created: firebase.firestore.Timestamp.fromDate(new Date()), 
-                        course_name: course.title, 
-                        course_id, 
-                        payment_mode: (payment_mode !== undefined) ? req.body.payment_mode : 'None',
-                        amount 
-                    }
-                )
          
-            await db.collection('students').doc( student_id ).update({
-                address, city, comments, dob, email, first, last, payments, state, status, tel, zip
-            })
-
-        } else {
-             //
-            await db.collection('students').doc( student_id ).update({
-                address, city, comments, dob, email, first, last, state, status, tel, zip                 
-            })
-        }
-
+        console.log('SUM....', sum)
+        //convert the payment to an integer
+        parseInt( payment ) > 0 ? payments.unshift(
+            {   
+                created: firebase.firestore.Timestamp.fromDate(new Date()), 
+                course_name: course.title, 
+                course_id, 
+                payment_mode: (payment_mode !== undefined) ? req.body.payment_mode : 'None',
+                amount : parseInt( payment ) 
+            }
+        ) : 0
+        
+        //update the student in database
+        await db.collection('students').doc( student_id ).update({
+            address, city, comments, dob, email, first, last, payments, state, status, tel, zip
+        }) 
+    
+        
+       
+        //registration tag depending on whether they paid or not
+        const tags = parseInt( payment ) > 0 && sum == 0 ? [ 
+                                                            {"name" : "Paid Course Registration", "status": "active"}, 
+                                                            {"name": "Course Waitlist", "status": "inactive"}
+                                                        ] : []
+        //walking tag depending on whether the student visited office in person or not
+        status.walk_in ? tags.push({"name":"Walk In", "status":"active"}) : tags
+        //the audience in the mailchimp without mailchimp are                                  
+        status.course_start ? tags.push({"name":"Course Start", "status":"active"}) : tags
+        //create postdata to send to mailchimp
+        // const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student_id, course_id, tags )              
+        //send student data to mailchimp list/audience for students
+        // await subscribe( postData, STUDENT_LIST )       
+        console.log('stupid tags ', tags)
+        if(tags.length > 0 ) { updateStudentTags(email, tags)}
+       
         res.status(201).json({
             message: "Student has been updated",
             redirect: true,

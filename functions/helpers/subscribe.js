@@ -1,8 +1,8 @@
-const md5 = require('blueimp-md5')
-
+const md5 = require('md5')
 const moment = require('moment-timezone')
 const request = require('request')
 const client = require("@mailchimp/mailchimp_marketing");
+
 
 client.setConfig({
   apiKey: MAILCHIMP_API_KEY,
@@ -71,45 +71,63 @@ module.exports = {
             return tags 
         } 
     },     
-    
+
     /**
-     * PARAMS: email : string, tags : array
-     * hashes the email and tags student 
-     * RETURN: No value
+     * @param: Array of objects, string
+     * 
+     * @returns: Nothing
      */
-    tagStudent: (email, tags) => {
-        //get the email hash
-        const email_hash = md5(email)
-        console.log('EMAIL HASH ', email_hash)
-        //create data to send to mailchimp API
-        const data = JSON.stringify(tags)
-        const options = {
-            url: 'https://us4.api.mailchimp.com/3.0/lists/' + STUDENT_LIST +'/members/' + email_hash +'/tags',
-            method: 'POST',           
-            headers: {
-                Authorization: "auth " + MAILCHIMP_API_KEY,
-                "Content-Type" : "application/json"
-            },
-            body: data
+    
+    //email 
+    updateStudentTags : async ( email, obj ) => {
+        try {
+            const response = await client.lists.updateListMemberTags(
+                STUDENT_LIST,
+                md5(email.toLowerCase()),
+                obj
+            )
+
+            console.log('fucking mailchimp respones', response)
+        } catch (error) {
+            //console log the error
+            console.log(error)     
         }
-        //send data to mailchimp api
-        request (options, (err, response, body) => {
-            if(err) {
-                console.log('ERROR #1',err)
-                //return err
-            } else {
-                console.log('RESPONSE STATUS CODE -> ', response.statusCode)
-                if (response.statusCode === 200) {
-                    //return response
-                    console.log(response)
-                    //next()
-                } else {
-                    console.log('ERROR #2',err)
-                   // return err
-                }
-            }
-        }) 
+        
     },
+
+    // tagStudent: (email, tags) => {
+    //     //get the email hash
+    //     const email_hash = md5(email)
+    //     console.log('EMAIL HASH ', email_hash)
+    //     //create data to send to mailchimp API
+    //     const data = JSON.stringify(tags)
+    //     const options = {
+    //         url: 'https://us4.api.mailchimp.com/3.0/lists/' + STUDENT_LIST +'/members/' + email_hash +'/tags',
+    //         method: 'POST',           
+    //         headers: {
+    //             Authorization: "auth " + MAILCHIMP_API_KEY,
+    //             "Content-Type" : "application/json"
+    //         },
+    //         body: data
+    //     }
+    //     //send data to mailchimp api
+    //     request (options, (err, response, body) => {
+    //         if(err) {
+    //             console.log('ERROR #1',err)
+    //             //return err
+    //         } else {
+    //             console.log('RESPONSE STATUS CODE -> ', response.statusCode)
+    //             if (response.statusCode === 200) {
+    //                 //return response
+    //                 console.log(response)
+    //                 //next()
+    //             } else {
+    //                 console.log('ERROR #2',err)
+    //                // return err
+    //             }
+    //         }
+    //     }) 
+    // },
 
    
     employerData: (email, org_name) => {
