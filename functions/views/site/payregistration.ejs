@@ -6,12 +6,12 @@
                 <!-- <h4 class="text-dark text-center"> {{course}} </h4> -->
                 <br>                    
                 <!--BEGINNING OF THE FORM-->
-                <form ref="form" post="/courses/" >
+                <form ref="form" id ="pay_registration" >
                         
                     <div class="row  justify-content-center">
                         <div class="col-sm-12 col-md-8 col-lg-4">                                
                             <p class="text-dark text-left">
-                                Since our classes fill up fast, registration fees payment is required to secure your spot in <span><u><strong>{{course}}</strong></u> </span> class.  Class spots are awarded in order of registration fee payment. 
+                                Classes fill up fast, registration fees payment is required to secure your spot in <span><u><strong><%=course.title %> </strong></u> </span> class.  Class spots are awarded in order of registration fee payment. 
                             </p>
                         </div>                            
                     </div>   
@@ -19,200 +19,171 @@
                         <!--FIRST AND LAST NAMES-->
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-8 col-lg-4">                                
-                            <div class="form-group">
-                                                                    
-                                <p >  FULL NAME: <br><strong> {{getCourse.student.name}} </strong> </p>                                   
+                            <div class="form-group">                                                                    
+                                <p >  NAME: <br><strong> <%= student.name %> </strong> </p>                                   
                             </div>
-                        </div>
-                        
+                        </div>                        
                     </div>                     
                                             
                         <!--EMAIL AND TELEPHONE-->
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-4 col-lg-2">
                             <div class="form-group">                                                                       
-                                <p > EMAIL: <br> <strong> {{getCourse.student.email}}  </strong></p>                                                                       
+                                <p > EMAIL: <br> <strong> <%= student.email %> </strong></p>                                                                       
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-2">
                             <div class="form-group">                                                                     
-                                <p> TEL: <br> <strong> {{getCourse.student.tel}}  </strong></p>                                                                    
+                                <p> TEL: <br> <strong>  <%= student.phone %></strong></p>                                                                    
                             </div>
                         </div>
                     </div> 
+
+                    <input type="hidden" name="code" id="code" value="<%=code%>">
+                    <input type="hidden" name="course_id" id="course_id" value="<%= course.id %>">
+                    <input type="hidden" name="student_id" id="student_id" value="<%= student.id %>">
+
+                    <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
                     <div class="row justify-content-center">
-                        <div class="col-sm-12 col-md-8 col-lg-4 p-3 bg-light">     
-                            <p class="text-center lead text-danger"><strong>Register now and secure your spot immediately. </strong></p>
+                        <div class="col-sm-12 col-lg-4 p-3 bg-light">     
+                            
                             <label for="card-element">
                                 Credit or debit card
                             </label>
-                            <div id="card-element" ref="card-element" @change="cardErrors(event)">
-                            <!-- A Stripe Element will be inserted here. -->
+                            <div id="card-element">
+                                <!-- Elements will create input elements here -->
                             </div>
-
-                            <!-- Used to display form errors. -->
-                            <div id="card-errors" ref="card-errors" role="alert"></div>
-                            <!-- <div ref="card" class="credit-card-inputs mb-2"  ></div>                -->
-                            <button class="btn btn-primary btn-block p-3 mt-3" type="submit" v-on:click.prevent="register"><strong>Pay $ {{ registration }}.00 to register</strong> </button> 
+                            
+                              <!-- We'll put the error messages in this element -->
+                            <div id="card-errors" role="alert" ></div>
+                            <div class="mt-2">                               
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Register Now</strong></button> 
                                 <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
+                                <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
+                            </div>
+                                
                         </div>
-                    </div>                                     
+                    </div>                    
+                    
+                    <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>                          
                 </form>
             </div>                
         </div>
     </div>
 </section>
 
+<script src="https://js.stripe.com/v3"></script>
 
-<script src="https://js.stripe.com/v3/"></script>
+<script type="application/javascript">
 
-<script>
-import Keys from '../../helpers/courses'    
-import { store } from "../../store/store"
-import { mapGetters } from "vuex"
-import moment from 'moment'
+    //get the public stripe token
+    let stripe = Stripe(<%-JSON.stringify(STRIPE_PUBLIC_KEY)%>)
+    
+    let elements = stripe.elements()
 
-    let stripe = Stripe(`${Keys.stripeKeys.publishable_key}`),
-    //let stripe = Stripe("pk_test_1OEs7O89DnSOhIn7wcGJaAaR00e3wrtQKB"),
-        elements = stripe.elements()
-        //card = undefined 
-
-    let style = {
+    // Set up Stripe.js and Elements to use in checkout form
+    var style = {
         base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSmoothing: 'antialiased',
-            fontSize: '16px',
-            '::placeholder': {
-            color: '#aab7c4'
-            }
-        },
-        
-        invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
+            color: "#32325d",
         }
     }
+    //create card
+    var card = elements.create("card", { style: style })
+    //mount the card on the form
+    card.mount("#card-element")
+    //if card details change, note any errors and if nothing show empty string
+    card.on('change', ({ error }) => {
 
-    // Create an instance of the card Element.
-    let card = elements.create('card', { style })
-    
-export default {
-     //el: '#card-element',
+        const displayError = document.getElementById('card-errors')
 
-     computed: {
-        ...mapGetters([        
-            "getCourse"
-        ])          
-    },      
-    
-    data(){
-        return{           
-            course: "",
-            course_name: "",          
-            registration: 0            
+        if (error) {
+            displayError.textContent = error.message
+        } else {
+            displayError.textContent = ''
         }
-    },
-   
-    created(){ 
-        if(this.getCourse.course.end_date){
-            this.course_name = this.getCourse.course.name
-            //this.course_type = course.type
-            this.course = moment.utc(this.getCourse.course.start_date).format("MMM D") + " - " + moment.utc(this.getCourse.course.end_date).format("MMM D") +" "+ this.getCourse.course.name +" "+ this.getCourse.course.type.toLowerCase()
-            this.registration = Keys.Costs[this.getCourse.course.name]
-            
-        }else{     
-            this.course_name = this.getCourse.course.name   
-            //this.course_type = course.type           
-            this.course = moment.utc(this.getCourse.course.start_date).format("MMM D") +" "+ this.getCourse.course.name +" "+ this.getCourse.course.type.toLowerCase()
-            this.registration = Keys.Costs[this.getCourse.course.name]            
-        }
-    },
+    })
 
-    mounted(){
+     //this event register a student who pays registration fees
+     $("#btnRegister").on('click', e => { 
+            //prevent default behavior
+            e.preventDefault()            
+      
+            //hide the registration button to avoid multiple form submission           
+            $('#btnRegister').hide()
+            //show user their form submission is being processed
+            $("#process-registration").show()
 
-          //this route get a specific/one course and student details using one call!
-        this.$store.dispatch('getPublicCourse', { courseId: this.$route.params.course_id, studentId: this.$route.params.student_id })  
-        
-        card.mount('#card-element')  
-
-    },
-    
-    methods: {
-
-        cardErrors(e){
-
-            let cardErrors = this.$refs['card-errors']
-
-            if (e.error) {
-                cardErrors.textContent = e.error.message
-            } else {
-                cardErrors.textContent = ''
+            const studentData = {
+                course_id: $('#course_id').val(),
+                student_id: $('#student_id').val(),
+                code: $('#code').val()
             }
-        },
-            
 
-        async register(){
-           
-           // if(this.checkForm()){
-
-            const { token, error } = await stripe.createToken(card)                      
-                                        
-            let self = this
-
-            if (error) {
-                self.hasCardErrors = true
-                self.$forceUpdate() // Forcing the DOM to update so the Stripe Element can update.
-                return
-            }
-            //if the token exists
-            if(token && this.registration > 0){   
-
-                const payload = { 
-                                  stripeToken : token.id,
-                                  amount : this.registration, 
-                                  user_course : this.course, 
-                                  course_id : this.$route.params.course_id,
-                                  student_id: this.$route.params.student_id
-                                }                               
-
-                //send this even to GA                   
-                this.$ga.event({
-                    eventCategory: 'Engagement',
-                    eventAction: `Post Registration Payment`,
-                    eventLabel: `Prospective Student`,
-                    eventValue: 1
-                })  
-                //create transaction object to send later to Google Analytics
-                this.$ga.ecommerce.addTransaction({
-                    id: this.$route.params.course_id                    
-                })                 
-                    
-                //add item to virtual cart                 
-                this.$ga.ecommerce.addItem({
-                    id: this.$route.params.course_id,
-                    name: this.course,
-                    category: this.course_name,
-                    price: this.registration,
-                    quantity:  1                   
+            stripe.createToken( card ).then( result => {
+                // Handle result.error or result.token
+                if(result.error){
+                    return displayError.textContent = result.error
+                }               
+                //get the stripe token
+                const stripeToken = result.token.id              
+                //create an on object constructed from data entered by user in the form above
+                const studentData = { first, last, email, tel, comments }
+                //debugger                
+                //add course costs 
+                studentData.payment = course.fees
+                //add stripe token from stripe
+                studentData.stripeToken = stripeToken
+                debugger
+                //send data to GA         
+                gtag('event', 'Course Registration', {
+                    "transaction_id": course.courseId,
+                    "affiliation": "EHCT - Course Self Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id": course.courseId,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            // "variant": course.type,     
+                            "quantity": 1,
+                            "price": course.fees
+                        }
+                    ]
                 })
-                //send the data to store
-                this.$store.dispatch('postRegistrationPayment', payload)             
-                //send ecommerce data to GA
-                this.$ga.ecommerce.send()
 
-                //send payer to payment confirmation page
-                this.$router.push({name: 'payment-confirmation'})  
-            } else {
-                alert("There was an error with processing your payment.")
-            }                   
-          //  }              
-        }
-    }  
-}
+                $.ajax({
+                    type: 'POST', 
+                    url: '/students/register/'+ code +'/'+ course.courseId,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    // headers: {
+                    //     Accept: "application/json",
+                    //    // "Content-Type": "application/json",
+                    //     'CSRF-Token': token
+                    // },
+                    dataType: "json",
+                    data: studentData,
+                }).done(function (response) {
+                    if (response.redirect !== undefined && response.redirect) {
+                        debugger
+                        alert(response.message)
+                        //window.location.replace(response.redirect_url)
+                        window.location.href = response.redirect_url
+                    }      
+                    //if something is wrong - alert user and redirect user to course schedule page
+                    if (response.redirect !== undefined && !response.redirect) {
+                        
+                        alert('Something went wrong - start the registration process again!')
+                        window.location.href = '/courses'
+                       // window.location.replace('/courses')
+                    }                   
+                })                         
+            })           
+     })
+
+    
 </script>
 
-<style scoped>
+<style>
    
     .StripeElement {
     box-sizing: border-box;

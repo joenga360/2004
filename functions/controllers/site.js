@@ -125,6 +125,43 @@ module.exports = {
         }      
     },
 
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+     getStudentPayRegistrationForm : async ( req, res, next ) => {
+        //get the parameters
+        const { code, course_id, student_id } = req.params   
+        //get the course or reservation full name/title
+        const course = await courseDbName( code, course_id )   
+
+        try {
+            //get the student using student id
+            const result = await db.collection("students").doc( student_id ).get()
+            //create student to return to the front side
+            const student = {
+                name: `${ result.data().first } ${ result.data().last }`,
+                email: `${ result.data().email } `,
+                phone: `${ result.data().tel }`,
+                id: result.id
+            }
+
+            //return the registration form
+            res.render('site/payregistration', {                
+                course: course,                
+                code: code,  
+                student: student,                 
+                seo_info: seo_page[code + "_page_seo_info"]                                              
+            })      
+             
+            
+        } catch (error) {
+            console.log( 'error', error )
+        }
+     },
+
     //8. Get the receipt page
     getReceiptPage: (req, res) => {
       
@@ -230,8 +267,7 @@ module.exports = {
 
                 //classify the courses as either day, evening, weekend
                 const courses = course_classifier( classes )                
-                
-                console.log('CNA COURSES --- ', courses)
+ 
                 if( classes.length > 0 ){
                     res.locals.lead = true
                     res.render('site/leadcourseschedules', {                

@@ -2,6 +2,8 @@ const router = require('express-promise-router')()
 const studentController = require('../controllers/student')
 const authenticate = require("../helpers/authenticate")
 
+//post/processes student payment information
+router.route( '/registration' ).post( studentController.studentPayRegistration )
 //student registers self for a course on public site
 router.route('/register/:code/:id').post( studentController.studentSelfCourseSignUp )
 //admin registers a new student

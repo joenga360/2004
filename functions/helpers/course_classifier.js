@@ -180,16 +180,16 @@ module.exports = {
     },
 
     /**
-     * 
-     * @param {String} course_name 
-     * @returns {String} 
+     * codeName takes in course_name, e.g., CNA, HCA to CNA Bridging parameter
+     * @param {String} course_name
+     * @returns {String} code
      */
 
     codeName: ( course_name ) => {             
         console.log('course name ', course_name, 'and ', course_name.substring(7, 11).trim())
         switch (course_name.substring(7, 11).trim()){
             case "CNA":
-                return 'cna'                                
+                return 'cna'                               
 
             case "HCA":
                 return 'bridging'            
@@ -215,8 +215,7 @@ module.exports = {
                     return 'cpr'
                 } else if( course_name.substring(0, 4).trim() == 'BLS'){
                     return 'bls'
-                } else {
-                    
+                } else {                    
                     if(course_name.substring(21, 28).trim() == "(CORE)"){
                         return 'delegation'
                     } else {

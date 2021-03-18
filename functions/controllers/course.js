@@ -63,8 +63,7 @@ module.exports = {
     getCourseById: async ( req, res, next ) => {
         try {
             //get the parameters
-            const { code, course_id } = req.params
-            console.log('req params ', req.params )
+            const { code, course_id } = req.params        
             //get the course data details
             const course = await courseDbName ( code, course_id )
 
@@ -346,7 +345,7 @@ module.exports = {
             await db.collection('courses').doc(course_id).update({ start_date, end_date })
 
             //get all course students
-            const courseStudents = await db.collection('students').orderBy('enrolledOn').get()
+            const courseStudents = await db.collection( 'students' ).orderBy( 'enrolledOn' ).get()
             //convert results to array
             const query = courseStudents.docs
             //create an array to store students
@@ -388,7 +387,6 @@ module.exports = {
 
         } catch (error){
 
-            console.log('ERROR ->', error)
             res.status(500).json({
                 message: `There has been an error adding the course.`,
                 error

@@ -10,6 +10,21 @@ const db = firebase.firestore()
 
 module.exports = {
 
+    
+
+     /**
+      * 
+      * @param {*} req 
+      * @param {*} res 
+      * @param {*} next 
+      */
+     studentPayRegistration : async ( req, res, next ) => {
+        try {
+            
+        } catch (error) {
+            
+        }
+     },
     /**
      * First view after admin signs up 
      * @params: none
@@ -103,8 +118,7 @@ module.exports = {
             //get req params
             const { code, id } = req.params 
             //get the long name of course stored in database
-            const course = await courseDbName( code, id )     
-            console.log('COURSE ', course)       
+            const course = await courseDbName( code, id )            
             //get the req.body data
             const { comments, email, first, payment, stripeToken, last, tel } = req.body         
             //check if there is an amount
@@ -121,7 +135,7 @@ module.exports = {
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
                 //use registrant's email, first and last name and telephone to create a customer using stripe api
-                const customer = await createCustomer( email, first, last, tel )    
+                const customer = await createCustomer( email, first, last, tel )   
             
                 //create a card using customer created from above process
                 const card = await createCard( customer, stripeToken )
@@ -134,8 +148,7 @@ module.exports = {
                     payment_mode: "Credit/Debit card",
                     course_name: course.title,
                     course_id: course.id, 
-                    amount,
-                    // code,
+                    amount,        
                     chargeId,
                     last4: card.last4,
                     cardId: card.id,
@@ -147,8 +160,7 @@ module.exports = {
                 payments.unshift({ 
                     course_id : course.id, 
                     course_name : course.title, 
-                    amount, 
-                    // code,
+                    amount,    
                     created : firebase.firestore.Timestamp.fromDate(new Date())
                 })                             
             } 
@@ -163,7 +175,8 @@ module.exports = {
             //tag registrant depending on whether they paid or not
             const tags = parseInt( payment ) > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
              //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags )              
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags, code )
+       
              //send student data to mailchimp list/audience for students
             await subscribe( postData, STUDENT_LIST )
            
@@ -293,11 +306,11 @@ module.exports = {
         // const student_payments = student.payments
         const payments = student.payments
 
-        console.log('PAYMENTS --> ', payments)
+        console.log('PAYMENT --> ', payment)
         //sum the student payments
-        const sum = payments.reduce(( payment, paid )=>{
-            console.log(`payment: ${ payment } and amount: ${paid.amount}` )
-            return payment += paid.amount
+        const sum = payments.reduce(( x, paid )=>{
+            console.log(`payment: ${ x } and amount: ${paid.amount}` )
+            return x += paid.amount
         }, 0 )
       
          
@@ -316,9 +329,7 @@ module.exports = {
         //update the student in database
         await db.collection('students').doc( student_id ).update({
             address, city, comments, dob, email, first, last, payments, state, status, tel, zip
-        }) 
-    
-        
+        })        
        
         //registration tag depending on whether they paid or not
         const tags = parseInt( payment ) > 0 && sum == 0 ? [ 
@@ -329,12 +340,9 @@ module.exports = {
         status.walk_in ? tags.push({"name":"Walk In", "status":"active"}) : tags
         //the audience in the mailchimp without mailchimp are                                  
         status.course_start ? tags.push({"name":"Course Start", "status":"active"}) : tags
-        //create postdata to send to mailchimp
-        // const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student_id, course_id, tags )              
-        //send student data to mailchimp list/audience for students
-        // await subscribe( postData, STUDENT_LIST )       
+       
         console.log('stupid tags ', tags)
-        if(tags.length > 0 ) { updateStudentTags(email, tags)}
+        if(tags.length > 0 ) { updateStudentTags( email, tags ) }
        
         res.status(201).json({
             message: "Student has been updated",
