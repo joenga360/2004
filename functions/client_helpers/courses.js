@@ -6,8 +6,7 @@
  
  //Registration fees
 
-const registration_fee = {
-   
+const registration_fee = {   
     "CNA" : 75,
     "DSHS Home Care Aide/75 Hours" : 75,
     "Adult CPR/First Aid/AED Course Skill Testing" : 50,

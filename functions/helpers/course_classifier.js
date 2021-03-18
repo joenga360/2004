@@ -6,7 +6,7 @@ const db = firebase.firestore()
 
 module.exports = {
 /**
- * @params: array
+ *@params: array
  * returns an object containing arrays
 */
     course_classifier: (coursesArray) => {
@@ -21,8 +21,6 @@ module.exports = {
                 type: course.type
             }
         })
-     
-        // console.log('THE COURSES ARRAY', courses )
        
         return {            
        

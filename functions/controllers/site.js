@@ -136,6 +136,10 @@ module.exports = {
         const { code, course_id, student_id } = req.params   
         //get the course or reservation full name/title
         const course = await courseDbName( code, course_id )   
+        //get the long name of course stored in database
+        const course_name = courseName(course)           
+        //get course registration fee
+        const fees  = registration_fee[course_name]
 
         try {
             //get the student using student id
@@ -152,8 +156,11 @@ module.exports = {
             res.render('site/payregistration', {                
                 course: course,                
                 code: code,  
+                fees:fees,
                 student: student,                 
-                seo_info: seo_page[code + "_page_seo_info"]                                              
+                seo_info: seo_page[code + "_page_seo_info"] ,
+                seo_info: seo_page.register_page_seo_info, 
+                STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY                                            
             })      
              
             
@@ -276,12 +283,11 @@ module.exports = {
                         code: req.params.name,                   
                         seo_info: seo_page[req.params.name + "_page_seo_info"]                                              
                     })
-                }else{
+                } else {
                     res.status(404).json({
                         message: `No ${course_name} courses at the moment.  Check with us later.`
                     })                   
-                }            
-
+                }
             }
            
         }catch(err){
@@ -518,7 +524,7 @@ module.exports = {
     },
     // Get jobs landing page
     getJobsMainLandingPage: (req, res) => {
-               
+        //get the well designed page for jobs landing       
         res.render('site/jobslanding',  { seo_info: seo_page.jobs_landing_seo_info })
     }
 }

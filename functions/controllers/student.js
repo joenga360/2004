@@ -8,9 +8,7 @@ const { courseDbName, codeName } = require('../helpers/course_classifier')
 //create reference for firestore database
 const db = firebase.firestore()
 
-module.exports = {
-
-    
+module.exports = {  
 
      /**
       * 
