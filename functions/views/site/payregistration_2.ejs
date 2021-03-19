@@ -17,14 +17,16 @@
         <div class="container-fluid">         
             <div class="row justify-content-center mt-4">
                 <div class="col-sm-12">                 
-                    <!-- <h4 class="text-dark text-center"> {{course}} </h4> -->
+                    <%=JSON.stringify(course)%>
+                    fee..<%=fees%>
                     <br>                    
                     <!--BEGINNING OF THE FORM-->
                     <form ref="form" id ="pay_registration" >                        
                         <div class="row  justify-content-center">
-                            <div class="col-sm-12 col-md-8 col-lg-6">                                
+                            <div class="col-sm-12 col-md-8 col-lg-6">
+                                <h1 class="text-center">Complete registration for <%=course.title %> now</h1>                                
                                 <p class="font-weight-bold bg-warning">
-                                    There are only few spots available so, register to secure your spot in the <%=course.title %>.  Spots are awarded in the order of receipt of registration fees. 
+                                    <small>There are only few spots available so, complete registration to secure your spot.  Spots are assigned in the order of receipt of registration fees. </small>
                                 </p>
                             </div>                            
                         </div>   
@@ -58,7 +60,7 @@
                         <input type="hidden" name="code" id="code" value="<%=code%>">
                         <input type="hidden" name="course_id" id="course_id" value="<%= course.id %>">
                         <input type="hidden" name="student_id" id="student_id" value="<%= student.id %>">
-    
+                        <input type="hidden" name="amount" id="amount" value="<%= fees %>">
                         <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
                         <div class="row justify-content-center">
                             <div class="col-sm-12 col-lg-6 p-3 bg-light">     
@@ -74,7 +76,7 @@
                                 <div id="card-errors" role="alert" ></div>
                                 <div class="mt-2">                               
                                     <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Register Now</strong></button> 
-                                    <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
+                                    <p class="text-success">Payments processed by Stripe Corporation.</p>
                                     <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
                                 </div>
                                     
@@ -96,7 +98,9 @@
 
     //get the public stripe token
     let stripe = Stripe(<%-JSON.stringify(STRIPE_PUBLIC_KEY)%>)
-    
+    //get the course
+    const course = (<%-JSON.stringify( course )%>)
+
     let elements = stripe.elements()
 
     // Set up Stripe.js and Elements to use in checkout form
@@ -134,7 +138,8 @@
             const studentData = {
                 course_id: $('#course_id').val(),
                 student_id: $('#student_id').val(),
-                code: $('#code').val()
+                code: $('#code').val(),
+                amount: $("#amount").val()
             }
 
             stripe.createToken( card ).then( result => {
@@ -145,7 +150,7 @@
                 //get the stripe token
                 const stripeToken = result.token.id              
                
-                //debugger                
+                debugger                
                 //add course costs 
                 studentData.payment = course.fees
                 //add stripe token from stripe
@@ -154,11 +159,11 @@
                 //send data to GA         
                 gtag('event', 'Course Registration', {
                     "transaction_id": course.courseId,
-                    "affiliation": "EHCT - Course Self Registration",  
+                    "affiliation": "EHCT - Post Registration Payment",  
                     "currency": "USD",  
                     "items": [
                         {
-                            "id": course.courseId,
+                            "id": studentData.course_id,
                             "name": course.name,     
                             "category": "Courses", //course_name,
                             // "variant": course.type,     
@@ -170,7 +175,7 @@
 
                 $.ajax({
                     type: 'POST', 
-                    url: '/students/register/'+ code +'/'+ course.courseId,
+                    url: '/students/registration',
                     credentials: 'same-origin', // <-- includes cookies in the request
                     // headers: {
                     //     Accept: "application/json",

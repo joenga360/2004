@@ -17,15 +17,68 @@ module.exports = {
       * @param {*} next 
       */
      studentPayRegistration : async ( req, res, next ) => {
+        //get course code, course id and student id
+        const { amount, code, course_id, student_id, stripeToken } = req.body
+        //check to make sure amount and stripeToken exist
+        if(parseInt(amount) > 0 || stripeToken == "" || stripeToken==undefined ){
+            res.status(404).json({
+                message: "Something went wrong!  Try to enter card details again."
+            })
+        }
+        //get the long name of course stored in database
+        const course = await courseDbName( code, course_id ) 
+                
         try {
-            
+            //get student to be updatad
+            const results = await db.collection('students').doc( student_id ).get()
+            //get student data
+            const student = results.data()
+            //use student's email, first and last name and telephone to create a customer using stripe api
+            const customer = await createCustomer( student.email, student.first, student.last, student.tel )             
+            //create a card using customer created from above process
+            const card = await createCard( customer, stripeToken )        
+            //create a charge
+            const chargeId = await charge( card.id, customer, amount, item_description = "Post Course Registration Sign Up - " + course.title ) 
+            //insert payment information            
+            const payments = [{
+                payment_mode: "Credit/Debit card",
+                course_name: course.title,
+                course_id: course.id, 
+                amount: parseInt(amount),        
+                chargeId,
+                last4: card.last4,
+                cardId: card.id,
+                created : firebase.firestore.Timestamp.fromDate(new Date())
+            }]   
+             //update the student in database
+            await db.collection('students').doc( student_id ).update({ payments })         
+            //registration tag depending on whether they paid or not
+            const tags = [ 
+                            {"name" : "Paid Course Registration", "status": "active"}, 
+                            {"name": "Course Waitlist", "status": "inactive"}
+                        ] 
+            //update user tags
+            updateStudentTags( email, tags ) 
+            //redirect user to confirm payment page
+            res.status(201).json({
+                redirect: true,
+                redirect_url: '/confirm-payment',
+                message: 'You have signed up for '+ course.title
+            })
+
         } catch (error) {
-            
+         
+            console.log("Stupid error ", error)      
+            res.status(500).json({
+                "redirect":false,
+                "redirect_url":"localhost:3000/courses",
+                "message": "Did not sign up for the class."
+            })
         }
      },
     /**
      * First view after admin signs up 
-     * @params: none
+     *@param: none
      * returns: students who registered today and daily sum
      */
     getDailyRegistrants: async ( req, res, next ) => {
@@ -337,9 +390,8 @@ module.exports = {
         //walking tag depending on whether the student visited office in person or not
         status.walk_in ? tags.push({"name":"Walk In", "status":"active"}) : tags
         //the audience in the mailchimp without mailchimp are                                  
-        status.course_start ? tags.push({"name":"Course Start", "status":"active"}) : tags
-       
-        console.log('stupid tags ', tags)
+        status.course_start ? tags.push({"name":"Course Start", "status":"active"}) : tags       
+        //update student's tags
         if(tags.length > 0 ) { updateStudentTags( email, tags ) }
        
         res.status(201).json({

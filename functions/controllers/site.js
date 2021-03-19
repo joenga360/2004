@@ -136,11 +136,12 @@ module.exports = {
         //get the course or reservation full name/title
         const course = await courseDbName( code, course_id )   
         //get the long name of course stored in database
-        const course_name = courseName(course)           
+          
+        console.log( 'and course ', course)       
         //get course registration fee
-        const fees  = registration_fee[course_name]
+        const fees  = registration_fee[course.data.name]
 
-        console.log('Hello...')
+        console.log('Hello...', fees)
         try {
             //get the student using student id
             const result = await db.collection("students").doc( student_id ).get()
@@ -156,7 +157,7 @@ module.exports = {
             res.render('site/payregistration_2', {                
                 course: course,                
                 code: code,  
-                fees:fees,
+                fees: fees,
                 student: student,                 
                 seo_info: seo_page[code + "_page_seo_info"] ,
                 seo_info: seo_page.register_page_seo_info, 
