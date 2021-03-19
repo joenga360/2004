@@ -20,7 +20,7 @@ module.exports = {
         //get course code, course id and student id
         const { amount, code, course_id, student_id, stripeToken } = req.body
         //check to make sure amount and stripeToken exist
-        if(parseInt(amount) > 0 || stripeToken == "" || stripeToken==undefined ){
+        if(parseInt(amount) == 0 || stripeToken == "" || stripeToken == undefined ){
             res.status(404).json({
                 message: "Something went wrong!  Try to enter card details again."
             })
@@ -58,7 +58,7 @@ module.exports = {
                             {"name": "Course Waitlist", "status": "inactive"}
                         ] 
             //update user tags
-            updateStudentTags( email, tags ) 
+            updateStudentTags( student.email, tags ) 
             //redirect user to confirm payment page
             res.status(201).json({
                 redirect: true,

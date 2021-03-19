@@ -152,26 +152,27 @@
                
                 debugger                
                 //add course costs 
-                studentData.payment = course.fees
+                studentData.payment = studentData.amount
                 //add stripe token from stripe
-                studentData.stripeToken = stripeToken
-                debugger
+                studentData.stripeToken = stripeToken                
                 //send data to GA         
                 gtag('event', 'Course Registration', {
-                    "transaction_id": course.courseId,
+                    "transaction_id": studentData.course_id,
                     "affiliation": "EHCT - Post Registration Payment",  
                     "currency": "USD",  
                     "items": [
                         {
                             "id": studentData.course_id,
-                            "name": course.name,     
+                            "name": course.data.name,     
                             "category": "Courses", //course_name,
                             // "variant": course.type,     
                             "quantity": 1,
-                            "price": course.fees
+                            "price": studentData.amount
                         }
                     ]
                 })
+
+                debugger
 
                 $.ajax({
                     type: 'POST', 
