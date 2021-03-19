@@ -122,11 +122,11 @@ module.exports = {
      */
 
     courseDbName : async ( code, id ) => {
+        console.log(`CODE: ${code} and ID: ${id}`)
+        //get the full name of the course
+        const full_course_name = courseName( code )
 
         try {
-             //get the full name of the course
-            const full_course_name = courseName( code )
-
             //get the code
             if(
                 full_course_name == "BLS Course Skill Testing" || 

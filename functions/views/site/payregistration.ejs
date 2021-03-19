@@ -6,12 +6,11 @@
                 <!-- <h4 class="text-dark text-center"> {{course}} </h4> -->
                 <br>                    
                 <!--BEGINNING OF THE FORM-->
-                <form ref="form" id ="pay_registration" >
-                        
+                <form ref="form" id ="pay_registration" >                        
                     <div class="row  justify-content-center">
                         <div class="col-sm-12 col-md-8 col-lg-4">                                
                             <p class="text-dark text-left">
-                                Classes fill up fast, registration fees payment is required to secure your spot in <span><u><strong><%=course.title %> </strong></u> </span> class.  Class spots are awarded in order of registration fee payment. 
+                                Classes fill up fast, registration fees payment is required to secure your spot in <span><u><strong><%=course.title %> </strong></u> </span> class.  Spots are awarded in order of registration fee payment. 
                             </p>
                         </div>                            
                     </div>   
@@ -20,7 +19,7 @@
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-8 col-lg-4">                                
                             <div class="form-group">                                                                    
-                                <p >  NAME: <br><strong> <%= student.name %> </strong> </p>                                   
+                                <p >  NAME: <strong> <%= student.name %> </strong> </p>                                   
                             </div>
                         </div>                        
                     </div>                     
@@ -29,12 +28,12 @@
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-4 col-lg-2">
                             <div class="form-group">                                                                       
-                                <p > EMAIL: <br> <strong> <%= student.email %> </strong></p>                                                                       
+                                <p > EMAIL:<strong> <%= student.email %> </strong></p>                                                                       
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-2">
                             <div class="form-group">                                                                     
-                                <p> TEL: <br> <strong>  <%= student.phone %></strong></p>                                                                    
+                                <p> TEL: <strong>  <%= student.phone %></strong></p>                                                                    
                             </div>
                         </div>
                     </div> 

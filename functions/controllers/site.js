@@ -3,11 +3,11 @@ const SkillService = require('../client_helpers/SkillService')
 const seo_page = require('../client_helpers/seo_page_info')
 const { registration_fee } = require('../client_helpers/courses.js')
 const moment = require('moment-timezone')
-const { course_classifier } = require('../helpers/course_classifier')
+const { course_classifier, courseDbName  } = require('../helpers/course_classifier')
 const { campaign, courseName, courseCampaigns } = require('../client_helpers/campaign') 
 const { catalog, courseCode, upsell }  = require('../client_helpers/catalog') 
 const firebase = require("firebase")
-const { getJobPostForm, getJobPreview } = require('./job')
+//const { getJobPostForm, getJobPreview } = require('./job')
 const db = firebase.firestore()
 
 
@@ -126,7 +126,6 @@ module.exports = {
     },
 
     /**
-     * 
      * @param {*} req 
      * @param {*} res 
      * @param {*} next 
@@ -141,6 +140,7 @@ module.exports = {
         //get course registration fee
         const fees  = registration_fee[course_name]
 
+        console.log('Hello...')
         try {
             //get the student using student id
             const result = await db.collection("students").doc( student_id ).get()
@@ -153,7 +153,7 @@ module.exports = {
             }
 
             //return the registration form
-            res.render('site/payregistration', {                
+            res.render('site/payregistration_2', {                
                 course: course,                
                 code: code,  
                 fees:fees,

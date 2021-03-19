@@ -19,14 +19,14 @@ router.get('/catalog', SiteController.getCatalog)
 router.get("/questions", SiteController.getQuestionsPage)
 //receipt page after waitlisting for a course 
 router.get('/success', SiteController.getReceiptPage)
-//gets page for student to pay registration fee after receiving email
-router.route('/secure/:code/:course_id/:student_id').get( SiteController.getStudentPayRegistrationForm )
+//gets page for student to pay registration fee after receiving email //    getStudentPayRegistrationForm
+router.get('/secure/:code/:course_id/:student_id', SiteController.getStudentPayRegistrationForm )
 //receipt page after receipt of payment for course sign up
 router.get('/confirm-payment', SiteController.getReceiptPage)
 //get the courses landing page
 router.get('/course/:name', SiteController.getCoursesLandingPage )
 //get lead page for other courses
-router.get("/schedules/:name",  SiteController.getLeadCourses)
+router.get("/schedules/:name", SiteController.getLeadCourses)
 //get lead page for courses
 router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm)
 //get lead page for courses
