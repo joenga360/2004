@@ -154,7 +154,7 @@ module.exports = {
             }
 
             //return the registration form
-            res.render('site/payregistration_2', {                
+            res.render('site/payregistration', {                
                 course: course,                
                 code: code,  
                 fees: fees,

@@ -1,8 +1,6 @@
 const md5 = require('md5')
 const moment = require('moment-timezone')
-const request = require('request')
 const client = require("@mailchimp/mailchimp_marketing");
-const { codeName } = require('./course_classifier');
 
 
 client.setConfig({
@@ -20,10 +18,9 @@ module.exports = {
    
         //format end date
         const end =  end_date ? moment.utc(end_date.toDate()).format('MM/DD/YYYY') : null
-        console.log('start-date ', start_date, 'start ', start)
+     
         //construct and return data // tags,    
-        return mc_data = {
-               
+        return mc_data = {               
             email_address: email,     
             status: 'subscribed',
             tags,                  
@@ -40,7 +37,7 @@ module.exports = {
             }              
 
         }
-    },   
+    },  
 
     /**
      * @param: Array of objects, string
@@ -50,70 +47,35 @@ module.exports = {
     //email 
     updateStudentTags : async ( email, tags ) => {
         try {
-            console.log('object ', tags, 'hash', md5(email.toLowerCase()), 'and email ', email, 'and student list ', STUDENT_LIST)
-            const response = await client.lists.updateListMemberTags(
+            await client.lists.updateListMemberTags(
                 STUDENT_LIST,
                 md5(email.toLowerCase()),
                 { tags }
             )
 
-            console.log('fucking mailchimp responses', response)
         } catch (error) {
             //console log the error
             console.log(error)     
         }        
     },
-
-
    
-    employerData: (email, org_name) => {
-         // Construct req data
+    employerData: ( email, settings, org_name, tel ) => {
+        // Construct req data
         const mc_data = {
             members: [
                 {
                     email_address: email,
                     status: 'subscribed',
+                    tags: settings,
                     merge_fields: {
                         NAME: org_name,
+                        PHONE: tel
                     }
                 }
             ]
         }
 
         return mc_data
-    },
-    /**
-     * PARAMS: student status object about student - contact_made, course_start, walk_in, sponsored  
-     * loop the object to find object keys whose value is true
-     * RETURN: array of keys whose value is true
-     */
-    tag: (object1) => {
-         //create a tag array to store tags          
-        const tags = [] 
-        //return empty array if the object is null
-        if(Object.keys(object1).length === 0 ) return tags
-       
-        for (let [key, value] of Object.entries(object1)) {
-            //if value is true, push key to tags array
-            if(value === true){ tags.push({"name": key, "status": "active"}) }
-        }
-        console.log("TAGS ", tags)
-        //return tags array
-        return tags     
-    },
-
-    segment: async ( email, list_id, segment_id ) => {
-        try {
-            const response = await client.lists.createSegmentMember(
-                list_id,
-                segment_id,
-                { email_address: email }
-            )
-    
-            console.log( 'SEGMENT RESPONSE', response )   
-        } catch (error) {
-            console.log( 'SEGMENT ERROR -> ', error )
-        }       
     },
 
     //a function that returns id to subscribe to
@@ -122,6 +84,7 @@ module.exports = {
         if(course_start){
             return 1709440 
         }
+
         if(amount === 0 ){
             //return type of student as one who chooses to be waitlisted for any courses
             return 4438132   //waitlist         
@@ -138,21 +101,13 @@ module.exports = {
         }
     },
 
-    subscribe: async ( postData, list_id ) => {
-        try {
-             //stringify data
+    subscribe: async ( list_id, postData ) => {
+        try {            
             // const data = JSON.stringify(postData)
-            const response = await client.lists.addListMember(list_id, postData);
-        
-            console.log('SUBSCRIBE RESPONSE', response.status, 'and', response.statusCode)
+            await client.lists.addListMember( list_id, postData )    
           
         } catch (error) {
             console.log('ERROR --> ', error )
-        }
-
-       
-        
-       
-          
+        }         
     }
 }

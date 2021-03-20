@@ -3,6 +3,7 @@ const moment = require('moment')
 //create reference for firestore database
 const db = firebase.firestore()
 const seo_page = require('../client_helpers/seo_page_info')
+const { employerData, subscribe  } = require("../helpers/subscribe")
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(SENDGRID_API)
 
@@ -170,26 +171,29 @@ module.exports = {
     },
     //create a job
     postJob: async( req, res ) => {
-       console.log('req body in post job -> ', req.body)
-        try{        
-            
-            //get the job post and poster details
-            const { 
-                    address, clinical, compensation, description, requirements, schedule, title, 
-                    facility_name, email, tel, settings
-                } = req.body   
 
-            const reimbursement = req.body.reimbursement ? req.body.reimbursement : "" 
-            
-            const inhouse_training = req.body.inhouse_training ? req.body.inhouse_training : ""
+        //get the job post and poster details
+        const { 
+                address, compensation, description, requirements, schedule, title, 
+                facility_name, email, tel, settings
+            } = req.body   
+        //check if the employer offers reimbursement    
+        const reimbursement = req.body.reimbursement ? req.body.reimbursement : "" 
+        //check if the employer offers in house training
+        const inhouse_training = req.body.inhouse_training ? req.body.inhouse_training : ""
+        //check if the employer can be a clinical site
+        const clinical = req.body.clinical ? req.body.clinical : ""
 
+        try{ 
             // save job post in the collection
-            const result = await db.collection('jobs').add({
+            await db.collection('jobs').add({
                 created : firebase.firestore.Timestamp.fromDate(new Date()),
                 address, clinical, compensation, description, requirements, schedule, title,
                 facility_name, email, tel, settings, reimbursement, inhouse_training,
                 applicants: []
             })
+
+            await subscribe (EMPLOYER_LIST, employerData(email, settings, facility_name, tel ))
 
             //send back           
             res.status(201).json({
