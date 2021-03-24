@@ -193,7 +193,7 @@ module.exports = {
                 applicants: []
             })
 
-            await subscribe (EMPLOYER_LIST, employerData(email, settings, facility_name, tel ))
+            await subscribe (EMPLOYER_LIST, employerData(email, /*settings,*/ facility_name, tel ))
 
             //send back           
             res.status(201).json({
