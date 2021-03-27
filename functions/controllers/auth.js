@@ -143,8 +143,8 @@ module.exports = {
     userLogOut: async (req, res) => {
         try {           
             console.log('we are getting in USER LOG OUT')
-            res.clearCookie("session")
-            res.clearCookie("decoded")
+            res.clearCookie('__session')
+            //res.clearCookie("decoded")
            
             res.redirect("/admin/signin")
         } catch (error) {
