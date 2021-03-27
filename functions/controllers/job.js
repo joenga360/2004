@@ -202,7 +202,12 @@ module.exports = {
                 redirect: true,
                 message: 'Your job post announcement has been successfully created!',
                 id: result.id
-            })       
+           }) 
+
+// v=spf1 include:_spf.google.com include:spf.mandrillapp.com ~all
+
+	
+// "v=spf1 include:_spf.firebasemail.com include:spf.mandrillapp.com ~all"
                                                        
         }catch(error){
             console.log(error)
