@@ -59,20 +59,16 @@ module.exports = {
         }        
     },
    
-    employerData: ( email,/* settings,*/ org_name, tel ) => {
+    employerData: ( email, settings, org_name, tel ) => {
         // Construct req data
         const mc_data = {
-            members: [
-                {
-                    email_address: email,
-                    status: 'subscribed',
-                  //  tags: settings,
-                    merge_fields: {
-                        NAME: org_name,
-                        PHONE: tel
-                    }
-                }
-            ]
+            email_address: email,
+            status: 'subscribed',
+            tags: settings,                          
+            merge_fields: {
+                NAME: org_name,
+                PHONE: tel
+            }        
         }
 
         return mc_data

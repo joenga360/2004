@@ -171,11 +171,11 @@ module.exports = {
     },
     //create a job
     postJob: async( req, res ) => {
-
+        console.log(`req body ${JSON.stringify(req.body)}`)
         //get the job post and poster details
         const { 
-                address, compensation, description, requirements, schedule, title, 
-                facility_name, email, tel, settings
+                address, compensation, description, requirements, email, facility_name, schedule, settings,
+                tel,  title,
             } = req.body   
         //check if the employer offers reimbursement    
         const reimbursement = req.body.reimbursement ? req.body.reimbursement : "" 
@@ -186,14 +186,15 @@ module.exports = {
 
         try{ 
             // save job post in the collection
-            await db.collection('jobs').add({
+            const result = await db.collection('jobs').add({
                 created : firebase.firestore.Timestamp.fromDate(new Date()),
                 address, clinical, compensation, description, requirements, schedule, title,
                 facility_name, email, tel, settings, reimbursement, inhouse_training,
                 applicants: []
             })
 
-            await subscribe (EMPLOYER_LIST, employerData(email, /*settings,*/ facility_name, tel ))
+            console.log(`EMPLOYER LIST IS: ${EMPLOYER_LIST} AND EMPLOYER DATA IS ${JSON.stringify(employerData(email, /*settings,*/ facility_name, tel ))}`)
+            await subscribe (EMPLOYER_LIST, employerData(email, settings, facility_name, tel ))
 
             //send back           
             res.status(201).json({
@@ -202,10 +203,9 @@ module.exports = {
                 redirect: true,
                 message: 'Your job post announcement has been successfully created!',
                 id: result.id
-           }) 
+            }) 
 
 // v=spf1 include:_spf.google.com include:spf.mandrillapp.com ~all
-
 	
 // "v=spf1 include:_spf.firebasemail.com include:spf.mandrillapp.com ~all"
                                                        
@@ -257,7 +257,7 @@ module.exports = {
     checkout: async ( req, res, next ) => {
         res.render('employer/jobs/checkout', {
             seo_info: seo_page.jobs_page_seo_info,
-            STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY
+            STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
         })
     },
 
