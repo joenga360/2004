@@ -84,6 +84,7 @@ module.exports = {
                     'email': x.data.email,
                     'tel': x.data.tel,
                     'payments': x.data.payments,
+                    'status': x.data.status,
                     'amount': x.data.payments.reduce((sum, payment) => {
                                     return sum += payment.amount
                                 }, 0 )
@@ -94,6 +95,7 @@ module.exports = {
                     'amount': doc.amount,
                     'email': doc.email,
                     'name': doc.name,
+                    'status':doc.status,
                     'tel': doc.tel  
                 }
 

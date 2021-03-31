@@ -141,7 +141,6 @@ module.exports = {
         //get course registration fee
         const fees  = registration_fee[course.data.name]
 
-        console.log('Hello...', fees)
         try {
             //get the student using student id
             const result = await db.collection("students").doc( student_id ).get()
@@ -217,7 +216,6 @@ module.exports = {
                                     })    
         //res.status(200).json({campaignText})
     },       
-
     //12. Get CNA lead course schedule page
     getLeadCourses: async ( req, res ) => {          
         try{                   
@@ -369,7 +367,6 @@ module.exports = {
         })
 
         //res.send(itemList)
-
         res.render('site/catalog', { courses: catalog, itemList: itemList, seo_info: seo_page.catalog_page_seo_info })
     },
     //get course details page

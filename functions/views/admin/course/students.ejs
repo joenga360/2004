@@ -43,19 +43,51 @@
                                 </tr>
                             </thead>
                             <tbody class="justify-content-between" >
-                                <% students.forEach(student => { %>                                   
-                                <tr >
-                                    <th scope="row">  </th>
-                                    <td><%=student.name %></td>                    
-                                    <td><%=student.tel %></td>
-                                    <td><%=student.email %></td>                            
-                                    <td><%=student.amount %></td>
-                                    <td>
-                                        <a href="/admin/update/<%= code %>/<%= courseId %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
-                                        <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
-                                        <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
-                                    </td>                         
-                                </tr>
+                                <% students.forEach(student => { %>  
+                                   <% if( student.status.course_start ) { %>
+                                    <tr class="bg-success">
+                                        <th scope="row">  </th>
+                                        <td><%=student.name %></td>                    
+                                        <td><%=student.tel %></td>
+                                        <td><%=student.email %></td>                            
+                                        <td><%=student.amount %></td>
+                                        <td>
+                                            <a href="/admin/update/<%= code %>/<%= courseId %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                            <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
+                                            <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
+                                        </td>                         
+                                    </tr>
+                                   <% } %> 
+                                   
+                                   <% if( student.status.walk_in && !student.status.course_start ) { %>
+                                    <tr class="bg-warning">
+                                        <th scope="row">  </th>
+                                        <td><%=student.name %></td>                    
+                                        <td><%=student.tel %></td>
+                                        <td><%=student.email %></td>                            
+                                        <td><%=student.amount %></td>
+                                        <td>
+                                            <a href="/admin/update/<%= code %>/<%= courseId %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                            <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
+                                            <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
+                                        </td>                         
+                                    </tr>
+                                   <% } %>
+
+                                   <% if( !student.status.walk_in && !student.status.course_start ) { %>
+                                    <tr>
+                                        <th scope="row">  </th>
+                                        <td><%=student.name %></td>                    
+                                        <td><%=student.tel %></td>
+                                        <td><%=student.email %></td>                            
+                                        <td><%=student.amount %></td>
+                                        <td>
+                                            <a href="/admin/update/<%= code %>/<%= courseId %>/<%= student.student_id %> %>" class="btn btn-light btn-sm" role="button"> Update </a>   
+                                            <a data_student_id="<%=student.student_id%>", data_course_id = '<%= courseId %>' class="btn btn-light btn-sm transfer" role="button"> Transfer </a>                                    
+                                            <a href="/students/unenroll/<%= student.student_id %>/<%= courseId %>" class="btn btn-light btn-sm" role="button"> Unenroll </a>                                                                                                     
+                                        </td>                         
+                                    </tr>
+                                   <% } %>
                                 <% }) %>                         
                             </tbody>
                         </table>
