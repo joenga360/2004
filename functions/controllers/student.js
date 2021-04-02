@@ -88,7 +88,7 @@ module.exports = {
 
             //query student collection
             const results = await db.collection('students')
-                                    .orderBy('enrolledOn')
+                                    .orderBy('enrolledOn', 'desc')
                                     .get()
             //get student documents
             const docs = results.docs            
