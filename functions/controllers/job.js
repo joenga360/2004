@@ -40,7 +40,7 @@ module.exports = {
     //apply to a job
     applyJob: async( req, res, next ) => {
         try{
-           console.log('are we getting here......')
+           console.log('are we getting here......', req.body)
             //get data from front end
             const { name, tel, email, certifications, id } = req.body
             //make sure 
@@ -55,7 +55,17 @@ module.exports = {
             const existing =  job.data().applicants.filter( x => x.name === name && x.email === email)
           
             //if the applicant has not applied, submit application
-            if(existing.length == 0 ){
+            if(existing.length > 0 ){
+                return res.status(404).json({
+
+                    'message': 'We see you have submitted an application for this job.  Search for another job to apply for.',
+                    'success': false,
+                    'redirect': false,
+                    'url': '/job/all'
+                })
+                
+            } else {
+
                 //get the applicants array
                 const applicants = job.data().applicants
                 //add the new applicant to the applicants array
@@ -72,9 +82,9 @@ module.exports = {
                 const num = existing + 1
 
                 const msg = {
-                    to: `${ job.email }`,
-                    from: 'recruiting@excelcna.com', 
-                    subject: `Caregiver #${num} : ${ job.title }`,//'Sending with Twilio SendGrid is Fun',
+                    to: `${ job.data().email }`,
+                    from: 'training@excelcna.com', 
+                    subject: `Caregiver #${num} : ${ job.data().title }`,//'Sending with Twilio SendGrid is Fun',
                     text: 'Here is a caregivers/CNAs interested in your position:',
                     html: `<ul><li>${ name }</li><li>Tel: ${ tel } Email: ${ email } </li> <li> ${ certifications }</li></ul>`,
                 }
@@ -91,17 +101,10 @@ module.exports = {
                     'redirect': true,
                     'url': '/job/all'
                 })
-            } else {
-                return res.status(404).json({
-
-                    'message': 'We see you have submitted an application for this job.  Search for another job to apply for.',
-                    'success': false,
-                    'redirect': false,
-                    'url': '/job/all'
-                })
+                
             }
         }catch(error){
-            console.log("Stupid error ", error)
+            console.log("Stupid error ", JSON.stringify(error.response.body))
         }       
     },   
     //delete a job
@@ -193,7 +196,7 @@ module.exports = {
                 applicants: []
             })
 
-            console.log(`EMPLOYER LIST IS: ${EMPLOYER_LIST} AND EMPLOYER DATA IS ${JSON.stringify(employerData(email, /*settings,*/ facility_name, tel ))}`)
+            //subscribe employer to the employer e-mail list
             await subscribe (EMPLOYER_LIST, employerData(email, settings, facility_name, tel ))
 
             //send back           
@@ -220,7 +223,7 @@ module.exports = {
         }
     },       
    
-     //view single job for by an employer
+    //view single job for by an employer
     viewJobById: async(req, res, next) => {
         
         try{            
