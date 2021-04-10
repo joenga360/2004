@@ -5,7 +5,9 @@ const db = firebase.firestore()
 const seo_page = require('../client_helpers/seo_page_info')
 const { employerData, subscribe  } = require("../helpers/subscribe")
 const sgMail = require('@sendgrid/mail')
+const { courses_landing_seo_info } = require("../client_helpers/seo_page_info")
 sgMail.setApiKey(SENDGRID_API)
+const mailchimpClient = require('@mailchimp/mailchimp_transactional')( MANDRILL_API_KEY )
 
 
 module.exports = {
@@ -55,9 +57,8 @@ module.exports = {
             const existing =  job.data().applicants.filter( x => x.name === name && x.email === email)
           
             //if the applicant has not applied, submit application
-            if(existing.length > 0 ){
+            if( existing.length > 0 ){
                 return res.status(404).json({
-
                     'message': 'We see you have submitted an application for this job.  Search for another job to apply for.',
                     'success': false,
                     'redirect': false,
@@ -78,18 +79,46 @@ module.exports = {
                         certifications
                     }
                 )
+                
+                console.log('We are in else....', MANDRILL_API_KEY)
+                //const num = existing + 1
 
-                const num = existing + 1
+                const response = await mailchimpClient.messages.sendTemplate({
+                    'template_name': "simple-plain-email",
+                    'template_content': [{
+                        'name': 'body-table',
+                        'content': '<tbody><tr><td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #222222;font-family: Georgia, Times, " times="" new="" roman",="" serif;"=""><span style="font-size:14px"><span style="font-family:roboto,helvetica neue,helvetica,arial,sans-serif"><strong>Dear *|FNAME|*,</strong><br><br>Thanks for registering for our *|COURSE|* class.  To complete the registration, come to our office and take the math and English entrance exam (it is easy) or bring transcripts you have more than 30 college credits and pay the registration fee if you have not done so yet. <br><br> You will also collect *|COURSE|*  learning resources such as the text book, homework/question packets, abbreviation and definition worksheets.<br><br><strong><a href="https://www.doh.wa.gov/LicensesPermitsandCertificates/ProfessionsNewReneworUpdate/ApplyOnline/OnlineInstructions" target="_blank">Apply</a></strong> for NAR license<span style="color:#FF0000"><strong> IMMEDIATELY</strong></span>.  NAR will allow you to meet your clinical rotation requirements - the sooner you have your NAR the better you will be.  <br><br>See you soon!  </span></span></td></tr></tbody>'
+                    }],
+                    'message': {
+                        'subject': 'Candidate application',
+                        'from_email': 'jobs@excelcna.com',
+                        'track_opens': true,
+                        'track_clicks': true,
+                        'important': true,
+                        // 'merge_vars': {
+                        //     rcpt: 'ngatuna05@gmail.com',
+                        //     vars: [
+                        //         { name: FNAME, content:'Don' },
+                        //         { name: COURSE, content: 'CNA'}
+                        //     ]
+                        // },
+                        to: [
+                            {email: 'training@excelcna.com', name: 'Don Gatuna'}
+                        ]
+                    },
+                });
 
-                const msg = {
-                    to: `${ job.data().email }`,
-                    from: 'training@excelcna.com', 
-                    subject: `Caregiver #${num} : ${ job.data().title }`,//'Sending with Twilio SendGrid is Fun',
-                    text: 'Here is a caregivers/CNAs interested in your position:',
-                    html: `<ul><li>${ name }</li><li>Tel: ${ tel } Email: ${ email } </li> <li> ${ certifications }</li></ul>`,
-                }
+                console.log('MANDRILL RESPONSE ---> ', response)
 
-                await sgMail.send(msg)
+                // const msg = {
+                //     to: `${ job.data().email }`,
+                //     from: 'training@excelcna.com', 
+                //     subject: `Caregiver #${num} : ${ job.data().title }`,//'Sending with Twilio SendGrid is Fun',
+                //     text: 'Here is a caregivers/CNAs interested in your position:',
+                //     html: `<ul><li>${ name }</li><li>Tel: ${ tel } Email: ${ email } </li> <li> ${ certifications }</li></ul>`,
+                // }
+
+                // await sgMail.send(msg)
 
                 await db.collection('jobs').doc(id).update({
                     applicants
@@ -104,7 +133,7 @@ module.exports = {
                 
             }
         }catch(error){
-            console.log("Stupid error ", JSON.stringify(error.response.body))
+            console.log("Stupid error ", JSON.stringify(error))
         }       
     },   
     //delete a job

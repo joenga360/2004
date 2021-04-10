@@ -304,7 +304,7 @@ module.exports = {
             //the audience in the mailchimp without mailchimp are                                  
             status.course_start ? tags.push("Course Start") : tags
              //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, course_id, tags )              
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, course_id, tags, code )              
              //send student data to mailchimp list/audience for students
             await subscribe( STUDENT_LIST, postData )       
            
