@@ -1,5 +1,7 @@
-const Course = require('../models/course')
-const Job = require('../models/job')
+const firebase = require("firebase")
+const moment = require('moment')
+//create reference for firestore database
+const db = firebase.firestore()
 
 const notificationsWorkerFactory = function () {
   return {

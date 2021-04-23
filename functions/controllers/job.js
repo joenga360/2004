@@ -67,6 +67,8 @@ module.exports = {
                 
             } else {
 
+                //const certifications = req.body.certifications !=' '? req.body.certifications.split(' '): ' '
+
                 //get the applicants array
                 const applicants = job.data().applicants
                 //add the new applicant to the applicants array
@@ -80,30 +82,32 @@ module.exports = {
                     }
                 )
                 
-                console.log('We are in else....', MANDRILL_API_KEY)
-                //const num = existing + 1
+               //get the length of applicants who have submitted to this particular job post and increment by 1
+                const num = applicants.length 
 
                 const response = await mailchimpClient.messages.sendTemplate({
-                    'template_name': "simple-plain-email",
-                    'template_content': [{
-                        'name': 'body-table',
-                        'content': '<tbody><tr><td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #222222;font-family: Georgia, Times, " times="" new="" roman",="" serif;"=""><span style="font-size:14px"><span style="font-family:roboto,helvetica neue,helvetica,arial,sans-serif"><strong>Dear *|FNAME|*,</strong><br><br>Thanks for registering for our *|COURSE|* class.  To complete the registration, come to our office and take the math and English entrance exam (it is easy) or bring transcripts you have more than 30 college credits and pay the registration fee if you have not done so yet. <br><br> You will also collect *|COURSE|*  learning resources such as the text book, homework/question packets, abbreviation and definition worksheets.<br><br><strong><a href="https://www.doh.wa.gov/LicensesPermitsandCertificates/ProfessionsNewReneworUpdate/ApplyOnline/OnlineInstructions" target="_blank">Apply</a></strong> for NAR license<span style="color:#FF0000"><strong> IMMEDIATELY</strong></span>.  NAR will allow you to meet your clinical rotation requirements - the sooner you have your NAR the better you will be.  <br><br>See you soon!  </span></span></td></tr></tbody>'
-                    }],
-                    'message': {
-                        'subject': 'Candidate application',
-                        'from_email': 'jobs@excelcna.com',
-                        'track_opens': true,
-                        'track_clicks': true,
-                        'important': true,
-                        // 'merge_vars': {
-                        //     rcpt: 'ngatuna05@gmail.com',
-                        //     vars: [
-                        //         { name: FNAME, content:'Don' },
-                        //         { name: COURSE, content: 'CNA'}
-                        //     ]
-                        // },
+                    template_name: "job-applicant-email",
+                    template_content: [],
+                    message: {
+                        from_email: 'jobs@excelcna.com',
+                        
+                        subject: `Caregiver/CNA Job Application #${num} for ${ job.data().title }`,                      
+                        track_opens: true,
+                        track_clicks: true,
+                        important: true,
+                        merge_language: "mailchimp",
+                        merge_vars: [{
+                            rcpt: job.data().email,
+                            vars: [
+                                { name: 'APPLICANT_NAME', content: name },
+                                { name: 'JOB_TITLE', content:  job.data().title },
+                                { name: 'APPLICANT_EMAIL', content: email },
+                                { name: 'APPLICANT_TEL', content: tel },
+                                { name: 'APPLICANT_CERTIFICATIONS', content: certifications }
+                            ]
+                        }],
                         to: [
-                            {email: 'training@excelcna.com', name: 'Don Gatuna'}
+                            { email: job.data().email }
                         ]
                     },
                 });
@@ -133,7 +137,7 @@ module.exports = {
                 
             }
         }catch(error){
-            console.log("Stupid error ", JSON.stringify(error))
+            console.log("Stupid error ", error)
         }       
     },   
     //delete a job

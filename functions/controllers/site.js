@@ -130,44 +130,44 @@ module.exports = {
      * @param {*} res 
      * @param {*} next 
      */
-     getStudentPayRegistrationForm : async ( req, res, next ) => {
-        //get the parameters
-        const { code, course_id, student_id } = req.params   
-        //get the course or reservation full name/title
-        const course = await courseDbName( code, course_id )   
-        //get the long name of course stored in database
-          
-        console.log( 'and course ', course)       
-        //get course registration fee
-        const fees  = registration_fee[course.data.name]
+    getStudentPayRegistrationForm : async ( req, res, next ) => {
+    //get the parameters
+    const { code, course_id, student_id } = req.params   
+    //get the course or reservation full name/title
+    const course = await courseDbName( code, course_id )   
+    //get the long name of course stored in database
+        
+    console.log( 'and course ', course)       
+    //get course registration fee
+    const fees  = registration_fee[course.data.name]
 
-        try {
-            //get the student using student id
-            const result = await db.collection("students").doc( student_id ).get()
-            //create student to return to the front side
-            const student = {
-                name: `${ result.data().first } ${ result.data().last }`,
-                email: `${ result.data().email } `,
-                phone: `${ result.data().tel }`,
-                id: result.id
-            }
-
-            //return the registration form
-            res.render('site/payregistration', {                
-                course: course,                
-                code: code,  
-                fees: fees,
-                student: student,                 
-                seo_info: seo_page[code + "_page_seo_info"] ,
-                seo_info: seo_page.register_page_seo_info, 
-                STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY                                            
-            })      
-             
-            
-        } catch (error) {
-            console.log( 'error', error )
+    try {
+        //get the student using student id
+        const result = await db.collection("students").doc( student_id ).get()
+        //create student to return to the front side
+        const student = {
+            name: `${ result.data().first } ${ result.data().last }`,
+            email: `${ result.data().email } `,
+            phone: `${ result.data().tel }`,
+            id: result.id
         }
-     },
+
+        //return the registration form
+        res.render('site/payregistration', {                
+            course: course,                
+            code: code,  
+            fees: fees,
+            student: student,                 
+            seo_info: seo_page[code + "_page_seo_info"] ,
+            seo_info: seo_page.register_page_seo_info, 
+            STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY                                            
+        })      
+            
+        
+    } catch (error) {
+        console.log( 'error', error )
+    }
+    },
 
     //8. Get the receipt page
     getReceiptPage: (req, res) => {
@@ -201,6 +201,31 @@ module.exports = {
                                             // csrfToken: req.csrfToken(),
                                             seo_info: seo_page.admin_signin_page_seo_info 
                                         })
+    },
+
+    //get 10 jobs to present to a course registrant
+    getJobs: async ( req, res, next ) => {
+        try {
+            //get 10 most recent jobs
+            const results = await db.collection("jobs")
+                                    .orderBy("created", "desc")
+                                    .limit(10)
+
+            const jobs = results.docs.map( x => {
+                                    return {                                        
+                                        id: x.id,
+                                        created: x.data().created,
+                                        facility_name: x.data().facility_name,
+                                        title: x.data().title,
+                                    }
+                                })
+
+            //res render
+            
+
+        } catch (error) {
+            
+        }
     },
 
     //11. Get the employer sign up page
