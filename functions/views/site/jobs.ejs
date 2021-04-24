@@ -10,15 +10,11 @@
                         </tr>
                     </thead>
                                                       
-                    <tbody >      
-                        <!-- <%=jobs%>              -->
+                    <tbody>                  
                         <% jobs.forEach( job => { %>                          
                             <tr>
                                 <td class="text-start">
-                                    <%= job.created %> <a href="/job/view/<%= job.id %>" class="text-end"><strong><%=job.title%> </strong></a>
-                                    <!-- <span>
-                                       <p class="text-muted text-end"></p> 
-                                    </span> -->
+                                    <%= job.created %> <a href="/job/view/<%= job.id %>" class="text-end"><strong><%=job.title%> </strong></a>                                   
                                 </td>   
                             </tr>              
                         <% }) %>                         

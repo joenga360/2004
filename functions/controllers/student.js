@@ -418,7 +418,7 @@ module.exports = {
          try {
              console.log( 'REQ PARAMS  -> ', req.body )
             //get req.params 
-            const { old_course_id, new_course_id, student_id } = req.body
+            const { code, old_course_id, new_course_id, student_id } = req.body
             //query student collection using student id
             const results = await db.collection('students').doc(student_id).get()
             //get student
@@ -469,7 +469,7 @@ module.exports = {
                  
             res.status(201).json({
                 'message': 'Student has been updated',
-                'redirect_url': '/courses/'+new_course_id,
+                'redirect_url': `/courses/${code}/${new_course_id}`,//'/courses/'+new_course_id,
                 'redirect': true
             })
          } catch (error) {

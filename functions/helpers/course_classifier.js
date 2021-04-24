@@ -141,7 +141,7 @@ module.exports = {
                 
                 //if the course does NOT exist, let the user know so - redirect to the courses page
                 if(!course){                 
-                    return res.status(201).json({ message: 'No such course exists' })   
+                    return { message: 'No such course exists' }  
                 } 
 
                 //create course description to send to stripe
@@ -159,7 +159,7 @@ module.exports = {
                 const course = results.data()
                 //if the course does NOT exist, let the user know so - redirect to the courses page
                 if(!course){                 
-                    return res.status(201).json({ message: 'No such course exists' })   
+                    return { message: 'No such course exists' }   
                 }
 
                 return {
@@ -186,8 +186,7 @@ module.exports = {
     codeName: ( course_name ) => {             
         console.log('course name ', course_name, 'and ', course_name.substring(7, 11).trim())
         switch (course_name.substring(7, 11).trim()){
-            case "CNA":
-                return 'cna'                               
+                                     
 
             case "HCA":
                 return 'bridging'            
@@ -207,9 +206,11 @@ module.exports = {
                     return 'ceu'
                 } 
 
-            default:         
-                    
-                if(course_name.substring(0, 4).trim() == 'Adul'){
+            default: 
+                
+                if(course_name === "CNA") {
+                    return 'cna'
+                }else if(course_name.substring(0, 4).trim() == 'Adul'){
                     return 'cpr'
                 } else if( course_name.substring(0, 4).trim() == 'BLS'){
                     return 'bls'

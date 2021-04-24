@@ -23,10 +23,10 @@
                         <ul class="list-group list-group-flush justify-content-between">
                             <li class="list-group-item list-group-item-primary text-dark"><strong>DAY CLASS</strong><br> Mon - Fri <br> 3 weeks long <br> 9:00 a.m. - 3:00 p.m.</li> 
                             <% if(transfer) { %> 
-                                <% courses.cna.day_courses.forEach( course =>{ %>
+                                <% courses.cna.day_courses.forEach( course => { %>
                                     <li class="list-group-item" >
                                         <%=course.start_date %> - <%=course.end_date %> 
-                                        <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                        <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="cna"  type="button" > + </a>  
                                     </li>
                                 <% }) %>
                             <% } else { %>
@@ -45,7 +45,7 @@
                             <% if (transfer) { %> 
                                 <% courses.cna.evening_courses.forEach(course => { %>
                                     <li class="list-group-item" >
-                                        <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                        <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="cna" type="button" > + </a>  
                                     </li>
                                 <% }) %>
                             <% } else { %>
@@ -63,7 +63,7 @@
                             <% if(transfer) { %> 
                                 <% courses.cna.weekend_courses.forEach(course =>{ %>
                                     <li class="list-group-item" >
-                                        <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                        <%= course.start_date %> - <%= course.end_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="cna" type="button" > + </a>  
                                     </li>
                                 <% }) %>
                             <% } else { %>
@@ -83,7 +83,7 @@
                             <% if(transfer){ %>
                                 <% courses.bridging.day_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="bridging" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <% } else { %> 
@@ -103,7 +103,7 @@
                             <% if(transfer){ %>
                                 <% courses.bridging.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="bridging" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -126,7 +126,7 @@
                             <% if(transfer){ %>
                                 <% courses.hca.day_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="cna" type="hca" > + </a>  
                                 </li>
                                 <% }) %>
                             <% } else { %> 
@@ -146,7 +146,7 @@
                             <% if(transfer){ %>
                                 <% courses.hca.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="hca" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -169,7 +169,7 @@
                             <% if(transfer) { %>
                                 <% courses.dementia.day_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="dementia"  type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <% } else { %> 
@@ -189,7 +189,7 @@
                             <% if(transfer) { %>
                                 <% courses.dementia.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="dementia" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -212,7 +212,7 @@
                             <% if(transfer) { %>
                                 <% courses.mh.day_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="mh" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <% } else { %> 
@@ -232,7 +232,7 @@
                             <% if(transfer) { %>
                                 <% courses.mh.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="mh"  type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -255,7 +255,7 @@
                             <% if(transfer) { %>
                                 <% courses.ceu.day_courses.forEach( course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="ceu"  type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <% } else { %> 
@@ -275,7 +275,7 @@
                             <% if(transfer) { %>
                                 <% courses.ceu.weekend_courses.forEach(course => { %>  
                                 <li class="list-group-item" >
-                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' type="button" > + </a>  
+                                    <%= course.start_date %> - <%= course.end_date %>  <a class="btn btn-sm btn-outline-success float-right transfer" data_course_id='<%=course.courseId%>' data_course_code="ceu" type="button" > + </a>  
                                 </li>
                                 <% }) %>
                             <%} else { %> 
@@ -575,8 +575,10 @@
             const student_id = localStorage.getItem('student_id')
             //get the new course id to transfer student to
             const new_course_id = e.currentTarget.attributes[1].nodeValue
+            //get the short course code
+            const code = e.currentTarget.attributes[2].nodeValue
             //gather transfer data
-            const studentData = { old_course_id, new_course_id, student_id }
+            const studentData = { code, old_course_id, new_course_id, student_id }
             debugger
             localStorage.clear()
             //send data to server

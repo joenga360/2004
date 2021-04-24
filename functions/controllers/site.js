@@ -196,7 +196,7 @@ module.exports = {
 
     //10. Get the employer sign in page
     getAdminSignInPage: (req, res) => {
-      //  res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
+        // res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
         res.render('site/adminsignin', {
                                             // csrfToken: req.csrfToken(),
                                             seo_info: seo_page.admin_signin_page_seo_info 
@@ -219,8 +219,8 @@ module.exports = {
                                         title: x.data().title,
                                     }
                                 })
-
-            //res render
+            //
+            res.render('site/applyjob', { jobs: jobs, seo_info: seo_page.jobs_page_seo_info })                      
             
 
         } catch (error) {

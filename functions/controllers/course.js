@@ -1,6 +1,6 @@
 const firebase = require("firebase")
 const moment = require('moment')
-const { course_classifier, addCourses, courseDbName  } = require('../helpers/course_classifier.js')
+const { course_classifier, addCourses, courseDbName, codeName } = require('../helpers/course_classifier.js')
 const seo_page = require('../client_helpers/seo_page_info')
 //create reference for firestore database
 const db = firebase.firestore()
@@ -318,7 +318,7 @@ module.exports = {
             //get the new dates and course id
             const { course_id, dates }  = req.body
             //check if the course exists
-            const courseQuery = await db.collection('courses').doc(course_id).get()
+            const courseQuery = await db.collection('courses').doc( course_id ).get()
             //if no such course exists, return
             if(!courseQuery){
                 return res.status(404).json({
@@ -329,7 +329,10 @@ module.exports = {
             const course = courseQuery.data()
             //get present year to append to class dates
             const year = moment().year()   
-            
+            //get the course code name
+            const code = codeName( courseQuery.data().name )
+
+            console.log('CODE NAME IN UP DATE COURSE', )
             //split the course dates
             const course_date = dates.split(' ')           
             
@@ -354,8 +357,7 @@ module.exports = {
             const studentsArray = []
             //store all students in the array
             query.forEach( result => studentsArray.unshift({ id: result.id, data: result.data() }))   
-            
-            console.log('students array -> ', studentsArray)
+           
             const students = studentsArray.map( x => {
                 return {
                     id: x.id,
@@ -383,7 +385,7 @@ module.exports = {
             res.status(200).json({
                 message: "The course has been successfully been updated.",
                 redirect: true,
-                redirect_url: "/courses/"+course_id,
+                redirect_url: `/courses/${code}/${course_id}`, 
                 students
             })
 
