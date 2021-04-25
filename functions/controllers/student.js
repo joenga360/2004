@@ -233,12 +233,14 @@ module.exports = {
            
             res.status(201).json({
                 redirect: true,
-                redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
+                student_id: student.id,
+                registered: ( stripeToken && amount > 0 ) ? true : false,
+                redirect_url: '/start-job-search',
                 message: 'You have signed up for '+ course.title
             })
 
         } catch (error){     
-            console.log("Stupid error ", error)      
+               
             res.status(500).json({
                 "redirect":false,
                 "redirect_url":"localhost:3000/courses",
@@ -261,7 +263,6 @@ module.exports = {
             //get the req.body data
             const { address, birthdate, city, comments, email, first, last, payment, payment_mode, state, tel, zip } = req.body 
 
-            console.log('req body --> ', req.body, "and ", payment_mode )
             //add status data - did the student walk in before course starts and did they start class
             const status = {
                 course_start: req.body.course_start ? true: false,

@@ -9,6 +9,8 @@ router.get('/',  SiteController.getHomePage)
 router.get("/admin/signin",  SiteController.getAdminSignInPage)
 //get the admin sign up page
 router.get("/admin/signup", SiteController.getAdminSignUpPage)
+//get the page for course registrant to apply
+router.get('/start-job-search', SiteController.getJobs)
 //get the lead main course page
 router.get('/courses', SiteController.getMainCourseLandingPage)
 //get the catalog page
