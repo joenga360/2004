@@ -6,6 +6,8 @@ const authenticate = require("../helpers/authenticate")
 router.route( '/registration' ).post( studentController.studentPayRegistration )
 //student registers self for a course on public site
 router.route('/register/:code/:id').post( studentController.studentSelfCourseSignUp )
+//student contacts employers (starts job search) while enrolling for class
+router.route('/start-job-search').patch( studentController.contactEmployers )
 //admin registers a new student
 router.route('/start/:course_id/:code').post( authenticate.isAdmin,  studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 

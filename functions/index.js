@@ -69,7 +69,7 @@ app.all( "*", async( req, res, next ) => {
     next()   
 })  
 
-
+//resource for commenting format - https://jsdoc.app/tags-param.html
 // app.use(cookieSession({name: 'session', keys: ['key1']}))
 // console.log('Before routes...')
 app.use('/', require('./routes/site'))

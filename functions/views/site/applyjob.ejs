@@ -1,57 +1,121 @@
 <div class="container-fluid p-5">           
     <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-5">  
-
-        <% jobs.forEach( job => { %>   
-            <div class="card">   
-                <div class="card-header">
-                    <%= job.facility_name %>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title"> <%= job.title %> </h5>
-                    
-                    <a class="btn btn-primary float-right apply" data_job_id="<%= job.id %>" type="button">Apply</a>
-                </div>
-            </div>
-        <% }) %> 
+        <div class="col-sm-10 col-md-6">     
+        <div class="alert alert-secondary" role="alert">
+            The sooner you start your job search, the sooner you will complete your training.  Employers assist you complete your clinical verification while you train and eventually hire you.  In addition, some employers can assist you with tuition or reimburse your tuition.  Contact 4 - 7 employers before scrolling down the page to complete course registration.             
         </div>
+        
+        <% jobs.forEach( job => { %>   
+            <div class="card" id = "<%= job.id %>" >           
+                <div class="card-body">
+                    <h5 class="card-title"> <%= job.facility_name %> </h5>
+                    <div class="row justify-content-between px-3">
+                        <p class="card-text "><%= job.address %></p>                        
+                        <a class="btn btn-primary text-white float-right apply"                          
+                            data_job_id = "<%= job.id %>"                        
+                            type="button"> <strong> Contact </strong>
+                        </a>
+                    </div>                    
+                </div>              
+            </div><br>
+            <% }) %> 
+            
+            <a class="btn btn-dark btn-lg btn-block text-white float-right registration"           
+                type="button"> <strong>COMPLETE COURSE REGISTRATION</strong>
+            </a>
+        </div> 
     </div>
 </div>
 <script type="application/javascript">
     $(document).ready(()=>{
 
-        $('#apply-job-form').on('submit', (e) => {
-            //make sure front data side is filled     
+        //get items in the local storage       
+        const student_id = localStorage.getItem('student_id')
+        const registered = JSON.parse(localStorage.getItem('registered'))
+        const jobs = localStorage.getItem('jobs') != null ? JSON.parse(localStorage.getItem('jobs')) : []
 
-            if(!$('#name').val()) return alert('Please fill in your name!')
-            if(!$('#email').val()) return alert('Please fill in your email!')
-            if(!$('#tel').val()) return alert('Please fill in your phone number!')
-            //Classify the user as a job seeker and increment 'Job Applications Submitted' by one
-            gtag('set', { 'dimension2': "Job Seeker", 'metric7': 1 })
-            gtag('event', `Apply Job`, {
-                'event_category': 'Engagement',
-                'event_label': `Job Seeker`,
-                'value': 1
-            })
+        const student_data = { student_id, jobs }
+        console.log('data after document loads --> ', student_data )
+    
+        $('.apply').on('click', (e) => {
 
-            alert('Thanks for submitting your job application.')
-            $("#applyJobModal").modal("hide")
+            //prevent default behavior
+            e.preventDefault()
 
+            //get the job id 
+            //properties of a job         
+            const job_id = e.currentTarget.attributes[1].nodeValue
 
-            //clear the data contained in the modal form
-            $("#applyJobModal").on('hidden.bs.modal', () => {
-                //this reset html
-                $('#applyJobModal form')[0].reset()
-            })
+            console.log(student_data)
+            //push above job into data jobs array
+            jobs.push({ job_id })
             
-            e.preventDefault
+            localStorage.setItem('jobs', JSON.stringify(jobs))
+            debugger
+            //hide the job
+            $("#"+job_id).hide()
         })
 
-        $('#submitJobBtn').on('click', () => {           
-            // e.preventDefault
-            $('#apply-job-form').submit()
+        
+        $('.registration').on('click', e => {
+            //prevent default behavior
+            e.preventDefault()
+
+            console.log('data ---', student_data )
+            debugger
             
+            if( jobs.length > 0 ) {
+                //send data to server
+                $.ajax({
+                    type: 'PATCH', 
+                    url: '/students/start-job-search',
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    // headers: {
+                    //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
+                    // },
+                    dataType: "json",
+                    data: student_data 
+                }).done(function (response) {
+                
+                    if (response.redirect !== undefined && response.redirect) {
+                        
+                        alert(response.message)
+                        // window.location.href = response.redirect_url
+                         //check if the student registered or waitlisted
+                        if(JSON.parse(localStorage.getItem('registered'))){
+                            //clear the local storage
+                            localStorage.clear()
+                            //send registrant to receipt page
+                            window.location.replace('/confirm-payment')
+                        }else{
+                            //clear the local storage
+                            localStorage.clear()
+                            //send registrant to receipt page
+                            window.location.replace('/success')
+                        }
+                    }      
+                    
+                    if (response.redirect === undefined || !response.redirect) {
+                        
+                        alert(response.message)
+                        // window.location.href = response.redirect_url
+                        localStorage.setItem('jobs', null)
+                        window.location.replace('/students/start-job-search')
+                    } 
+                    
+                    //clear
+                })
+            } else {
+                debugger
+                //check if the student registered or waitlisted
+                if(JSON.parse(localStorage.getItem('registered'))){
+                    window.location.replace('/confirm-payment')
+                }else{
+                    window.location.replace('/success')
+                }
+            }
         })
+       
         
     })
 //create a get route to send the user to admin

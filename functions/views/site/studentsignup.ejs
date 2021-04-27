@@ -280,6 +280,9 @@
                         data: studentData,
                     }).done(function (response) {
                         if (response.redirect !== undefined && response.redirect) {
+                            //add local storage items for student id and if student registered or waitlisted
+                            localStorage.setItem('student_id', response.student_id)
+                            localStorage.setItem('registered', response.registered)
                             debugger
                             alert(response.message)
                             window.location.replace(response.redirect_url)

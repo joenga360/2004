@@ -125,10 +125,12 @@ module.exports = {
         }      
     },
 
-    /**
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
+    /** 
+     * The link to this form is sent to student who has already registered for a class
+     * Aims to get the student to sign up and convert from waitlist to registered    
+     * @param {code, course_id, student_id} req //course
+     * @param {full name of student, email, tel, id } res 
+     * @param {none} next 
      */
     getStudentPayRegistrationForm : async ( req, res, next ) => {
     //get the parameters
@@ -205,20 +207,24 @@ module.exports = {
 
     //get 10 jobs to present to a course registrant
     getJobs: async ( req, res, next ) => {
+        console.log('shiiieeet')
         try {
             //get 10 most recent jobs
             const results = await db.collection("jobs")
                                     .orderBy("created", "desc")
                                     .limit(10)
+                                    .get()
 
             const jobs = results.docs.map( x => {
                                     return {                                        
                                         id: x.id,
-                                        created: x.data().created,
+                                        address: x.data().address,
+                                        email: x.data().email,                                   
                                         facility_name: x.data().facility_name,
                                         title: x.data().title,
                                     }
                                 })
+            console.log('JOBS ', jobs)
             //
             res.render('site/applyjob', { jobs: jobs, seo_info: seo_page.jobs_page_seo_info })                      
             
@@ -249,7 +255,7 @@ module.exports = {
             //get the long name of course stored in database
             const course_name = courseName(req.params.name)
 
-            if(
+            if (
                 course_name == "BLS Course Skill Testing" || 
                 course_name == "Adult CPR/First Aid/AED Skill Testing" || 
                 course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 

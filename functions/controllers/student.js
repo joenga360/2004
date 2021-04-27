@@ -159,9 +159,40 @@ module.exports = {
             })
         }
     },
+
+    /**
+     * student contacts employers about job and/or clinical verification opportunities
+     * @param { Object } req - contains student id and array of job ids from front end
+     * @param { Object } res - returns message and redirect boolean
+     * 
+     */
+
+    contactEmployers : async (req, res, next ) => {
+
+        try {
+            console.log('req body ', req.body)
+            //get the data from the front end
+            const { student_id, jobs }  = req.body
+            //find the student with id of student_id
+            await db.collection('students').doc( student_id ).update({ jobs })           
+
+            //alert employer about student's interest
+            res.status(201).json({
+                redirect: true,                
+                message: "Employers interested in hiring you might contact you.  Keep an eye on your inbox."
+            })
+
+        } catch ( error ){
+            res.status(500).json({
+                redirect: false,                
+                message: "Something went wrong when you tried to contact employers."
+            })
+        }
+    },
     /**
      * student register self for an upcoming course
-     * params: id of the course, code
+     * @param { String | course id, code } - param is course id and code
+     * @params: id of the course, code
      * data: student information and stripe token if payment is made
      */
     studentSelfCourseSignUp: async( req, res, next ) => {
@@ -363,10 +394,8 @@ module.exports = {
         const sum = payments.reduce(( x, paid )=>{
             console.log(`payment: ${ x } and amount: ${paid.amount}` )
             return x += paid.amount
-        }, 0 )
+        }, 0 )      
       
-         
-        console.log('SUM....', sum)
         //convert the payment to an integer
         parseInt( payment ) > 0 ? payments.unshift(
             {   
