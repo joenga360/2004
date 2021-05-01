@@ -37,6 +37,7 @@
     "md5": "^2.3.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
+    "node-cron": "^3.0.0",
     "node-quickbooks": "^2.0.37",
     "querystring": "^0.2.0",
     "request": "^2.88.2",

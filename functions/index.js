@@ -80,6 +80,9 @@ app.use('/job', require('./routes/job'))
 app.use('/students', require('./routes/student'))
 
 //Get user info and set csurf cooke
+const scheduler = require('./scheduler')
+
+scheduler.start()
 
 
 exports.app = functions.https.onRequest(app)

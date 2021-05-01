@@ -72,30 +72,7 @@ module.exports = {
         }
 
         return mc_data
-    },
-
-    //a function that returns id to subscribe to
-    segmentURL: ( amount, name, course_start ) => {
-
-        if(course_start){
-            return 1709440 
-        }
-
-        if(amount === 0 ){
-            //return type of student as one who chooses to be waitlisted for any courses
-            return 4438132   //waitlist         
-        } else if (amount > 0 && amount <= 75) {
-            //return type of student as one who pays $ 75.00 registration fees for HCA-CNA Bridging and CNA
-            if(name === "BLS Course Skill Testing" || name === "Adult CPR/First Aid/AED Course Skill Testing"){
-                return 1709440   //
-            }
-            return 1709500                     
-        } else {
-             //return student as one who makes who pays for the course or makes a big chunk of payment
-             //includes students who pay $ 65.00 for BLS and $ 80.00 for CPR/First Aid
-            return 1709440            
-        }
-    },
+    },    
 
     subscribe: async ( list_id, postData ) => {
         try {            
