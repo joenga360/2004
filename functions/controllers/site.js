@@ -153,7 +153,6 @@ module.exports = {
             phone: `${ result.data().tel }`,
             id: result.id
         }
-
         //return the registration form
         res.render('site/payregistration', {                
             course: course,                

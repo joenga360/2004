@@ -41,8 +41,7 @@ module.exports = {
     },
     //apply to a job
     applyJob: async( req, res, next ) => {
-        try{
-           console.log('are we getting here......', req.body)
+        try{           
             //get data from front end
             const { name, tel, email, certifications, id } = req.body
             //make sure 
@@ -85,17 +84,16 @@ module.exports = {
                //get the length of applicants who have submitted to this particular job post and increment by 1
                 const num = applicants.length 
 
-                const response = await mailchimpClient.messages.sendTemplate({
+                await mailchimpClient.messages.sendTemplate({
                     template_name: "job-applicant-email",
                     template_content: [],
                     message: {
-                        from_email: 'jobs@excelcna.com',
-                        
+                        from_email: 'jobs@excelcna.com',                        
                         subject: `Caregiver/CNA Job Application #${num} for ${ job.data().title }`,                      
                         track_opens: true,
                         track_clicks: true,
                         important: true,
-                        merge_language: "mailchimp",
+                        merge_language: "handlebars",
                         merge_vars: [{
                             rcpt: job.data().email,
                             vars: [
@@ -110,19 +108,7 @@ module.exports = {
                             { email: job.data().email }
                         ]
                     },
-                });
-
-                console.log('MANDRILL RESPONSE ---> ', response)
-
-                // const msg = {
-                //     to: `${ job.data().email }`,
-                //     from: 'training@excelcna.com', 
-                //     subject: `Caregiver #${num} : ${ job.data().title }`,//'Sending with Twilio SendGrid is Fun',
-                //     text: 'Here is a caregivers/CNAs interested in your position:',
-                //     html: `<ul><li>${ name }</li><li>Tel: ${ tel } Email: ${ email } </li> <li> ${ certifications }</li></ul>`,
-                // }
-
-                // await sgMail.send(msg)
+                })               
 
                 await db.collection('jobs').doc(id).update({
                     applicants

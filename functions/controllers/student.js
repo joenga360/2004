@@ -170,12 +170,61 @@ module.exports = {
     contactEmployers : async (req, res, next ) => {
 
         try {
-            console.log('req body ', req.body)
+            
             //get the data from the front end
             const { student_id, jobs }  = req.body
-            //find the student with id of student_id
-            await db.collection('students').doc( student_id ).update({ jobs })           
+            //get student for full name and contact information
+            const student = await db.collection('students').doc( student_id ).get()
+            //student's full name
+            const full_name = `${ student.data().first } ${ student.data().last }`            
+            //send employers emails
+            jobs.forEach (async( x ) => {    
+                
+                //get student for full name and contact information
+                const job = await db.collection('jobs').doc( x.job_id ).get()
+                //get the prospects
+                const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
+                //add the new prospect to the prospects array
+                prospects.unshift[{ 
+                    full_name,
+                    applied: firebase.firestore.Timestamp.fromDate(new Date()), 
+                    email: student.data().email,
+                    tel: student.data().tel
+                }]
+                //find the student with id of student_id
+                await db.collection('jobs')               
+                        .doc( x.job_id )
+                        .update(prospects) 
 
+                //send 
+                await mailchimpClient.messages.sendTemplate({
+                    template_name: "student-applicant",
+                    template_content: [],
+                    message: {
+                        from_email: 'jobs@excelcna.com',                        
+                        subject: `Caregiver/CNA Job Application for ${ job.data().title }`,                      
+                        track_opens: true,
+                        track_clicks: true,
+                        important: true,
+                        merge_language: "handlebars",
+                        merge_vars: [{
+                            rcpt: job.data().email,
+                            vars: [
+                                { name: 'ORGANIZATION', content: job.data().facility_name },
+                                { name: 'JOB_TITLE', content:  job.data().title },
+                                { name: 'STUDENT_FULL_NAME', content: full_name },
+                                { name: 'STUDENT_EMAIL', content: student.data().email },
+                                { name: 'STUDENT_TEL', content: student.data().tel },
+                                { name: 'COURSE', content: student.data().payments[0].course_name }                                
+                            ]
+                        }],
+                        to: [
+                            { email: job.data().email }
+                        ]
+                    },
+                })
+            })
+                     
             //alert employer about student's interest
             res.status(201).json({
                 redirect: true,                
@@ -261,14 +310,24 @@ module.exports = {
        
              //send student data to mailchimp list/audience for students
             await subscribe( STUDENT_LIST, postData )
-           
-            res.status(201).json({
-                redirect: true,
-                student_id: student.id,
-                registered: ( stripeToken && amount > 0 ) ? true : false,
-                redirect_url: '/start-job-search',
-                message: 'You have signed up for '+ course.title
-            })
+
+            //check the code of the course
+            if(code == 'hca' || code == 'cna' || code == 'bridging') {
+                res.status(201).json({
+                    redirect: true,
+                    student_id: student.id,
+                    registered: ( stripeToken && amount > 0 ) ? true : false,
+                    redirect_url: '/start-job-search',
+                    message: 'You have signed up for '+ course.title
+                })
+            } else {
+
+                res.status(201).json({
+                    redirect: true,                      
+                    redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
+                    message: 'You have signed up for '+ course.title
+                })
+            }            
 
         } catch (error){     
                
@@ -389,7 +448,6 @@ module.exports = {
         // const student_payments = student.payments
         const payments = student.payments
 
-        console.log('PAYMENT --> ', payment)
         //sum the student payments
         const sum = payments.reduce(( x, paid )=>{
             console.log(`payment: ${ x } and amount: ${paid.amount}` )
@@ -433,10 +491,10 @@ module.exports = {
         
       } catch (error) {
           console.log('error -> ', error)
-        res.status(500).json({
-            'message':'There has been an error processing your request',
-            error
-        })
+            res.status(500).json({
+                'message':'There has been an error processing your request',
+                error
+            })
       }
     },
     /**
