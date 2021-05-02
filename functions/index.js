@@ -82,7 +82,8 @@ app.use('/students', require('./routes/student'))
 //Get user info and set csurf cooke
 const scheduler = require('./scheduler')
 
-scheduler.start()
+scheduler.alertDaily()
+scheduler.alertWeekly()
 
 
 exports.app = functions.https.onRequest(app)
