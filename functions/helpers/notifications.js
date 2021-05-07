@@ -101,8 +101,8 @@ notifyEmployers : async ( num ) => {
 
   //5. get jobs with more than 1 applicant and were posted within the last 7 days
   const jobs = employer_jobs.docs.filter( x => x.data().created >= start && x.data().created <= end )
-                                 .filter( x => x.data().applicants.length > 0 || x.data().propects.length > 0 )
-                                 .map( x => {
+                                  .filter( x => x.data().applicants.length > 0 || x.data().propects.length > 0 )
+                                  .map( x => {
                                     return {
                                       id: x.id,
                                       title: x.data().title,
@@ -111,38 +111,38 @@ notifyEmployers : async ( num ) => {
                                       prospects: x.data().propects,
                                       email: x.data().email
                                     }
-                                 })
+                                  })
 
-  
-  if(jobs.length > 0 ){
-    jobs.forEach(async(job) => {
-      await mailchimpClient.messages.sendTemplate({
-        template_name: "student-applicant",
-        template_content: [],
-        message: {
-            from_email: 'jobs@excelcna.com',                        
-            subject: `${ subject }`,                      
-            track_opens: true,
-            track_clicks: true,
-            important: true,
-            merge_language: "handlebars",
-            merge_vars: [{
-                rcpt: job.email,
-                vars: [
-                  { name: 'APPLICANTS', content: job.applicants },
-                  { name: 'PROSPECTIVES', content: job.prospects },
-                  { name: 'JOB_ID', content: job.id },
-                  { name: 'ORGANIZATION', content: job.facility_name },
-                  { name: 'TITLE', content: job.title }                                                       
-                ]
-            }],
-            to: [
-                { email: job.email }
-            ]
-        } 
-      })
-    }) 
+
+    if(jobs.length > 0 ){
+      jobs.forEach(async(job) => {
+        await mailchimpClient.messages.sendTemplate({
+          template_name: "student-applicant",
+          template_content: [],
+          message: {
+              from_email: 'jobs@excelcna.com',                        
+              subject: `${ subject }`,                      
+              track_opens: true,
+              track_clicks: true,
+              important: true,
+              merge_language: "handlebars",
+              merge_vars: [{
+                  rcpt: job.email,
+                  vars: [
+                    { name: 'APPLICANTS', content: job.applicants },
+                    { name: 'PROSPECTIVES', content: job.prospects },
+                    { name: 'JOB_ID', content: job.id },
+                    { name: 'ORGANIZATION', content: job.facility_name },
+                    { name: 'TITLE', content: job.title }                                                       
+                  ]
+              }],
+              to: [
+                  { email: job.email }
+              ]
+          } 
+        })
+      }) 
+    }
   }
-}
 
 }

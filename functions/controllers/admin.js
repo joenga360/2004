@@ -45,7 +45,86 @@ module.exports = {
             courses: courses
         })
     },
+ /**
+     * student contacts employers about job and/or clinical verification opportunities
+     * @param { Object } req - contains student id and array of job ids from front end
+     * @param { Object } res - returns message and redirect boolean
+     * 
+     */
+    contactEmployers : async (req, res, next ) => {
+        try {        
+            //get the data from the front end
+            const { student_id, jobs }  = req.body
+            //get student for full name and contact information
+            const student = await db.collection('students').doc( student_id ).get()
+            //student's full name
+            const full_name = `${ student.data().first } ${ student.data().last }`      
+        
+            //if the student has contacted more than 1 employer
+            if( jobs.length > 0 ) {
+                //send employers emails
+                jobs.forEach (async( x ) => {                        
+                    //get student for full name and contact information
+                    const job = await db.collection('jobs').doc( x.job_id ).get()
+                    //get the prospects
+                    const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
+                    //add the new prospect to the prospects array
+                    prospects.unshift[{ 
+                        full_name,
+                        applied: firebase.firestore.Timestamp.fromDate(new Date()), 
+                        email: student.data().email,
+                        tel: student.data().tel
+                    }]
+                    //find the student with id of student_id
+                    await db.collection('jobs')               
+                            .doc( x.job_id )
+                            .update(prospects) 
 
+                    //send 
+                    await mailchimpClient.messages.sendTemplate({
+                        template_name: "student-applicant",
+                        template_content: [],
+                        message: {
+                            from_email: 'jobs@excelcna.com',                        
+                            subject: `Caregiver/CNA Job Application for ${ job.data().title }`,                      
+                            track_opens: true,
+                            track_clicks: true,
+                            important: true,
+                            merge_language: "handlebars",
+                            merge_vars: [{
+                                rcpt: job.data().email,
+                                vars: [
+                                    { name: 'ORGANIZATION', content: job.data().facility_name },
+                                    { name: 'JOB_TITLE', content:  job.data().title },
+                                    { name: 'STUDENT_FULL_NAME', content: full_name },
+                                    { name: 'STUDENT_EMAIL', content: student.data().email },
+                                    { name: 'STUDENT_TEL', content: student.data().tel },
+                                    { name: 'COURSE', content: student.data().payments[0].course_name }                                
+                                ]
+                            }],
+                            to: [
+                                { email: job.data().email }
+                            ]
+                        },
+                    })
+                })
+            }            
+                 
+            //alert employer about student's interest
+            res.status(201).json({
+                redirect: true,             
+               //redirect_url: ``/courses/${code}/${course_id}` `,   
+                message: "Employers interested in hiring you might contact you.  Keep an eye on your inbox."
+            })
+
+        } catch ( error ){
+            res.status(500).json({
+                redirect: false, 
+                // redirect_url: ``,                
+                message: "Something went wrong when you tried to contact employers."
+            })
+        }
+    },
     /**
      * get course schedules view for admin to enroll student 
      * params: String: 'add' or 'transfer' 
@@ -140,7 +219,34 @@ module.exports = {
         })
     },
 
-  
+    //get 10 jobs to present to a course registrant
+    getJobs: async ( req, res, next ) => {     
+        try {
+            //get 10 most recent jobs
+            const results = await db.collection("jobs")
+                                    .orderBy("created", "desc")
+                                    .limit(10)
+                                    .get()
+
+            const jobs = results.docs.map( x => {
+                                    return {                                        
+                                        id: x.id,
+                                        address: x.data().address,
+                                        // email: x.data().email,                                   
+                                        facility_name: x.data().facility_name,
+                                        title: x.data().title,
+                                        settings: x.data().settings
+                                    }
+                                })          
+            console.log('jobs ', jobs)
+            res.render('admin/student/applyjob', { jobs: jobs, seo_info: seo_page.jobs_page_seo_info })                      
+            
+
+        } catch (error) {
+            
+        }
+    },
+
     getStudentRegisterForm: async ( req, res, next ) => {
         try{   
 

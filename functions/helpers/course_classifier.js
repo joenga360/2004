@@ -189,7 +189,10 @@ module.exports = {
                                      
 
             case "HCA":
-                return 'bridging'            
+                return 'bridging' 
+                
+            case "CNA":
+                return "cna"
             
             case "DSHS":
                 if ( course_name.substring(12, 14).trim() == "Ho" ) {
@@ -208,9 +211,7 @@ module.exports = {
 
             default: 
                 
-                if(course_name === "CNA") {
-                    return 'cna'
-                }else if(course_name.substring(0, 4).trim() == 'Adul'){
+                if (course_name.substring(0, 4).trim() == 'Adul'){
                     return 'cpr'
                 } else if( course_name.substring(0, 4).trim() == 'BLS'){
                     return 'bls'

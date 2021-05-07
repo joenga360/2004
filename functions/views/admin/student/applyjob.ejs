@@ -1,11 +1,10 @@
 <div class="container-fluid p-5">           
     <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-6 col-lg-4">     
-        <div class="alert alert-secondary" role="alert">
-            The sooner you start your job search, the sooner you will complete your training.  Employers assist you complete your clinical verification while you train and eventually hire you.  In addition, some employers can assist you with tuition or reimburse your tuition.  Contact 4 - 7 employers before scrolling down the page to complete course registration.             
-        </div>
-        
-        <% jobs.forEach( job => { %>   
+        <div class="col-sm-10 col-md-4">    
+            <div class="alert alert-secondary" role="alert">
+                Recommend to the applicant/student to apply to 4 - 8 jobs.            
+            </div>    
+            <% jobs.forEach( job => { %>   
             <div class="card" id = "<%= job.id %>" >           
                 <div class="card-body">
                     <h5 class="card-title"> <%= job.facility_name %> </h5>
@@ -23,7 +22,7 @@
             </div><br>
             <% }) %> 
             
-            <a class="btn btn-dark btn-lg btn-block text-white float-right registration"           
+            <a class="btn btn-dark btn-lg btn-block text-white registration"           
                 type="button"> <strong>COMPLETE COURSE REGISTRATION</strong>
             </a>
         </div> 
@@ -33,12 +32,10 @@
     $(document).ready(()=>{
 
         //get items in the local storage       
-        const student_id = localStorage.getItem('student_id')
-        const registered = JSON.parse(localStorage.getItem('registered'))
+        const student_id = localStorage.getItem('student_id')  
         const jobs = localStorage.getItem('jobs') != null ? JSON.parse(localStorage.getItem('jobs')) : []
 
         const student_data = { student_id, jobs }
-        console.log('data after document loads --> ', student_data )
     
         $('.apply').on('click', (e) => {
 
@@ -49,29 +46,25 @@
             //properties of a job         
             const job_id = e.currentTarget.attributes[1].nodeValue
 
-            console.log(student_data)
             //push above job into data jobs array
             jobs.push({ job_id })
             
             localStorage.setItem('jobs', JSON.stringify(jobs))
-            debugger
+
             //hide the job
             $("#"+job_id).hide()
         })
-
+        debugger
         
         $('.registration').on('click', e => {
             //prevent default behavior
             e.preventDefault()
-
-            console.log('data ---', student_data )
-            debugger
             
             if( jobs.length > 0 ) {
                 //send data to server
                 $.ajax({
                     type: 'PATCH', 
-                    url: '/students/start-job-search',
+                    url: '/admin/start-job-search',
                     credentials: 'same-origin', // <-- includes cookies in the request
                     // headers: {
                     //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
@@ -82,20 +75,15 @@
                 
                     if (response.redirect !== undefined && response.redirect) {
                         
+                        const course_id = localStorage.getItem( 'course_id' )
+                        const code = localStorage.getItem( 'code')
+
                         alert(response.message)
-                        // window.location.href = response.redirect_url
-                         //check if the student registered or waitlisted
-                        if(JSON.parse(localStorage.getItem('registered'))){
-                            //clear the local storage
-                            localStorage.clear()
-                            //send registrant to receipt page
-                            window.location.replace('/confirm-payment')
-                        }else{
-                            //clear the local storage
-                            localStorage.clear()
-                            //send registrant to receipt page
-                            window.location.replace('/success')
-                        }
+                        
+                        localStorage.clear()
+                            
+                        window.location.replace(`/courses/${code}/${course_id}`)
+                    
                     }      
                     
                     if (response.redirect === undefined || !response.redirect) {
@@ -103,23 +91,17 @@
                         alert(response.message)
                         // window.location.href = response.redirect_url
                         localStorage.setItem('jobs', null)
-                        window.location.replace('/students/start-job-search')
+
+                        window.location.replace('/admin/start-job-search')
                     } 
                     
                     //clear
                 })
             } else {
                 debugger
-                //check if the student registered or waitlisted
-                if(JSON.parse(localStorage.getItem('registered'))){
-                    window.location.replace('/confirm-payment')
-                }else{
-                    window.location.replace('/success')
-                }
+                window.location.replace(`/courses/${code}/${course_id}`)
             }
-        })
-       
-        
+        })       
     })
 //create a get route to send the user to admin
 </script> 

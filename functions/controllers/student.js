@@ -111,7 +111,9 @@ module.exports = {
                         'email': registrant.data().email,
                         'id': registrant.id,
                         'tel': registrant.data().tel,
-                        'payment': registrant.data().payments.reduce(( sum, payment ) => {                           
+                        'payment': registrant.data().payments.reduce(( sum, payment ) => {        
+                            
+                            console.log('sum ')
                             //
                             let total = Object.entries(sum).length > 0 ? parseInt(sum.amount) + parseInt(payment.amount) : parseInt(payment.amount)                          
                             //console.log(payment.course_name)
@@ -159,16 +161,14 @@ module.exports = {
             })
         }
     },
-
+ 
     /**
      * student contacts employers about job and/or clinical verification opportunities
      * @param { Object } req - contains student id and array of job ids from front end
      * @param { Object } res - returns message and redirect boolean
      * 
      */
-
     contactEmployers : async (req, res, next ) => {
-
         try {
             
             //get the data from the front end
@@ -176,54 +176,57 @@ module.exports = {
             //get student for full name and contact information
             const student = await db.collection('students').doc( student_id ).get()
             //student's full name
-            const full_name = `${ student.data().first } ${ student.data().last }`            
-            //send employers emails
-            jobs.forEach (async( x ) => {    
-                
-                //get student for full name and contact information
-                const job = await db.collection('jobs').doc( x.job_id ).get()
-                //get the prospects
-                const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
-                //add the new prospect to the prospects array
-                prospects.unshift[{ 
-                    full_name,
-                    applied: firebase.firestore.Timestamp.fromDate(new Date()), 
-                    email: student.data().email,
-                    tel: student.data().tel
-                }]
-                //find the student with id of student_id
-                await db.collection('jobs')               
-                        .doc( x.job_id )
-                        .update(prospects) 
+            const full_name = `${ student.data().first } ${ student.data().last }`      
+            
+            //if the student has contacted more than 1 employer
+            if( jobs.length > 0 ) {
+                //send employers emails
+                jobs.forEach (async( x ) => {                        
+                    //get student for full name and contact information
+                    const job = await db.collection('jobs').doc( x.job_id ).get()
+                    //get the prospects
+                    const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
+                    //add the new prospect to the prospects array
+                    prospects.unshift[{ 
+                        full_name,
+                        applied: firebase.firestore.Timestamp.fromDate(new Date()), 
+                        email: student.data().email,
+                        tel: student.data().tel
+                    }]
+                    //find the student with id of student_id
+                    await db.collection('jobs')               
+                            .doc( x.job_id )
+                            .update(prospects) 
 
-                //send 
-                await mailchimpClient.messages.sendTemplate({
-                    template_name: "student-applicant",
-                    template_content: [],
-                    message: {
-                        from_email: 'jobs@excelcna.com',                        
-                        subject: `Caregiver/CNA Job Application for ${ job.data().title }`,                      
-                        track_opens: true,
-                        track_clicks: true,
-                        important: true,
-                        merge_language: "handlebars",
-                        merge_vars: [{
-                            rcpt: job.data().email,
-                            vars: [
-                                { name: 'ORGANIZATION', content: job.data().facility_name },
-                                { name: 'JOB_TITLE', content:  job.data().title },
-                                { name: 'STUDENT_FULL_NAME', content: full_name },
-                                { name: 'STUDENT_EMAIL', content: student.data().email },
-                                { name: 'STUDENT_TEL', content: student.data().tel },
-                                { name: 'COURSE', content: student.data().payments[0].course_name }                                
+                    //send 
+                    await mailchimpClient.messages.sendTemplate({
+                        template_name: "student-applicant",
+                        template_content: [],
+                        message: {
+                            from_email: 'jobs@excelcna.com',                        
+                            subject: `Caregiver/CNA Job Application for ${ job.data().title }`,                      
+                            track_opens: true,
+                            track_clicks: true,
+                            important: true,
+                            merge_language: "handlebars",
+                            merge_vars: [{
+                                rcpt: job.data().email,
+                                vars: [
+                                    { name: 'ORGANIZATION', content: job.data().facility_name },
+                                    { name: 'JOB_TITLE', content:  job.data().title },
+                                    { name: 'STUDENT_FULL_NAME', content: full_name },
+                                    { name: 'STUDENT_EMAIL', content: student.data().email },
+                                    { name: 'STUDENT_TEL', content: student.data().tel },
+                                    { name: 'COURSE', content: student.data().payments[0].course_name }                                
+                                ]
+                            }],
+                            to: [
+                                { email: job.data().email }
                             ]
-                        }],
-                        to: [
-                            { email: job.data().email }
-                        ]
-                    },
+                        },
+                    })
                 })
-            })
+            }            
                      
             //alert employer about student's interest
             res.status(201).json({
@@ -360,7 +363,7 @@ module.exports = {
                 web_sign_up: false
             }   
             //break birthdate so you can store in firestore
-             const dobArray = birthdate.split('-')
+            const dobArray = birthdate.split('-')
             //construct student date of birth date
             const DoB = moment.tz(dobArray[0] +" "+ dobArray[1]+" "+ dobArray[2], "YYYY MM DD", "America/Los_Angeles")
             const dob = DoB.toDate()
@@ -399,12 +402,15 @@ module.exports = {
              //send student data to mailchimp list/audience for students
             await subscribe( STUDENT_LIST, postData )       
            
-            //add this student to the registered segment of the list audience
-            //await segment(email, segmentURL(amount, course.name), STUDENT_LIST, add = true )            
+            console.log('code ', code, 'student id ', student.id, 'course_id', course_id, 'before res.status .....')     
             res.status(201).json({
                  message: `Admin has successfully added the student to ${course.data.title}.`,  
+                 student_id: `${student.id}`,
+                 code: `${code}`,
+                 course_id: `${course_id}`,
                  redirect: true,
-                 redirect_url: `/courses/${code}/${course_id}`       
+                 redirect_url: '/admin/start-job-search'
+                 //redirect_url: `/courses/${code}/${course_id}`       
             })
         }catch(error){
             console.log('What is the error -> ', error)

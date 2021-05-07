@@ -9,14 +9,14 @@ router.route('/register/:code/:id').post( studentController.studentSelfCourseSig
 //student contacts employers (starts job search) while enrolling for class
 router.route('/start-job-search').patch( studentController.contactEmployers )
 //admin registers a new student
-router.route('/start/:course_id/:code').post( authenticate.isAdmin,  studentController.studentCourseSignUpByAdmin ) 
+router.route('/start/:code/:course_id').post( authenticate.isAdmin, studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 
-router.route('/update/:code/:course_id').patch( authenticate.isAdmin,  studentController.studentUpdateByAdmin ) 
+router.route('/update/:code/:course_id').patch( authenticate.isAdmin, studentController.studentUpdateByAdmin ) 
 //admin transfers a student
-router.route('/transfer').patch( authenticate.isAdmin,  studentController.transferStudent ) 
+router.route('/transfer').patch( authenticate.isAdmin, studentController.transferStudent ) 
 //admin unenroll a student
-router.route('/unenroll/:student_id/:course_id').get( authenticate.isAdmin,  studentController.unenrollStudent ) 
+router.route('/unenroll/:student_id/:course_id').get( authenticate.isAdmin, studentController.unenrollStudent ) 
 //admin search a student
-router.route('/search').post( authenticate.isAdmin,  studentController.searchStudent ) 
+router.route('/search').post( authenticate.isAdmin, studentController.searchStudent ) 
 
 module.exports = router

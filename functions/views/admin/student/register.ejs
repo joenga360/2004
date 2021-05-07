@@ -269,7 +269,6 @@
 
 <script>
     $(document).ready(() => {
-
        //get the course id
        const courseId = (<%-JSON.stringify( courseId )%>)
        //get the abbreviation of course
@@ -347,7 +346,7 @@
             debugger
             $.ajax({
                 type: 'POST', 
-                url: '/students/start/'+courseId+'/'+code,
+                url: `/students/start/${code}/${courseId}`,                
                 credentials: 'same-origin', // <-- includes cookies in the request
                 // headers: {
                 //     'CSRF-Token': Cookies.get("XSRF-TOKEN")
@@ -357,6 +356,10 @@
             }).done(function (response) {
                 if (response.redirect !== undefined && response.redirect) {
                     debugger
+                    localStorage.setItem( 'course_id', response.course_id )
+                    localStorage.setItem( 'code', response.code )
+                    localStorage.setItem( 'student_id', response.student_id )
+                    debugger
                     // window.location.href = response.redirect_url
                     window.location.replace(response.redirect_url)
                 }      
@@ -365,10 +368,8 @@
                     
                     alert('Something went wrong - start the registration process again!')
 
-                    window.location.replace('/courses')
-                }   
-                //clear the local storage
-                localStorage.clear() 
+                    window.location.replace('/courses/admin/future')
+                }               
             })  
         })
 
@@ -451,7 +452,7 @@
            
             $.ajax({
                 type: 'PATCH', 
-                url: '/students/update/'+ code +'/'+courseId,
+                url: `/students/update/${code}/${courseId}`,
                 credentials: 'same-origin', // <-- includes cookies in the request
                 // headers: {
                 //     'CSRF-Token':  Cookies.get("XSRF-TOKEN")
