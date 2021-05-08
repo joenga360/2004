@@ -240,7 +240,7 @@ module.exports = {
                 error
             })
         }
-    },       
+    },    
    
     //view single job for by an employer
     viewJobById: async(req, res, next) => {

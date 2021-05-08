@@ -7,7 +7,7 @@ router.route('/').get(JobController.getJobPostForm)
 router.route("/preview").get(JobController.getJobPreview)
 //get job post preview for employer
 router.route("/contact").get(JobController.getJobContact) 
-//get single job post
+//get/view single job post
 router.route("/view/:id").get(JobController.viewJobById)
 //get all job posts
 router.route('/all').get(JobController.allJobs)

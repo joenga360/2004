@@ -6,7 +6,7 @@ const db = firebase.firestore()
 
 module.exports = {
 //Every Monday at 8:00 am, send students who signed up in the last 6 months job openings created last 7 days
-  notifyStudents : async ( num ) => {   
+notifyStudents : async ( num ) => {   
     console.log('notify students ', num )
     //parse the parameter to integer
     const day = parseInt(num)
@@ -26,7 +26,7 @@ module.exports = {
                                             && moment(job.data().created.toDate()).isBefore(end) 
                               ).map( job => {
                               return {
-                                id: job.id,
+                                url: `/job/view/${job.id}`,
                                 title: job.data().title,
                                 name: job.data().facility_name
                               }
@@ -58,7 +58,7 @@ module.exports = {
     students.forEach( async (student) => {
       
       await mailchimpClient.messages.sendTemplate({
-        template_name: "daily-job-announcement",
+        template_name: "jobs-openings",
         template_content: [],
         message: {
           from_email: 'jobs@excelcna.com',                        
@@ -87,7 +87,7 @@ module.exports = {
 notifyEmployers : async ( num ) => { 
   //parse the parameter to integer
   const day = parseInt( num )
-  console.log('notify employers ', num)
+  
   const subject = (num == 7 ) ? `Weekly Caregiver and CNA job applicants` : `Daily Caregiver and CNA job applicants`
   //1. create time markers for the start and/or end of the week            
   const start = moment().subtract(day, 'day').startOf('day')
@@ -96,53 +96,52 @@ notifyEmployers : async ( num ) => {
                                       
   //2.  get all jobs 
   const employer_jobs =  await db.collection('jobs')
-                              .orderBy("created", "desc")
-                              .get()                                     
+                                 .orderBy("created", "desc")
+                                 .get()                                     
 
   //5. get jobs with more than 1 applicant and were posted within the last 7 days
   const jobs = employer_jobs.docs.filter( x => x.data().created >= start && x.data().created <= end )
                                   .filter( x => x.data().applicants.length > 0 || x.data().propects.length > 0 )
                                   .map( x => {
                                     return {
-                                      id: x.id,
+                                      //id: x.id,
                                       title: x.data().title,
                                       facility_name: x.data().facility_name,
                                       applicants: x.data().applicants,
+                                      url: `/job/view/${x.id}`,
                                       prospects: x.data().propects,
                                       email: x.data().email
                                     }
                                   })
 
-
     if(jobs.length > 0 ){
-      jobs.forEach(async(job) => {
+      jobs.forEach(async(job) => {        
         await mailchimpClient.messages.sendTemplate({
-          template_name: "student-applicant",
+          template_name: "caregiver-cna-applicants",
           template_content: [],
           message: {
-              from_email: 'jobs@excelcna.com',                        
-              subject: `${ subject }`,                      
-              track_opens: true,
-              track_clicks: true,
-              important: true,
-              merge_language: "handlebars",
-              merge_vars: [{
-                  rcpt: job.email,
-                  vars: [
-                    { name: 'APPLICANTS', content: job.applicants },
-                    { name: 'PROSPECTIVES', content: job.prospects },
-                    { name: 'JOB_ID', content: job.id },
-                    { name: 'ORGANIZATION', content: job.facility_name },
-                    { name: 'TITLE', content: job.title }                                                       
-                  ]
-              }],
-              to: [
-                  { email: job.email }
-              ]
+            from_email: 'jobs@excelcna.com',                        
+            subject: `${ subject }`,                      
+            track_opens: true,
+            track_clicks: true,
+            important: true,
+            merge_language: "handlebars",
+            merge_vars: [{
+                rcpt: job.email,
+                vars: [
+                  { name: 'APPLICANTS', content: job.applicants }, 
+                  { name: 'PROSPECTS', content: job.prospects },                  
+                  { name: 'JOB_URL', content: job.url },
+                  { name: 'ORGANIZATION', content: job.facility_name },
+                  { name: 'TITLE', content: job.title }                                                       
+                ]
+            }],
+            to: [
+                { email: job.email }
+            ]
           } 
         })
       }) 
     }
   }
-
 }
